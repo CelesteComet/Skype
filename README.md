@@ -1,24 +1,14 @@
-# README
+# Readme
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Please do not sue me. I love Skype. Thank you.
 
-Things you may want to cover:
+# For Development
 
-* Ruby version
+Within directory
+1. bundle install
+2. npm install
+3. npm start
+4. rails s
+5. thank you!
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+All rights and stuff belongs to my Microsoft overlords
