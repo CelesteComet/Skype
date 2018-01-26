@@ -1,10 +1,29 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i');
 
 * {
   padding: 0;
   margin: 0;
   list-style-type: none;
   font-family: 'Noto Sans', sans-serif;
+}
+
+h4 { font-weight: 400 } /* MAYBE CHANGE FONT WEIGHT */
+
+/* UNIVERSAL STYLES */
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-blue {
+  color: #00AFF0;
 }
 
 #root > div {
@@ -24,6 +43,75 @@ aside {
   height: 100vh;
   transition: width .5s ease-in-out,min-width .5s ease-in-out;
   border-right: 1px solid #d6e6ec;
+  padding: 0 18px;
+  box-sizing: border-box;
+}
+
+.profile-name-status {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile-name-status p {
+  font-size: 0.7em;
+}
+
+.search-skype {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #d6e6ec;
+  font-size: 0.925em;
+  padding: 10px 0px 15px 0px;
+  position: relative;
+}
+
+.search-skype i {
+  font-size: 1.4em;
+  position: absolute;
+}
+
+.search-skype input {
+  display: block;
+  margin: 0 auto;
+  border: none;
+  font-size: 0.9em;
+  font-weight: 300;
+  text-align: center;
+}
+
+.search-skype input:focus {
+  text-align: left;
+  outline: none;
+  padding-left: 50px;
+}
+
+.search-skype input:blur {
+  color: #00AFF0
+}
+
+
+
+
+.profile-icon {
+  border-radius: 100px;
+  width: 42px;
+}
+
+.green-circle {
+  border-radius: 100px;
+  background: green;
+  width: 14px;
+  height: 14px;
+  border: 3px solid white;
+  position: absolute;
+  top: 28px;
+  left: 42px;
+}
+
+.green-circle ~ div {
+  padding-left: 41px;
 }
 
 footer {
@@ -67,6 +155,10 @@ footer a:hover {
     width: 10%;
     min-width: 3.6em;
     background-color: pink;
+  }
+
+  .search-skype {
+    display: none;
   }
 }
 

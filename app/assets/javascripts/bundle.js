@@ -21254,6 +21254,10 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Search = __webpack_require__(75);
+
+var _Search2 = _interopRequireDefault(_Search);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21277,7 +21281,32 @@ var SideBar = function (_Component) {
       return _react2.default.createElement(
         'aside',
         null,
-        ' I AM THE SIDEBAR '
+        _react2.default.createElement(
+          'div',
+          { className: 'me-container' },
+          _react2.default.createElement('div', { className: 'profile-icon' }),
+          _react2.default.createElement(
+            'div',
+            { className: 'profile-name-status' },
+            _react2.default.createElement('img', { className: 'profile-icon', src: 'images/myicon.jpeg' }),
+            _react2.default.createElement('div', { className: 'green-circle' }),
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'h4',
+                null,
+                'Bruce Wong'
+              ),
+              _react2.default.createElement(
+                'p',
+                { className: 'small gray' },
+                'Online'
+              )
+            )
+          ),
+          _react2.default.createElement(_Search2.default, null)
+        )
       );
     }
   }]);
@@ -21355,7 +21384,7 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Footer() {
+function Footer(props) {
   return _react2.default.createElement(
     'footer',
     null,
@@ -21438,6 +21467,106 @@ function Footer() {
 }
 
 exports.default = Footer;
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Search = function (_Component) {
+  _inherits(Search, _Component);
+
+  function Search(props) {
+    _classCallCheck(this, Search);
+
+    var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
+
+    _this.state = {
+      searchTerm: 'Search Skype'
+    };
+
+    _this.handleChange = _this.handleChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(Search, [{
+    key: 'handleChange',
+    value: function handleChange(e) {
+      this.setState({
+        searchTerm: e.target.value
+      });
+    }
+  }, {
+    key: 'handleFocus',
+    value: function handleFocus(e) {
+      var searchTerm = this.state.searchTerm;
+
+      if (searchTerm === 'Search Skype') {
+        this.setState({
+          searchTerm: ''
+        });
+      }
+    }
+  }, {
+    key: 'handleFocusOut',
+    value: function handleFocusOut(e) {
+      var searchTerm = this.state.searchTerm;
+
+      if (searchTerm.length === 0) {
+        this.setState({
+          searchTerm: 'Search Skype'
+        });
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var searchTerm = this.state.searchTerm;
+
+      return _react2.default.createElement(
+        'form',
+        { className: 'search-skype' },
+        _react2.default.createElement('i', { className: 'fa fa-search icon-blue', 'aria-hidden': 'false' }),
+        _react2.default.createElement('input', {
+          text: 'text',
+          value: searchTerm,
+          onChange: this.handleChange,
+          onFocus: function onFocus() {
+            return _this2.handleFocus();
+          },
+          onBlur: function onBlur() {
+            return _this2.handleFocusOut();
+          } })
+      );
+    }
+  }]);
+
+  return Search;
+}(_react.Component);
+
+exports.default = Search;
 
 /***/ })
 /******/ ]);
