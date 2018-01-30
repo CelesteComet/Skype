@@ -1,36 +1,44 @@
 import React, { Component } from 'react';
 import Search from './Search';
+import ProfileItem from './ProfileItem';
+import RecentsList from './RecentsList';
+import AsideButtons from './AsideButtons';
 
 
 class SideBar extends Component {
 
   render() {
     return (
-      <aside> 
-        <div className="me-container">
-
-          {/* Profile Icon */}
-          <div className="profile-icon">
-
+      <div className="aside-container">
+        <aside> 
+          {/* Cloud Background*/}
+          <div className="cloud-background">
+            <div className="white-circle cloud-4"></div>
+            <div className="white-circle cloud-3"></div>
+            <div className="white-circle cloud-2"></div>
+            <div className="white-circle cloud-1"></div>
+            <div className="white-circle cloud-2 deep-blue-cloud"></div>
+            <div className="white-circle cloud-2 light-blue-cloud"></div>
           </div>
 
-          {/* Profile */}
+          <ProfileItem 
+            name={'Bruce Wong'} 
+            status={'Online'}
+            src={'images/myicon.jpeg'} 
+            handleClick={() => {console.log("HELLO")}} />
 
-          <div className="profile-name-status">
-            <img className="profile-icon" src="images/myicon.jpeg" />
-            <div className="green-circle"></div>
-            <div>
-              <h4>Bruce Wong</h4>
-              <p className="small gray">Online</p>
-            </div>
+          <div className="me-container">
+            {/* Search */}
+            <Search />
+            <AsideButtons />
+            <RecentsList />
+
+
+
+
           </div>
-
-          {/* Search */}
-          <Search />
-
-
-        </div>
-      </aside>
+        </aside>
+      </div>
     );
   }
 

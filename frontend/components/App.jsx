@@ -4,10 +4,12 @@ import SideBar from './SideBar';
 import Main from './Main';
 import Footer from './Footer';
 
+
+
 const App = () => {
   return (
     <Fragment>
-      <div>
+      <div> 
         <SideBar />
         <Main />
       </div>
@@ -17,6 +19,17 @@ const App = () => {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
 
 
 

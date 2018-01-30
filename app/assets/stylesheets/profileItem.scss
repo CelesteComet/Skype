@@ -1,0 +1,24 @@
+.profile-item {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  display: inline-block;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+
+  .wrapper {
+
+  }
+
+  .name-info {
+    padding-left: 25px;
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.profile-item:hover {
+  cursor: pointer;
+}
