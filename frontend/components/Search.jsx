@@ -39,13 +39,16 @@ class Search extends Component {
     const { searchTerm } = this.state;
     return (
       <form className="search-skype">
-      <i className="fa fa-search icon-blue" aria-hidden="false"></i>
-      <input 
-        text="text" 
-        value={ searchTerm }
-        onChange={ this.handleChange } 
-        onFocus={() => (this.handleFocus())} 
-        onBlur={() => (this.handleFocusOut())} />
+        <div>
+          <i className="fa fa-search icon-blue" aria-hidden="false"></i>
+          <input 
+            text="text" 
+            value={ searchTerm }
+            onChange={ this.handleChange } 
+            onFocus={() => (this.handleFocus())} 
+            onBlur={() => (this.handleFocusOut())} />
+          <i className="fa fa-times icon-blue" aria-hidden="true"></i>
+        </div>
       </form>
     );
   }

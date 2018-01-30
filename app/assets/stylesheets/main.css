@@ -147,24 +147,34 @@ aside {
   width: 100%;
   box-sizing: border-box;
   border: none;
-  border-bottom: 1px solid #d6e6ec;
   font-size: 0.925em;
-  padding: 10px 0px 15px 15px;
   position: relative;
+  padding: 0px 15px 0 15px;
+  white-space: nowrap;
 }
 
-.search-skype i {
+.search-skype i:nth-of-type(1) {
   font-size: 1.3em;
-  position: absolute;
+  padding: 10px;
+  display: inline-block;
 }
 
 .search-skype input {
-  display: block;
-  margin: 0 13px;
+  display: inline-block;
   border: none;
+  box-sizing: border-box;
   font-size: 1em;
   font-weight: 300;
-  text-align: center;
+  height: 38px;
+}
+
+.search-skype > div {
+  border-bottom: 1px solid #d6e6ec;
+}
+
+.search-skype > div i:nth-of-type(2) {
+  margin-left: auto; 
+  margin-right: 0;
 }
 
 .search-skype input:focus {

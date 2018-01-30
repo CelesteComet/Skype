@@ -2039,6 +2039,7 @@ var store = (0, _redux.createStore)(_rootReducer2.default);
 
 document.addEventListener('DOMContentLoaded', function () {
   var root = document.getElementById('root');
+  window.store = store;
   _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
@@ -21479,17 +21480,22 @@ var Search = function (_Component) {
       return _react2.default.createElement(
         'form',
         { className: 'search-skype' },
-        _react2.default.createElement('i', { className: 'fa fa-search icon-blue', 'aria-hidden': 'false' }),
-        _react2.default.createElement('input', {
-          text: 'text',
-          value: searchTerm,
-          onChange: this.handleChange,
-          onFocus: function onFocus() {
-            return _this2.handleFocus();
-          },
-          onBlur: function onBlur() {
-            return _this2.handleFocusOut();
-          } })
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement('i', { className: 'fa fa-search icon-blue', 'aria-hidden': 'false' }),
+          _react2.default.createElement('input', {
+            text: 'text',
+            value: searchTerm,
+            onChange: this.handleChange,
+            onFocus: function onFocus() {
+              return _this2.handleFocus();
+            },
+            onBlur: function onBlur() {
+              return _this2.handleFocusOut();
+            } }),
+          _react2.default.createElement('i', { className: 'fa fa-times icon-blue', 'aria-hidden': 'true' })
+        )
       );
     }
   }]);

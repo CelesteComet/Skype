@@ -15,6 +15,7 @@ const store = createStore(rootReducer);
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root');
+  window.store = store;
   ReactDOM.render(
     <Provider store={ store }>
       <App />
