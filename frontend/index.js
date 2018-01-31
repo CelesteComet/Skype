@@ -6,19 +6,22 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './reducers/rootReducer';
 
+// Router stuff
+import { HashRouter, Route } from 'react-router-dom';
 
+// My own components
 import App from './components/App'; 
-import { someArray } from './components/App'
 
 const store = createStore(rootReducer);
 
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root');
-  window.store = store;
   ReactDOM.render(
-    <Provider store={ store }>
-      <App />
-    </Provider>
+    <HashRouter>
+      <Provider store={ store }>
+        <App />
+      </Provider>
+    </HashRouter>
   ,root)
 });

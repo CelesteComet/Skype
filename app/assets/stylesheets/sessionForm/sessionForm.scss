@@ -1,0 +1,103 @@
+.session-form {
+  width: 400px;
+  margin: 0 auto;
+  padding: 0 48px 0 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.session-form {
+  h1 {
+    font-weight: 300;
+    margin: 0 auto;
+    padding-bottom: 26.2812px;
+    padding-top: 3.1812px;
+    text-align: center;
+  }
+
+  input {
+    padding: 4px 8px 4px 8px;
+    font-size: 15px;
+    margin-top: 27px;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,.4);
+  }
+
+  button {
+    width: 100%;
+    background-color: #0b7db4;
+    color: #FFF;
+    border: 2px solid transparent;
+    height: 36px;
+    border-radius: 25px;
+    font-size: 15px;
+    margin-top: 17px;
+    margin-bottom: 18px;
+  }
+
+  button:hover {
+    border-color: #00AFF0;
+    cursor: pointer;
+  }
+
+  a {
+    color: #0b7db4;
+    font-weight: 500;
+  }
+
+  p {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 400;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+
+
+
+  ul li {
+    display: inline-block;
+    margin: 0 16px 0 16px;
+    font-size: 13px;
+    font-weight: 450;
+    padding-bottom: 10px;
+  }
+}
+
+.session-form-login {
+  width: 100%;
+}
+
+.session-footer {
+  ul {
+    padding-top: 67px;
+  }
+}
+
+.session-checkbox {
+  padding-top: 20px;
+  input {
+    display: inline-block;
+    margin: 0;
+    width: auto;
+    padding: 3px;
+
+  }
+
+  label {
+    display: inline-block
+  }
+}
+
+
+.microsoft-logos {
+  margin: 20px 0 20px 0;
+  text-align: center;
+}
