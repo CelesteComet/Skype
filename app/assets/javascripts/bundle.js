@@ -21255,8 +21255,10 @@ Object.defineProperty(exports, "__esModule", {
 var _redux = __webpack_require__(12);
 
 var rootReducer = (0, _redux.combineReducers)({
-  something: function something() {
-    return {};
+  session: function session() {
+    return {
+      currentUser: {}
+    };
   }
 });
 
