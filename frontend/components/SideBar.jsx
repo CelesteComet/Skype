@@ -32,16 +32,11 @@ class SideBar extends Component {
             <Search />
             <AsideButtons />
             <RecentsList />
-
-
-
-
           </div>
         </aside>
       </div>
     );
   }
-
 }
 
 export default SideBar;

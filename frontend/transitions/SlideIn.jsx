@@ -3,13 +3,12 @@ import React from 'react';
 
 function SlideIn({children}) {
   return (
-    <div className="full-container">
+    <div className="slide-in-left-container">
       <ReactCSSTransitionGroup
-        transitionName="slide-in"
+        transitionName="slide-in-left"
         transitionEnterTimeout={150}
         transitionLeaveTimeout={150}
-        transitionAppearTimeout={150}
-        transitionAppear={true}
+        transitionLeave={ false }
         component='div'>
         {children}
       </ReactCSSTransitionGroup>

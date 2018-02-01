@@ -8,17 +8,27 @@ class User < ApplicationRecord
 
   def password=(password)
     @password = password
-    self.password_digest = BCyrpt::Password.create(password)
+    self.password_digest = BCrypt::Password.create(password)
   end
 
   def is_password?(password)
-    BCyrpt::Password.new(self.password_digest) == password 
+    BCrypt::Password.new(self.password_digest) == password 
   end
 
   def reset_session_token!
     self.session_token = User.generate_session_token
     self.save!
     return self.session_token
+  end
+
+  def self.find_by_credentials(username, password) 
+    @user = User.find_by(username: username)
+
+    if @user && @user.is_password?(password) 
+      @user
+    else 
+      nil
+    end
   end
 
   def self.generate_session_token

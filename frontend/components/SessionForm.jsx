@@ -1,4 +1,8 @@
 import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux';
+
+import { clearError } from '../actions/sessionActions';
+
 
 import titleService from '../services/titleService';
 
@@ -18,6 +22,7 @@ class SessionForm extends Component {
       password: "",
       page: 1
     };
+
     titleService.changeFavicon("images/microsoftIcon.png");
 
     this.forwardPage = this.forwardPage.bind(this);
@@ -38,18 +43,35 @@ class SessionForm extends Component {
     }
   }
 
+  handleChange(e, property) {
+    this.setState({
+      [property]: e.target.value
+    })
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(clearError());
+  }
+
   render() {
     const { page } = this.state;
+    const { errors } = this.props;
     let currentPage = page === 1 ? "username" : "password";
     return (
       <div className="session-form">
         <MicrosoftLogos />
+        {errors.map((error, i) => (
+          <p key={i}>{error}</p>
+        ))}
         <SlideIn>
           { page === 1 &&
             <SessionLogin 
               type={ currentPage }
               next={ this.forwardPage }
-              back={ this.backPage } />
+              back={ this.backPage }
+              handleChange={ (e) => {this.handleChange(e, 'username')} } 
+              user={this.state} />
           }
         </SlideIn>
         <SlideIn>
@@ -57,7 +79,9 @@ class SessionForm extends Component {
             <SessionLogin  
               type={ currentPage }
               next={ this.forwardPage }
-              back={ this.backPage } />
+              back={ this.backPage } 
+              handleChange={ (e) => {this.handleChange(e, 'password')} } 
+              user={ this.state } />
           }
         </SlideIn>
       </div>
@@ -65,6 +89,17 @@ class SessionForm extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    errors: state.session.errors
+  };
+};
+
+const mapDispatchToProps = dispatch => ( { dispatch } );
+
+export default connect(mapStateToProps, mapDispatchToProps)(SessionForm);
 
 
-export default SessionForm;
+
+
+

@@ -1,18 +1,8 @@
 import { combineReducers } from 'redux';
+import sessionReducer from './sessionReducer';
 
 const rootReducer = combineReducers({
-  session: function() {
-    return {
-      entities: () => {
-        return {
-          meta: {
-            title: "HELLO"
-          }
-        }; 
-      },
-      currentUser: {}
-    }
-  }
+  session: sessionReducer
 });
 
 export default rootReducer;

@@ -1,17 +1,20 @@
 import React, { Fragment } from 'react';
 import { Router, Route, Switch } from 'react-router';
+import { AuthRoute, ProtectedRoute } from './Auth/AuthComponents';
 
+import Dashboard from './Dashboard';
 import SessionForm from './SessionForm';
-import RegistrationForm from './Session/RegistrationForm';
-import SideBar from './SideBar';
-import Main from './Main';
-import Footer from './Footer';
+import RegistrationForm from './SessionForm/RegistrationForm';
+
 
 const App = () => {
   return (
     <Fragment>
-      <Route exact path="/" component={ SessionForm }/>
-      <Route exact path='/users/new' component={ RegistrationForm } />
+      <Switch>
+        <Route exact path="/login" component={ SessionForm }/>
+        <Route exact path='/users/new' component={ RegistrationForm } />
+        <ProtectedRoute path="/" component={ Dashboard } />
+      </Switch>
     </Fragment>
   );
 }
