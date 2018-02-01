@@ -1,5 +1,5 @@
 .session-form {
-  width: 400px;
+  width: 414px;
   margin: 0 auto;
   padding: 0 48px 0 48px;
   display: flex;
@@ -71,23 +71,47 @@
   }
 }
 
+.session-create-page {
+  label {
+    font-size: 15px;
+  }
+
+  a {
+    font-weight: 400;
+    font-size: 15px;
+    display: block;
+    padding-bottom: 23px;
+    text-align: center;
+
+  }
+}
+
 .session-form-login {
   width: 100%;
 }
 
 .session-footer {
+  
+  text-align: center;
   ul {
     padding-top: 67px;
   }
 }
 
+.session-create-page {
+  
+}
+
 .session-checkbox {
   padding-top: 20px;
+  text-align: center;
+  padding-right: 20px;
   input {
     display: inline-block;
-    margin: 0;
+    margin: 5px;
     width: auto;
     padding: 3px;
+    font-size: 20px
 
   }
 

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import SessionFooter from './SessionFooter';
 
 class SessionLogin extends Component {
 
   render() {
-    const { type } = this.props;
+    const { type, next, back } = this.props;
     let buttons;
     let headingText;
     let inputPlaceholderText;
     let commandTextComponent;
+    let createForgotComponent;
 
     let buttonStyles = {
       width: '49%'
@@ -21,18 +24,29 @@ class SessionLogin extends Component {
     if (type == 'username') {
       headingText = "Sign In";
       inputPlaceholderText = "Email, phone or Skype";
+
+      createForgotComponent = (
+        <p>
+          No account?<Link to="/users/new"> Create one!</Link>
+        </p>
+      );
       buttons = (
         <div>
-          <button>Next</button>
+          <button onClick={() => {next()}}>Next</button>
         </div>
       );
     } else {
       headingText = "Enter password";
       commandTextComponent = <p>Enter the password for brucewong21</p>
       inputPlaceholderText = "Password";
+
       buttons = (
         <div style={buttonContainerStyles}>
-          <button style={buttonStyles}>Back</button>
+          <button 
+            style={buttonStyles}
+            onClick={() => {back()}}
+            children={'Back'}>
+          </button>
           <button style={buttonStyles}>Sign In</button>
         </div>
       );
@@ -43,15 +57,16 @@ class SessionLogin extends Component {
         <h1>{headingText}</h1>
         {commandTextComponent}
         <input 
-          type="text" 
+          type={type === 'username' ? 'text' : 'password'}
           placeholder={inputPlaceholderText} />
-        <div className="session-checkbox">
-          <input type="checkbox" /><label>Keep me signed in</label>
-        </div>
+        { type === 'password' && 
+          <div className="session-checkbox">
+            <input type="checkbox" /><label>Keep me signed in</label>
+          </div>
+        }
         {buttons}
-        <p>
-          No account?<a href=""> Create one!</a>
-        </p>
+        {createForgotComponent}
+        <SessionFooter />
       </div>
     );
   }

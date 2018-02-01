@@ -1,0 +1,23 @@
+.slide-in-appear {
+  position: relative;
+  left: -100px;
+}
+
+.slide-in-appear.slide-in-appear-active {
+  position: relative;
+  left: 0px;
+  transition: left 150ms ease-in;
+}
+
+.slide-in-leave {
+  position: relative;
+  left: 0px;
+  transition: left 150ms ease-in;
+}
+
+.slide-in-leave.slide-in-leave-active {
+  position: relative;
+  left: -100px;
+  transition: left 150ms ease-in;
+}
+
