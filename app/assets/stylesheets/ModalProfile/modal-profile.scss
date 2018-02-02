@@ -1,0 +1,42 @@
+.modal-profile {
+
+  h4 {
+    font-size: 18px;
+  }
+
+  .profile-item {
+    p {
+      font-size: 0.85em;
+      font-weight: 300;
+    }
+  }
+
+
+  .shroud {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    cursor: pointer;
+    background-color: white;
+    background: rgba(255,255,255,0.8);
+  };
+
+  .modal {
+    height: 90%;
+    background: #F6F9FC;
+    z-index: 5;
+    position: fixed;
+    width: 100%;
+  }
+
+  header {
+    padding-top: 26px;
+    padding-left: 19px;
+  }
+}
+
+
+

@@ -7,6 +7,6 @@ export const createUser = (user) => dispatch => {
     .then(user => {
       dispatch(receiveCurrentUser(user));
     }, err => {
-      dispatch(receiveError(err.responseJSON));
+      dispatch(receiveError(err));
     })
 }

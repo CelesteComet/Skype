@@ -3,11 +3,15 @@ import Search from './Search';
 import ProfileItem from './ProfileItem';
 import RecentsList from './RecentsList';
 import AsideButtons from './AsideButtons';
+import { toggleProfileModal } from '../actions/uiActions';
+import { connect } from 'react-redux';
 
 
 class SideBar extends Component {
 
   render() {
+    let { dispatch } = this.props;
+
     return (
       <div className="aside-container">
         <aside> 
@@ -25,7 +29,7 @@ class SideBar extends Component {
             name={'Bruce Wong'} 
             status={'Online'}
             src={'images/myicon.jpeg'} 
-            handleClick={() => {console.log("HELLO")}} />
+            handleClick={() => { dispatch(toggleProfileModal()) }} />
 
           <div className="me-container">
             {/* Search */}
@@ -39,4 +43,8 @@ class SideBar extends Component {
   }
 }
 
-export default SideBar;
+const mapDispatchToProps = dispatch => {
+  return { dispatch }
+};
+
+export default connect(null, mapDispatchToProps)(SideBar);

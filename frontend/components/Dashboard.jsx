@@ -1,23 +1,41 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import SideBar from './SideBar';
 import Main from './Main';
 import Footer from './Footer';
+import ModalProfile from './ModalProfile/ModalProfile';
 import { logoutUser } from '../actions/sessionActions';
 import { connect } from 'react-redux';
+import titleService from '../services/titleService';
 
-function Dashboard({dispatch}) {
-  return (
-    <Fragment>
-      <SideBar />
-      <Main />
-      <Footer />
-      <button onClick={() => { dispatch(logoutUser()) }}>LOGOUT</button>
-    </Fragment>
-  );
+
+class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { dispatch, modalView } = this.props;
+    return (
+      <Fragment>
+        { modalView && <ModalProfile /> }
+        <SideBar />
+        <Main />
+        <Footer />
+        <button onClick={() => { dispatch(logoutUser()) }}>LOGOUT</button>
+      </Fragment>
+    );
+  }
+}
+
+
+const mapStateToProps = state => {
+  return {
+    modalView: state.ui.profileModalView
+  }
 };
 
 const mapDispatchToProps = dispatch => {
   return { dispatch }
 };
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

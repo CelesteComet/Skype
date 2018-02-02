@@ -23773,10 +23773,15 @@ var _sessionReducer = __webpack_require__(106);
 
 var _sessionReducer2 = _interopRequireDefault(_sessionReducer);
 
+var _uiReducer = __webpack_require__(157);
+
+var _uiReducer2 = _interopRequireDefault(_uiReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
-  session: _sessionReducer2.default
+  session: _sessionReducer2.default,
+  ui: _uiReducer2.default
 });
 
 exports.default = rootReducer;
@@ -43483,6 +43488,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -43499,36 +43506,74 @@ var _Footer = __webpack_require__(139);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
+var _ModalProfile = __webpack_require__(156);
+
+var _ModalProfile2 = _interopRequireDefault(_ModalProfile);
+
 var _sessionActions = __webpack_require__(9);
 
 var _reactRedux = __webpack_require__(6);
 
+var _titleService = __webpack_require__(141);
+
+var _titleService2 = _interopRequireDefault(_titleService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Dashboard(_ref) {
-  var dispatch = _ref.dispatch;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  return _react2.default.createElement(
-    _react.Fragment,
-    null,
-    _react2.default.createElement(_SideBar2.default, null),
-    _react2.default.createElement(_Main2.default, null),
-    _react2.default.createElement(_Footer2.default, null),
-    _react2.default.createElement(
-      'button',
-      { onClick: function onClick() {
-          dispatch((0, _sessionActions.logoutUser)());
-        } },
-      'LOGOUT'
-    )
-  );
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Dashboard = function (_Component) {
+  _inherits(Dashboard, _Component);
+
+  function Dashboard(props) {
+    _classCallCheck(this, Dashboard);
+
+    return _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).call(this, props));
+  }
+
+  _createClass(Dashboard, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          dispatch = _props.dispatch,
+          modalView = _props.modalView;
+
+      return _react2.default.createElement(
+        _react.Fragment,
+        null,
+        modalView && _react2.default.createElement(_ModalProfile2.default, null),
+        _react2.default.createElement(_SideBar2.default, null),
+        _react2.default.createElement(_Main2.default, null),
+        _react2.default.createElement(_Footer2.default, null),
+        _react2.default.createElement(
+          'button',
+          { onClick: function onClick() {
+              dispatch((0, _sessionActions.logoutUser)());
+            } },
+          'LOGOUT'
+        )
+      );
+    }
+  }]);
+
+  return Dashboard;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    modalView: state.ui.profileModalView
+  };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return { dispatch: dispatch };
 };
 
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Dashboard);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Dashboard);
 
 /***/ }),
 /* 132 */
@@ -43563,6 +43608,10 @@ var _AsideButtons = __webpack_require__(137);
 
 var _AsideButtons2 = _interopRequireDefault(_AsideButtons);
 
+var _uiActions = __webpack_require__(158);
+
+var _reactRedux = __webpack_require__(6);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43583,6 +43632,9 @@ var SideBar = function (_Component) {
   _createClass(SideBar, [{
     key: 'render',
     value: function render() {
+      var dispatch = this.props.dispatch;
+
+
       return _react2.default.createElement(
         'div',
         { className: 'aside-container' },
@@ -43604,7 +43656,7 @@ var SideBar = function (_Component) {
             status: 'Online',
             src: 'images/myicon.jpeg',
             handleClick: function handleClick() {
-              console.log("HELLO");
+              dispatch((0, _uiActions.toggleProfileModal)());
             } }),
           _react2.default.createElement(
             'div',
@@ -43621,7 +43673,11 @@ var SideBar = function (_Component) {
   return SideBar;
 }(_react.Component);
 
-exports.default = SideBar;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(SideBar);
 
 /***/ }),
 /* 133 */
@@ -45677,7 +45733,7 @@ var createUser = exports.createUser = function createUser(user) {
     return APIUtil.createUser(user).then(function (user) {
       dispatch((0, _sessionActions.receiveCurrentUser)(user));
     }, function (err) {
-      dispatch((0, _sessionActions.receiveError)(err.responseJSON));
+      dispatch((0, _sessionActions.receiveError)(err));
     });
   };
 };
@@ -45699,6 +45755,185 @@ var createUser = exports.createUser = function createUser(user) {
     method: 'POST',
     data: { user: user }
   });
+};
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ProfileItem = __webpack_require__(59);
+
+var _ProfileItem2 = _interopRequireDefault(_ProfileItem);
+
+var _uiActions = __webpack_require__(158);
+
+var _reactRedux = __webpack_require__(6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModalProfile = function (_Component) {
+  _inherits(ModalProfile, _Component);
+
+  function ModalProfile(props) {
+    _classCallCheck(this, ModalProfile);
+
+    return _possibleConstructorReturn(this, (ModalProfile.__proto__ || Object.getPrototypeOf(ModalProfile)).call(this, props));
+  }
+
+  _createClass(ModalProfile, [{
+    key: 'render',
+    value: function render() {
+      var dispatch = this.props.dispatch;
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'modal-profile' },
+        _react2.default.createElement('div', { className: 'shroud' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'modal' },
+          _react2.default.createElement(
+            'header',
+            null,
+            _react2.default.createElement(_ProfileItem2.default, {
+              name: 'Bruce Wong',
+              src: '/images/myicon.jpeg',
+              status: 'Online',
+              handleClick: function handleClick() {
+                dispatch((0, _uiActions.toggleProfileModal)());
+              } })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'modal-main' },
+            _react2.default.createElement(
+              'h3',
+              null,
+              'Bruce Wong'
+            ),
+            _react2.default.createElement(
+              'p',
+              null,
+              'brucewong21'
+            ),
+            _react2.default.createElement(
+              'h2',
+              null,
+              'Online'
+            ),
+            _react2.default.createElement(
+              'p',
+              null,
+              'Notifications on'
+            ),
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'span',
+                null,
+                'Change Activity Message'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'big-buttons' },
+              'Manage Account'
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'big-buttons' },
+              'Sign Out'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return ModalProfile;
+}(_react.Component);
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(ModalProfile);
+
+/***/ }),
+/* 157 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _uiActions = __webpack_require__(158);
+
+var _lodash = __webpack_require__(107);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {
+  profileModalView: false
+};
+
+var uiReducer = function uiReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments[1];
+
+  var newState = _lodash2.default.merge({}, state);
+  switch (action.type) {
+    case _uiActions.TOGGLE_PROFILE_MODAL:
+      newState.profileModalView = !newState.profileModalView;
+      return newState;
+    default:
+      return state;
+  }
+};
+
+exports.default = uiReducer;
+
+/***/ }),
+/* 158 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
+
+var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModal() {
+  return {
+    type: TOGGLE_PROFILE_MODAL
+  };
 };
 
 /***/ })

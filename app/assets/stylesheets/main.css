@@ -64,6 +64,19 @@ h4 { font-weight: 400 } /* MAYBE CHANGE FONT WEIGHT */
   color: #00AFF0;
 }
 
+.small-gray {
+  font-size: .65em;
+  color: gray;
+}
+
+.italic {
+  font-style: italic;
+}
+
+#root {
+  overflow: hidden;
+  height: 100vh;
+}
 
 main {
   float: left;
@@ -220,6 +233,7 @@ aside {
 footer {
   display: flex;
   position: fixed;
+  z-index: 3;
   bottom: 0;
   font-size: 0.64em;
   padding: 0 1.5em 0 1em;
@@ -230,7 +244,9 @@ footer {
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+  min-height: 1.5em;
   box-sizing: border-box;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5)
 }
 
 footer ul {

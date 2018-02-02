@@ -1,10 +1,16 @@
 .recents-list {
   font-size: 10px;
-  align-text: top;
+
   .profile-item {
     height: 57px;
     padding-left: 20px;
     padding-right: 20px;
-    float: left;
+  }
+}
+
+@media (max-width: 600px) {
+  .recents-list {
+    left: -20px;
+    position: relative;
   }
 }
