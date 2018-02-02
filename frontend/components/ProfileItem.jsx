@@ -13,7 +13,7 @@ function ProfileItem({name, src, status, handleClick}) {
           status={ status } />
         <div className="name-info">
           <h4>{ name }</h4>
-          <p className="small gray">{ status }</p>
+          <p className="small gray italic">{ status }</p>
         </div>
       </div>
     </div> 

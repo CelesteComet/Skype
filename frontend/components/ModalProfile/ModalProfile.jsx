@@ -3,12 +3,21 @@ import ProfileItem from '../ProfileItem';
 import CircleImageIcon from '../CircleImageIcon';
 import { toggleProfileModal } from '../../actions/uiActions';
 import { connect } from 'react-redux';
+import { logoutUser } from '../../actions/sessionActions';
 
 
 class ModalProfile extends Component {
 
   constructor(props) {
     super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    const { dispatch } = this.props;
+    dispatch(logoutUser());
+    dispatch(toggleProfileModal());
+    
   }
 
   render() {
@@ -32,18 +41,18 @@ class ModalProfile extends Component {
             <div className="modal-content">
               <h3>Bruce Wong</h3>
               <p>brucewong21</p>
-              <h2>Online<i className="fa fa-sign-out icon-blue" aria-hidden="true"></i></h2>
+              <h2>Online<i className="fa fa-chevron-down icon-blue" aria-hidden="true"></i></h2>
               <p className="notifications">Notifications on</p>
               <div>
                 <span>Change Activity Message</span>
               </div>
               <div className="big-buttons first">
                 <i className="fa fa-cog icon-blue"></i>
-                Manage Account
+                <p>Manage Account</p>
               </div>
               <div className="big-buttons">
                 <i className="fa fa-sign-out icon-blue" aria-hidden="true"></i>
-                Sign Out
+                <p className="logout" onClick={this.handleLogout}>Sign Out</p>
               </div>
             </div>
           </div>

@@ -84,7 +84,7 @@
 .modal-content {
 
   overflow: scroll;
-  top: 260px;
+  top: 255px;
   position: relative;
   letter-spacing: 0.04em;
 
@@ -102,6 +102,12 @@
     font-size: 1.25em;
     font-weight: 500;
     padding-bottom: 8px;
+    display: flex;
+
+    i {
+      font-size: 13px;
+      padding-left: 18px;
+    }
   }
 
   p:nth-of-type(1) {
@@ -121,17 +127,33 @@
     font-weight: 300;
     font-size: 0.8em;
     display: block;
-    padding-bottom: 47px;
+    padding-bottom: 39px;
   }
 
   .big-buttons {
+    display: flex;
+    align-items: center;
     font-size: 1.1em;
     font-weight: 300;
     padding-bottom: 23px;
   }
 
+  .big-buttons i {
+    padding-right: 13px;
+    font-size: 22px;
+  }
+
+  .big-buttons p {
+    display: inline-block;
+    padding-bottom: 0;
+  }
+
   .big-buttons.first {
     padding-bottom: 13px;
+  }
+
+  .big-buttons .logout:hover {
+    cursor: pointer;
   }
 
 }
