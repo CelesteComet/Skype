@@ -21,7 +21,6 @@ class RegistrationCreateAccount extends Component {
   }
 
   componentDidMount() {
-    console.log("AWDWD")
   }
 
   componentWillReceiveProps(newProps) {

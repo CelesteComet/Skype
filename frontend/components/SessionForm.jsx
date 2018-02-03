@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import { clearError } from '../actions/sessionActions';
 
-
 import titleService from '../services/titleService';
 
 import MicrosoftLogos from './MicrosoftLogos';

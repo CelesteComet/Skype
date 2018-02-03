@@ -15,9 +15,8 @@ class ModalProfile extends Component {
 
   handleLogout() {
     const { dispatch } = this.props;
-    dispatch(logoutUser());
     dispatch(toggleProfileModal());
-    
+    dispatch(logoutUser());
   }
 
   render() {
