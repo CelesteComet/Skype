@@ -3,10 +3,11 @@ class Api::MessagesController < ApplicationController
   before_action :require_login 
 
   def create
-    @message = Message.new(message_params);
-    @message.user_id = current_user.id
+    @message = Message.new(message_paramws)
+    puts "WTF"
     if @message.save 
-      CreateMessageJob.perform('chat_1', @message);
+      print "MESSAGE SAVED"
+      
       render json: @message
     else
       render json: @message, status: 400
@@ -16,7 +17,7 @@ class Api::MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:body, :room_id)
+    params.require(:message).permit(:body, :user_id, :room_id)
   end
 
 end

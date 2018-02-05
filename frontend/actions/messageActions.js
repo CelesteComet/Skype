@@ -10,10 +10,9 @@ export const receiveMessage = message => {
 }
 
 export const createMessage = message => dispatch => {
-  console.log(message)
   return APIUtil.createMessage(message)
     .then(message => {
-      dispatch(receiveMessage(receiveMessage));
+      dispatch(receiveMessage(message));
     }, err => {
       console.log(err);
     }) 
