@@ -43659,6 +43659,8 @@ var _reactRouter = __webpack_require__(136);
 
 var _AuthComponents = __webpack_require__(137);
 
+var _reactRedux = __webpack_require__(5);
+
 var _Dashboard = __webpack_require__(138);
 
 var _Dashboard2 = _interopRequireDefault(_Dashboard);
@@ -43700,7 +43702,9 @@ var App = function (_Component) {
   }, {
     key: 'createSocket',
     value: function createSocket() {
-      (0, _configureSocket2.default)(this);
+      var dispatch = this.props.dispatch;
+
+      (0, _configureSocket2.default)(this, dispatch);
     }
   }, {
     key: 'render',
@@ -43722,7 +43726,11 @@ var App = function (_Component) {
   return App;
 }(_react.Component);
 
-exports.default = App;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(App);
 
 /***/ }),
 /* 136 */
@@ -47481,7 +47489,9 @@ var configureSocket = function configureSocket(context, dispatch) {
 
   console.log("Subscribing to chat channel");
   App.messages = App.cable.subscriptions.create({ channel: 'ChatChannel', room: 1 });
-  App.messages.received = function (data) {};
+  App.messages.received = function (data) {
+    dispatch((0, _messageActions.receiveMessage)(data));
+  };
 
   App.messages.disconnected = function () {
     console.log("Disconnected");

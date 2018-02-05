@@ -2,11 +2,14 @@ import React, { Fragment, Component } from 'react';
 import { Router, Route, Switch } from 'react-router';
 import { AuthRoute, ProtectedRoute } from './Auth/AuthComponents';
 
+import { connect } from 'react-redux';
+
 import Dashboard from './Dashboard';
 import SessionForm from './SessionForm';
 import RegistrationForm from './SessionForm/RegistrationForm';
 
 import configureSocket from '../configureSocket';
+
 
 
 class App extends Component {
@@ -19,7 +22,8 @@ class App extends Component {
   }
 
   createSocket() {
-    configureSocket(this);
+    const { dispatch } = this.props;
+    configureSocket(this, dispatch);
   }
   
   render() {
@@ -35,7 +39,11 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return { dispatch }
+}
+
+export default connect(null, mapDispatchToProps)(App);
 
 
 

@@ -11,7 +11,7 @@ const configureSocket = (context, dispatch) => {
   console.log("Subscribing to chat channel");
   App.messages = App.cable.subscriptions.create({channel:'ChatChannel', room: 1});
   App.messages.received = data => {
-
+    dispatch(receiveMessage(data));
   };
 
   App.messages.disconnected = () => {
