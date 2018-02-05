@@ -21565,7 +21565,7 @@ var _SessionFooter2 = _interopRequireDefault(_SessionFooter);
 
 var _sessionActions = __webpack_require__(7);
 
-var _typed = __webpack_require__(149);
+var _typed = __webpack_require__(151);
 
 var _typed2 = _interopRequireDefault(_typed);
 
@@ -21816,7 +21816,7 @@ exports.default = Fade;
 
 
 
-module.exports = __webpack_require__(150);
+module.exports = __webpack_require__(152);
 
 
 /***/ }),
@@ -41149,7 +41149,8 @@ var _lodash2 = _interopRequireDefault(_lodash);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var initialState = {
-  profileModalView: false
+  profileModalView: false,
+  currentRoomId: 1 // change this later when implementing changing rooms
 };
 
 var uiReducer = function uiReducer() {
@@ -43564,11 +43565,11 @@ var _Dashboard = __webpack_require__(135);
 
 var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
-var _SessionForm = __webpack_require__(148);
+var _SessionForm = __webpack_require__(150);
 
 var _SessionForm2 = _interopRequireDefault(_SessionForm);
 
-var _RegistrationForm = __webpack_require__(160);
+var _RegistrationForm = __webpack_require__(162);
 
 var _RegistrationForm2 = _interopRequireDefault(_RegistrationForm);
 
@@ -43601,9 +43602,19 @@ var App = function (_Component) {
       this.App || (this.App = {});
       App.cable = ActionCable.createConsumer();
 
-      App.messages = App.cable.subscriptions.create({ channel: 'ChatChannel', room: "1" });
-
+      console.log("Subscribing to chat channel");
+      App.messages = App.cable.subscriptions.create({ channel: 'ChatChannel', room: 1 });
       App.messages.received = function (data) {
+        console.log(data);
+      };
+
+      App.messages.disconnected = function () {
+        console.log("WOW");
+      };
+
+      console.log("Subscribing to appearance channel");
+      App.appearances = App.cable.subscriptions.create({ channel: 'AppearanceChannel', id: 1 });
+      App.appearances.received = function (data) {
         console.log(data);
       };
     }
@@ -43760,11 +43771,11 @@ var _Main = __webpack_require__(141);
 
 var _Main2 = _interopRequireDefault(_Main);
 
-var _Footer = __webpack_require__(146);
+var _Footer = __webpack_require__(148);
 
 var _Footer2 = _interopRequireDefault(_Footer);
 
-var _ModalProfile = __webpack_require__(147);
+var _ModalProfile = __webpack_require__(149);
 
 var _ModalProfile2 = _interopRequireDefault(_ModalProfile);
 
@@ -44488,6 +44499,10 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(5);
+
+var _messageActions = __webpack_require__(146);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44499,13 +44514,38 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var InputMessageInterface = function (_Component) {
   _inherits(InputMessageInterface, _Component);
 
-  function InputMessageInterface() {
+  function InputMessageInterface(props) {
     _classCallCheck(this, InputMessageInterface);
 
-    return _possibleConstructorReturn(this, (InputMessageInterface.__proto__ || Object.getPrototypeOf(InputMessageInterface)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (InputMessageInterface.__proto__ || Object.getPrototypeOf(InputMessageInterface)).call(this, props));
+
+    var roomId = props.roomId;
+    _this.state = {
+      body: '',
+      room_id: props.roomId
+    };
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    return _this;
   }
 
   _createClass(InputMessageInterface, [{
+    key: 'handleChange',
+    value: function handleChange(e) {
+      e.preventDefault();
+      this.setState({
+        body: e.target.value
+      });
+    }
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(e) {
+      e.preventDefault();
+      var dispatch = this.props.dispatch;
+
+      dispatch((0, _messageActions.createMessage)(this.state));
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -44531,14 +44571,19 @@ var InputMessageInterface = function (_Component) {
           _react2.default.createElement(
             'div',
             { className: 'input-message-input' },
-            _react2.default.createElement('textarea', null),
             _react2.default.createElement(
-              'div',
-              { className: 'icon-set' },
-              _react2.default.createElement('i', { className: 'fa fa-paperclip', 'aria-hidden': 'true' }),
-              _react2.default.createElement('i', { className: 'fa fa-picture-o', 'aria-hidden': 'true' }),
-              _react2.default.createElement('i', { className: 'fa fa-id-card', 'aria-hidden': 'true' }),
-              _react2.default.createElement('i', { className: 'fa fa-smile-o', 'aria-hidden': 'true' })
+              'form',
+              { onSubmit: this.handleSubmit },
+              _react2.default.createElement('textarea', { onChange: this.handleChange }),
+              _react2.default.createElement(
+                'div',
+                { className: 'icon-set' },
+                _react2.default.createElement('i', { className: 'fa fa-paperclip', 'aria-hidden': 'true' }),
+                _react2.default.createElement('i', { className: 'fa fa-picture-o', 'aria-hidden': 'true' }),
+                _react2.default.createElement('i', { className: 'fa fa-id-card', 'aria-hidden': 'true' }),
+                _react2.default.createElement('i', { className: 'fa fa-smile-o', 'aria-hidden': 'true' })
+              ),
+              _react2.default.createElement('input', { type: 'submit', value: 'send message' })
             )
           )
         )
@@ -44549,10 +44594,76 @@ var InputMessageInterface = function (_Component) {
   return InputMessageInterface;
 }(_react.Component);
 
-exports.default = InputMessageInterface;
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    roomId: state.ui.currentRoomId
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(InputMessageInterface);
 
 /***/ }),
 /* 146 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createMessage = exports.receiveMessage = exports.RECEIVE_MESSAGE = undefined;
+
+var _messageAPIService = __webpack_require__(147);
+
+var APIUtil = _interopRequireWildcard(_messageAPIService);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var RECEIVE_MESSAGE = exports.RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
+
+var receiveMessage = exports.receiveMessage = function receiveMessage(message) {
+  return {
+    type: RECEIVE_MESSAGE,
+    payload: message
+  };
+};
+
+var createMessage = exports.createMessage = function createMessage(message) {
+  return function (dispatch) {
+    console.log(message);
+    return APIUtil.createMessage(message).then(function (message) {
+      dispatch(receiveMessage(receiveMessage));
+    }, function (err) {
+      console.log(err);
+    });
+  };
+};
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var createMessage = exports.createMessage = function createMessage(message) {
+  return $.ajax({
+    url: 'api/messages',
+    method: 'POST',
+    data: { message: message }
+  });
+};
+
+/***/ }),
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44653,7 +44764,7 @@ function Footer(props) {
 exports.default = Footer;
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44810,7 +44921,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(ModalProfile);
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44977,7 +45088,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SessionForm);
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -46018,7 +46129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46036,11 +46147,11 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _TransitionGroup = __webpack_require__(151);
+var _TransitionGroup = __webpack_require__(153);
 
 var _TransitionGroup2 = _interopRequireDefault(_TransitionGroup);
 
-var _CSSTransitionGroupChild = __webpack_require__(154);
+var _CSSTransitionGroupChild = __webpack_require__(156);
 
 var _CSSTransitionGroupChild2 = _interopRequireDefault(_CSSTransitionGroupChild);
 
@@ -46119,7 +46230,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46129,7 +46240,7 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _chainFunction = __webpack_require__(152);
+var _chainFunction = __webpack_require__(154);
 
 var _chainFunction2 = _interopRequireDefault(_chainFunction);
 
@@ -46145,7 +46256,7 @@ var _warning = __webpack_require__(3);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _ChildMapping = __webpack_require__(153);
+var _ChildMapping = __webpack_require__(155);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46395,7 +46506,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports) {
 
 
@@ -46421,7 +46532,7 @@ module.exports = function chain(){
 
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46518,7 +46629,7 @@ function mergeChildMappings(prev, next) {
 }
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46528,19 +46639,19 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _addClass = __webpack_require__(155);
+var _addClass = __webpack_require__(157);
 
 var _addClass2 = _interopRequireDefault(_addClass);
 
-var _removeClass = __webpack_require__(157);
+var _removeClass = __webpack_require__(159);
 
 var _removeClass2 = _interopRequireDefault(_removeClass);
 
-var _requestAnimationFrame = __webpack_require__(158);
+var _requestAnimationFrame = __webpack_require__(160);
 
 var _requestAnimationFrame2 = _interopRequireDefault(_requestAnimationFrame);
 
-var _properties = __webpack_require__(159);
+var _properties = __webpack_require__(161);
 
 var _react = __webpack_require__(0);
 
@@ -46754,7 +46865,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46765,7 +46876,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = addClass;
 
-var _hasClass = __webpack_require__(156);
+var _hasClass = __webpack_require__(158);
 
 var _hasClass2 = _interopRequireDefault(_hasClass);
 
@@ -46777,7 +46888,7 @@ function addClass(element, className) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46793,7 +46904,7 @@ function hasClass(element, className) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46808,7 +46919,7 @@ module.exports = function removeClass(element, className) {
 };
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46867,7 +46978,7 @@ exports.default = compatRaf;
 module.exports = exports['default'];
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46983,7 +47094,7 @@ function getTransitionProperties() {
 }
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46999,7 +47110,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RegistrationCreateAccount = __webpack_require__(161);
+var _RegistrationCreateAccount = __webpack_require__(163);
 
 var _RegistrationCreateAccount2 = _interopRequireDefault(_RegistrationCreateAccount);
 
@@ -47094,7 +47205,7 @@ var RegistrationForm = function (_Component) {
 exports.default = RegistrationForm;
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47114,7 +47225,7 @@ var _reactRouterDom = __webpack_require__(15);
 
 var _reactRedux = __webpack_require__(5);
 
-var _userActions = __webpack_require__(162);
+var _userActions = __webpack_require__(164);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47255,7 +47366,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RegistrationCreateAccount));
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47268,7 +47379,7 @@ exports.createUser = exports.CREATE_USER = undefined;
 
 var _sessionActions = __webpack_require__(7);
 
-var _userAPIService = __webpack_require__(163);
+var _userAPIService = __webpack_require__(165);
 
 var APIUtil = _interopRequireWildcard(_userAPIService);
 
@@ -47286,7 +47397,7 @@ var createUser = exports.createUser = function createUser(user) {
 };
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

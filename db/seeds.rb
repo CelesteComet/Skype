@@ -6,5 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-bruceUser = User.create({username: "Bruce", password: "qqqqqq", profile_id: 1});
+bruceUser = User.create({username: "Bruce", password: "qqqqqq", profile_id: 1})
 bruceUser.save
+
+firstRoom = Room.create({})
+firstRoom.save

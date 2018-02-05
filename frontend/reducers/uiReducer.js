@@ -2,7 +2,8 @@ import { TOGGLE_PROFILE_MODAL } from '../actions/uiActions';
 import _ from 'lodash';
 
 const initialState = {
-  profileModalView: false
+  profileModalView: false,
+  currentRoomId: 1 // change this later when implementing changing rooms
 };
 
 const uiReducer = (state = initialState, action) => {

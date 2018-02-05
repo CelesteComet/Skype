@@ -21,11 +21,21 @@ class App extends Component {
     this.App || (this.App = {});
     App.cable = ActionCable.createConsumer();
 
-    App.messages = App.cable.subscriptions.create({channel:'ChatChannel', room: "1"});
-
-    App.messages.received = (data) => {
+    console.log("Subscribing to chat channel");
+    App.messages = App.cable.subscriptions.create({channel:'ChatChannel', room: 1});
+    App.messages.received = data => {
       console.log(data);
+    };
+
+    App.messages.disconnected = () => {
+      console.log("WOW")
     }
+
+    console.log("Subscribing to appearance channel");
+    App.appearances = App.cable.subscriptions.create({channel: 'AppearanceChannel', id: 1});
+    App.appearances.received = data => {
+      console.log(data);
+    };
 
 
 

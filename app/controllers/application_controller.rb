@@ -16,5 +16,11 @@ class ApplicationController < ActionController::Base
     session[:session_token] = nil
   end
 
+  def require_login
+    if !current_user
+      return false
+    end
+  end
+
   
 end
