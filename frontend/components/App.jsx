@@ -14,15 +14,22 @@ class App extends Component {
 
   componentDidMount() {
     this.createSocket();
-    debugger;
   }
 
   createSocket() {
     console.log("Creating socket connection");
     this.App || (this.App = {});
     App.cable = ActionCable.createConsumer();
-  }
 
+    App.messages = App.cable.subscriptions.create({channel:'ChatChannel', room: "1"});
+
+    App.messages.received = (data) => {
+      console.log(data);
+    }
+
+
+
+  }
   render() {
     return (
       <Fragment>

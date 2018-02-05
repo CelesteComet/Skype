@@ -72,7 +72,7 @@ h4 { font-weight: 400 } /* MAYBE CHANGE FONT WEIGHT */
   overflow: auto;
 }
 
-#root > div {
+.dashboard {
   overflow: auto;
   display: flex;
 }

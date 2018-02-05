@@ -17,7 +17,7 @@ class Dashboard extends Component {
     const { dispatch, modalView } = this.props;
     return (
       <Fragment>
-        <div>
+        <div className="dashboard">
           { modalView && <ModalProfile /> }
           <SideBar />
           <Main />

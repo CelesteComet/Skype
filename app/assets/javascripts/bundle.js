@@ -43593,7 +43593,6 @@ var App = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.createSocket();
-      debugger;
     }
   }, {
     key: 'createSocket',
@@ -43601,6 +43600,12 @@ var App = function (_Component) {
       console.log("Creating socket connection");
       this.App || (this.App = {});
       App.cable = ActionCable.createConsumer();
+
+      App.messages = App.cable.subscriptions.create({ channel: 'ChatChannel', room: "1" });
+
+      App.messages.received = function (data) {
+        console.log(data);
+      };
     }
   }, {
     key: 'render',
@@ -43800,7 +43805,7 @@ var Dashboard = function (_Component) {
         null,
         _react2.default.createElement(
           'div',
-          null,
+          { className: 'dashboard' },
           modalView && _react2.default.createElement(_ModalProfile2.default, null),
           _react2.default.createElement(_SideBar2.default, null),
           _react2.default.createElement(_Main2.default, null)
