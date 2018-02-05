@@ -69,13 +69,14 @@ h4 { font-weight: 400 } /* MAYBE CHANGE FONT WEIGHT */
 }
 
 #root {
-  overflow: hidden;
-  height: 100vh;
+  overflow: auto;
 }
 
-main {
-  float: left;
+#root > div {
+  overflow: auto;
+  display: flex;
 }
+
 
 aside {
   position: relative;
@@ -227,7 +228,6 @@ aside {
 
 footer {
   display: flex;
-  position: fixed;
   z-index: 3;
   bottom: 0;
   font-size: 0.65em;
@@ -245,6 +245,11 @@ footer {
   min-height: 1.5em;
   box-sizing: border-box;
   box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+main {
+  overflow: auto;
+  width: 100%;
 }
 
 footer ul {

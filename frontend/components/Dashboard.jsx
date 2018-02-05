@@ -17,11 +17,12 @@ class Dashboard extends Component {
     const { dispatch, modalView } = this.props;
     return (
       <Fragment>
-        { modalView && <ModalProfile /> }
-        <SideBar />
-        <Main />
+        <div>
+          { modalView && <ModalProfile /> }
+          <SideBar />
+          <Main />
+        </div>
         <Footer />
-        <button onClick={() => { dispatch(logoutUser()) }}>LOGOUT</button>
       </Fragment>
     );
   }

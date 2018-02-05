@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import MessageInterface from './MessageInterface';
 
 class Main extends Component {
 
   render() {
     return (
-      <main> I AM THE Main </main>
+      <main>
+        <MessageInterface />
+      </main>
     );
   }
 
