@@ -3,8 +3,7 @@ class Api::RoomMembershipsController < ApplicationController
   before_action :require_login # check application controller
 
   def index
-    @room_memberships = current_user.rooms.includes(:room_memberships)
-    render json: @room_memberships
+    @rooms = current_user.rooms.includes(:room_memberships)
   end
 
   def create

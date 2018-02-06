@@ -6,24 +6,45 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# create all friends
+
 bruceUser = User.create({username: "Bruce", password: "qqqqqq", profile_id: 1})
-
-alexUser = User.create({username: "Alex", password: "qqqqqq", profile_id: 2})
-
-ronUser = User.create({username: "Ron", password: "qqqqqq", profile_id: 3})
-
-
+User.create({username: "Alex", password: "qqqqqq", profile_id: 2})
+User.create({username: "Edward", password: "qqqqqq", profile_id: 3})
+User.create({username: "Emmanuel", password: "qqqqqq", profile_id: 4})
+User.create({username: "Wyatt", password: "qqqqqq", profile_id: 5})
+User.create({username: "Louisa", password: "qqqqqq", profile_id: 6})
+User.create({username: "David", password: "qqqqqq", profile_id: 7})
+User.create({username: "Ron", password: "qqqqqq", profile_id: 8})
+User.create({username: "Rose", password: "qqqqqq", profile_id: 9})
 
 firstRoom = Room.create({})
 secondRoom = Room.create({})
+thirdRoom = Room.create({})
 
-bruceFirstRoomMembership = RoomMembership.create(room_id: 1, user_id: 1)
-alexFirstRoomMembership = RoomMembership.create(room_id: 1, user_id: 2)
+# im in room 1
+RoomMembership.create(room_id: 1, user_id: 1)
+RoomMembership.create(room_id: 2, user_id: 1)
+RoomMembership.create(room_id: 3, user_id: 1)
 
-ronSecondRoomMembership = RoomMembership.create(room_id: 2, user_id: 3)
+# three different rooms
+RoomMembership.create(room_id: 1, user_id: 2)
+RoomMembership.create(room_id: 1, user_id: 8)
+RoomMembership.create(room_id: 1, user_id: 3)
+
+RoomMembership.create(room_id: 2, user_id: 4)
+RoomMembership.create(room_id: 2, user_id: 9)
+
+RoomMembership.create(room_id: 3, user_id: 5)
+RoomMembership.create(room_id: 3, user_id: 6)
 
 # give friends
 Friendship.create(user_id: bruceUser.id, friend_id: 2)
 Friendship.create(user_id: bruceUser.id, friend_id: 3)
+Friendship.create(user_id: bruceUser.id, friend_id: 4)
+Friendship.create(user_id: bruceUser.id, friend_id: 5)
+Friendship.create(user_id: bruceUser.id, friend_id: 6)
+Friendship.create(user_id: bruceUser.id, friend_id: 8)
+Friendship.create(user_id: bruceUser.id, friend_id: 9)
 
 

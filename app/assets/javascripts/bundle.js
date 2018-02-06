@@ -21675,7 +21675,7 @@ var _SessionFooter2 = _interopRequireDefault(_SessionFooter);
 
 var _sessionActions = __webpack_require__(7);
 
-var _typed = __webpack_require__(158);
+var _typed = __webpack_require__(159);
 
 var _typed2 = _interopRequireDefault(_typed);
 
@@ -21926,7 +21926,7 @@ exports.default = Fade;
 
 
 
-module.exports = __webpack_require__(159);
+module.exports = __webpack_require__(160);
 
 
 /***/ }),
@@ -43859,11 +43859,11 @@ var _Dashboard = __webpack_require__(144);
 
 var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
-var _SessionForm = __webpack_require__(157);
+var _SessionForm = __webpack_require__(158);
 
 var _SessionForm2 = _interopRequireDefault(_SessionForm);
 
-var _RegistrationForm = __webpack_require__(169);
+var _RegistrationForm = __webpack_require__(170);
 
 var _RegistrationForm2 = _interopRequireDefault(_RegistrationForm);
 
@@ -44056,7 +44056,7 @@ var _ModalProfile = __webpack_require__(156);
 
 var _ModalProfile2 = _interopRequireDefault(_ModalProfile);
 
-var _configureSocket = __webpack_require__(173);
+var _configureSocket = __webpack_require__(157);
 
 var _configureSocket2 = _interopRequireDefault(_configureSocket);
 
@@ -45199,6 +45199,41 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _messageActions = __webpack_require__(25);
+
+var configureSocket = function configureSocket(context, dispatch) {
+
+  console.log("Subscribing to chat channel");
+  App.messages = App.cable.subscriptions.create({ channel: 'ChatChannel', room: 1 });
+
+  App.messages.received = function (data) {
+    dispatch((0, _messageActions.receiveMessage)(data));
+  };
+
+  App.messages.disconnected = function () {
+    console.log("Disconnected");
+  };
+
+  console.log("Subscribing to appearance channel");
+  App.appearances = App.cable.subscriptions.create({ channel: 'AppearanceChannel', id: 1 });
+  App.appearances.received = function (data) {
+    console.log(data);
+  };
+};
+
+exports.default = configureSocket;
+
+/***/ }),
+/* 158 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -45356,7 +45391,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SessionForm);
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -46397,7 +46432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46415,11 +46450,11 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _TransitionGroup = __webpack_require__(160);
+var _TransitionGroup = __webpack_require__(161);
 
 var _TransitionGroup2 = _interopRequireDefault(_TransitionGroup);
 
-var _CSSTransitionGroupChild = __webpack_require__(163);
+var _CSSTransitionGroupChild = __webpack_require__(164);
 
 var _CSSTransitionGroupChild2 = _interopRequireDefault(_CSSTransitionGroupChild);
 
@@ -46498,7 +46533,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46508,7 +46543,7 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _chainFunction = __webpack_require__(161);
+var _chainFunction = __webpack_require__(162);
 
 var _chainFunction2 = _interopRequireDefault(_chainFunction);
 
@@ -46524,7 +46559,7 @@ var _warning = __webpack_require__(3);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _ChildMapping = __webpack_require__(162);
+var _ChildMapping = __webpack_require__(163);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46774,7 +46809,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports) {
 
 
@@ -46800,7 +46835,7 @@ module.exports = function chain(){
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46897,7 +46932,7 @@ function mergeChildMappings(prev, next) {
 }
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46907,19 +46942,19 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _addClass = __webpack_require__(164);
+var _addClass = __webpack_require__(165);
 
 var _addClass2 = _interopRequireDefault(_addClass);
 
-var _removeClass = __webpack_require__(166);
+var _removeClass = __webpack_require__(167);
 
 var _removeClass2 = _interopRequireDefault(_removeClass);
 
-var _requestAnimationFrame = __webpack_require__(167);
+var _requestAnimationFrame = __webpack_require__(168);
 
 var _requestAnimationFrame2 = _interopRequireDefault(_requestAnimationFrame);
 
-var _properties = __webpack_require__(168);
+var _properties = __webpack_require__(169);
 
 var _react = __webpack_require__(0);
 
@@ -47133,7 +47168,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47144,7 +47179,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = addClass;
 
-var _hasClass = __webpack_require__(165);
+var _hasClass = __webpack_require__(166);
 
 var _hasClass2 = _interopRequireDefault(_hasClass);
 
@@ -47156,7 +47191,7 @@ function addClass(element, className) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47172,7 +47207,7 @@ function hasClass(element, className) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47187,7 +47222,7 @@ module.exports = function removeClass(element, className) {
 };
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47246,7 +47281,7 @@ exports.default = compatRaf;
 module.exports = exports['default'];
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47362,7 +47397,7 @@ function getTransitionProperties() {
 }
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47378,7 +47413,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RegistrationCreateAccount = __webpack_require__(170);
+var _RegistrationCreateAccount = __webpack_require__(171);
 
 var _RegistrationCreateAccount2 = _interopRequireDefault(_RegistrationCreateAccount);
 
@@ -47473,7 +47508,7 @@ var RegistrationForm = function (_Component) {
 exports.default = RegistrationForm;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47493,7 +47528,7 @@ var _reactRouterDom = __webpack_require__(16);
 
 var _reactRedux = __webpack_require__(4);
 
-var _userActions = __webpack_require__(171);
+var _userActions = __webpack_require__(172);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47634,7 +47669,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RegistrationCreateAccount));
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47647,7 +47682,7 @@ exports.createUser = exports.CREATE_USER = undefined;
 
 var _sessionActions = __webpack_require__(7);
 
-var _userAPIService = __webpack_require__(172);
+var _userAPIService = __webpack_require__(173);
 
 var APIUtil = _interopRequireWildcard(_userAPIService);
 
@@ -47665,7 +47700,7 @@ var createUser = exports.createUser = function createUser(user) {
 };
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47682,41 +47717,6 @@ var createUser = exports.createUser = function createUser(user) {
     data: { user: user }
   });
 };
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _messageActions = __webpack_require__(25);
-
-var configureSocket = function configureSocket(context, dispatch) {
-
-  console.log("Subscribing to chat channel");
-  App.messages = App.cable.subscriptions.create({ channel: 'ChatChannel', room: 1 });
-
-  App.messages.received = function (data) {
-    dispatch((0, _messageActions.receiveMessage)(data));
-  };
-
-  App.messages.disconnected = function () {
-    console.log("Disconnected");
-  };
-
-  console.log("Subscribing to appearance channel");
-  App.appearances = App.cable.subscriptions.create({ channel: 'AppearanceChannel', id: 1 });
-  App.appearances.received = function (data) {
-    console.log(data);
-  };
-};
-
-exports.default = configureSocket;
 
 /***/ })
 /******/ ]);

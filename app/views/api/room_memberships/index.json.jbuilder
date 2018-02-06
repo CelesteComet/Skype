@@ -1,8 +1,11 @@
-debugger
-
-@room_memberships.each do |room_membership|
-  json.set! room_membership.id do 
-    json.set! :room_id, room_membership.room_id
-    json.set! :user_id, room_membership.user_id
+# This json builder returns the room memberships of all friends that are currently in
+# one of the rooms.
+@rooms.each do |room|
+  room.room_memberships.each do |membership|
+    json.set! membership.id do 
+      json.extract! membership, :user_id, :room_id 
+    end
   end
 end
+
+
