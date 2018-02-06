@@ -8,7 +8,6 @@ import RecentsListItem from './RecentsListItem';
 class RecentsList extends Component {
   render() {
     const {recentRooms} = this.props;
-    console.log(recentRooms, "RECENT ROOM")
     
     const recentsJSX = recentRooms.map((recentRoom, index) => {
       return (

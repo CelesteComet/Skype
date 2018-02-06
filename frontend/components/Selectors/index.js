@@ -18,6 +18,12 @@ export const getRecentsInfo = state => {
       rooms[membership.room_id].push(friendsMap[membership.user_id])
     }
   });
-  console.log(rooms);
+
+  // filter out all empty rooms
+  for (let id in rooms) {
+    if (rooms[id].length === 0) {
+      delete rooms[id];
+    }
+  }
   return rooms;
 }

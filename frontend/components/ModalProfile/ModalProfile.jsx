@@ -20,14 +20,14 @@ class ModalProfile extends Component {
   }
 
   render() {
-    const { dispatch } = this.props;
+    const { dispatch, currentUsername } = this.props;
     return (
       <div className="modal-profile">
         <div className="shroud"></div>
         <div className="modal">
           <header>
           <ProfileItem 
-            name='Bruce Wong'
+            name={ currentUsername }
             src='/images/myicon.jpeg'
             status='Online'
             handleClick={() => { dispatch(toggleProfileModal()) }} />
@@ -38,8 +38,8 @@ class ModalProfile extends Component {
               src='/images/myicon.jpeg'
               status='Online' />
             <div className="modal-content">
-              <h3>Bruce Wong</h3>
-              <p>brucewong21</p>
+              <h3>{currentUsername}</h3>
+              <p>{currentUsername}</p>
               <h2>Online<i className="fa fa-chevron-down icon-blue" aria-hidden="true"></i></h2>
               <p className="notifications">Notifications on</p>
               <div>
@@ -61,8 +61,14 @@ class ModalProfile extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    currentUsername: state.session.currentUser.username
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return { dispatch }
 };
 
-export default connect(null, mapDispatchToProps)(ModalProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalProfile);

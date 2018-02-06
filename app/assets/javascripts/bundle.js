@@ -18669,10 +18669,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
+var TOGGLE_CONTACTS_LIST = exports.TOGGLE_CONTACTS_LIST = "TOGGLE_CONTACTS_LIST";
 
 var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModal() {
   return {
     type: TOGGLE_PROFILE_MODAL
+  };
+};
+
+var toggleContactsList = exports.toggleContactsList = function toggleContactsList() {
+  return {
+    type: TOGGLE_CONTACTS_LIST
   };
 };
 
@@ -41448,6 +41455,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var initialState = {
   profileModalView: false,
+  contactsListView: false,
   currentRoomId: 1 // change this later when implementing changing rooms
 };
 
@@ -41459,6 +41467,9 @@ var uiReducer = function uiReducer() {
   switch (action.type) {
     case _uiActions.TOGGLE_PROFILE_MODAL:
       newState.profileModalView = !newState.profileModalView;
+      return newState;
+    case _uiActions.TOGGLE_CONTACTS_LIST:
+      newState.contactsListView = !newState.contactsListView;
       return newState;
     default:
       return state;
@@ -44203,7 +44214,9 @@ var SideBar = function (_Component) {
   _createClass(SideBar, [{
     key: 'render',
     value: function render() {
-      var dispatch = this.props.dispatch;
+      var _props = this.props,
+          dispatch = _props.dispatch,
+          currentUsername = _props.currentUsername;
 
 
       return _react2.default.createElement(
@@ -44223,7 +44236,7 @@ var SideBar = function (_Component) {
             _react2.default.createElement('div', { className: 'white-circle cloud-2 light-blue-cloud' })
           ),
           _react2.default.createElement(_ProfileItem2.default, {
-            name: 'Bruce Wong',
+            name: currentUsername,
             status: 'Online',
             src: 'images/myicon.jpeg',
             handleClick: function handleClick() {
@@ -44244,11 +44257,17 @@ var SideBar = function (_Component) {
   return SideBar;
 }(_react.Component);
 
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    currentUsername: state.session.currentUser.username
+  };
+};
+
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return { dispatch: dispatch };
 };
 
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(SideBar);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SideBar);
 
 /***/ }),
 /* 146 */
@@ -44406,7 +44425,6 @@ var RecentsList = function (_Component) {
     value: function render() {
       var recentRooms = this.props.recentRooms;
 
-      console.log(recentRooms, "RECENT ROOM");
 
       var recentsJSX = recentRooms.map(function (recentRoom, index) {
         return _react2.default.createElement(_RecentsListItem2.default, {
@@ -44557,21 +44575,100 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _uiActions = __webpack_require__(26);
+
+var _reactRedux = __webpack_require__(4);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function AsideButtons() {
-  return _react2.default.createElement(
-    'div',
-    null,
-    'HI'
-  );
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-exports.default = AsideButtons;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AsideButtons = function (_Component) {
+  _inherits(AsideButtons, _Component);
+
+  function AsideButtons() {
+    _classCallCheck(this, AsideButtons);
+
+    return _possibleConstructorReturn(this, (AsideButtons.__proto__ || Object.getPrototypeOf(AsideButtons)).apply(this, arguments));
+  }
+
+  _createClass(AsideButtons, [{
+    key: 'render',
+    value: function render() {
+      var dispatch = this.props.dispatch;
+
+      return _react2.default.createElement(
+        'ul',
+        { className: 'aside-buttons' },
+        _react2.default.createElement(
+          'li',
+          null,
+          _react2.default.createElement(
+            'span',
+            { onClick: function onClick() {
+                dispatch((0, _uiActions.toggleContactsList)());
+              } },
+            'Contacts List'
+          )
+        ),
+        _react2.default.createElement(
+          'li',
+          null,
+          _react2.default.createElement(
+            'span',
+            null,
+            'Other stuff'
+          )
+        ),
+        _react2.default.createElement(
+          'li',
+          null,
+          _react2.default.createElement(
+            'span',
+            null,
+            'Other stuff'
+          )
+        ),
+        _react2.default.createElement(
+          'li',
+          null,
+          _react2.default.createElement(
+            'span',
+            null,
+            'Other stuff'
+          )
+        ),
+        _react2.default.createElement(
+          'li',
+          null,
+          _react2.default.createElement(
+            'span',
+            null,
+            'Other stuff'
+          )
+        )
+      );
+    }
+  }]);
+
+  return AsideButtons;
+}(_react.Component);
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AsideButtons);
 
 /***/ }),
 /* 150 */
@@ -44594,6 +44691,12 @@ var _MessageInterface = __webpack_require__(151);
 
 var _MessageInterface2 = _interopRequireDefault(_MessageInterface);
 
+var _ContactsListView = __webpack_require__(178);
+
+var _ContactsListView2 = _interopRequireDefault(_ContactsListView);
+
+var _reactRedux = __webpack_require__(4);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44605,10 +44708,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Main = function (_Component) {
   _inherits(Main, _Component);
 
-  function Main() {
+  function Main(props) {
     _classCallCheck(this, Main);
 
-    return _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
   }
 
   _createClass(Main, [{
@@ -44617,7 +44720,8 @@ var Main = function (_Component) {
       return _react2.default.createElement(
         'main',
         null,
-        _react2.default.createElement(_MessageInterface2.default, null)
+        this.props.contactsListView && _react2.default.createElement(_MessageInterface2.default, null),
+        !this.props.contactsListView && _react2.default.createElement(_ContactsListView2.default, null)
       );
     }
   }]);
@@ -44625,7 +44729,13 @@ var Main = function (_Component) {
   return Main;
 }(_react.Component);
 
-exports.default = Main;
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    contactsListView: state.ui.contactsListView
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(Main);
 
 /***/ }),
 /* 151 */
@@ -45105,7 +45215,9 @@ var ModalProfile = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var dispatch = this.props.dispatch;
+      var _props = this.props,
+          dispatch = _props.dispatch,
+          currentUsername = _props.currentUsername;
 
       return _react2.default.createElement(
         'div',
@@ -45118,7 +45230,7 @@ var ModalProfile = function (_Component) {
             'header',
             null,
             _react2.default.createElement(_ProfileItem2.default, {
-              name: 'Bruce Wong',
+              name: currentUsername,
               src: '/images/myicon.jpeg',
               status: 'Online',
               handleClick: function handleClick() {
@@ -45137,12 +45249,12 @@ var ModalProfile = function (_Component) {
               _react2.default.createElement(
                 'h3',
                 null,
-                'Bruce Wong'
+                currentUsername
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                'brucewong21'
+                currentUsername
               ),
               _react2.default.createElement(
                 'h2',
@@ -45194,11 +45306,17 @@ var ModalProfile = function (_Component) {
   return ModalProfile;
 }(_react.Component);
 
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    currentUsername: state.session.currentUser.username
+  };
+};
+
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return { dispatch: dispatch };
 };
 
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(ModalProfile);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ModalProfile);
 
 /***/ }),
 /* 157 */
@@ -47762,7 +47880,13 @@ var getRecentsInfo = exports.getRecentsInfo = function getRecentsInfo(state) {
       rooms[membership.room_id].push(friendsMap[membership.user_id]);
     }
   });
-  console.log(rooms);
+
+  // filter out all empty rooms
+  for (var id in rooms) {
+    if (rooms[id].length === 0) {
+      delete rooms[id];
+    }
+  }
   return rooms;
 };
 
@@ -47947,6 +48071,81 @@ function bytesToUuid(buf, offset) {
 
 module.exports = bytesToUuid;
 
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(4);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ContactsListView = function (_Component) {
+  _inherits(ContactsListView, _Component);
+
+  function ContactsListView(props) {
+    _classCallCheck(this, ContactsListView);
+
+    return _possibleConstructorReturn(this, (ContactsListView.__proto__ || Object.getPrototypeOf(ContactsListView)).call(this, props));
+  }
+
+  _createClass(ContactsListView, [{
+    key: 'render',
+    value: function render() {
+      var contacts = this.props.contacts;
+
+      var contactsJSX = contacts.map(function (contact) {
+        return _react2.default.createElement(
+          'li',
+          null,
+          contact.username
+        );
+      });
+      return _react2.default.createElement(
+        'div',
+        { className: 'contacts-list-view' },
+        _react2.default.createElement(
+          'ul',
+          null,
+          contactsJSX
+        )
+      );
+    }
+  }]);
+
+  return ContactsListView;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    contacts: Object.values(state.friends)
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ContactsListView);
 
 /***/ })
 /******/ ]);

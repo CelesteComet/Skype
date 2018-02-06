@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 class SideBar extends Component {
 
   render() {
-    let { dispatch } = this.props;
+    let { dispatch, currentUsername} = this.props;
 
     return (
       <div className="aside-container">
@@ -26,7 +26,7 @@ class SideBar extends Component {
           </div>
 
           <ProfileItem 
-            name={'Bruce Wong'} 
+            name={currentUsername} 
             status={'Online'}
             src={'images/myicon.jpeg'} 
             handleClick={() => { dispatch(toggleProfileModal()) }} />
@@ -43,8 +43,14 @@ class SideBar extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    currentUsername: state.session.currentUser.username
+  }
+};
+
 const mapDispatchToProps = dispatch => {
   return { dispatch }
 };
 
-export default connect(null, mapDispatchToProps)(SideBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

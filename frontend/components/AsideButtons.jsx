@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { toggleContactsList } from '../actions/uiActions';
+import { connect } from 'react-redux';
 
-function AsideButtons() {
-  return <div>HI</div>;
+class AsideButtons extends Component {
+
+  render() {
+    const { dispatch } = this.props;
+    return (
+      <ul className="aside-buttons">
+        <li><span onClick={() => { dispatch(toggleContactsList())}}>Contacts List</span></li>
+        <li><span>Other stuff</span></li>
+        <li><span>Other stuff</span></li>
+        <li><span>Other stuff</span></li>
+        <li><span>Other stuff</span></li>
+      </ul>
+    );
+  }
 }
 
-export default AsideButtons;
+const mapDispatchToProps = dispatch => {
+  return { dispatch }
+};
+
+export default connect(null, mapDispatchToProps)(AsideButtons);

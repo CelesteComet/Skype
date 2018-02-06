@@ -87,8 +87,8 @@ aside {
 
 .aside-container {
   float: left;
-  max-width: 20em;
-  min-width: 15.6em;
+  max-width: 320px;
+  min-width: 250px;
   width: 27.5%;
   height: 100vh;
   transition: width .5s ease-in-out,min-width .5s ease-in-out;
@@ -249,7 +249,7 @@ footer {
 
 main {
   overflow: auto;
-  width: 100%;
+  width: 72.5%;
 }
 
 footer ul {
