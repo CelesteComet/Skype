@@ -22,9 +22,16 @@ class InputMessageInterface extends Component {
     })
   }
 
+  resetForm() {
+    this.setState({
+      body: '',
+    })
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     const { dispatch } = this.props;
+    this.resetForm();
     dispatch(createMessage(this.state));
   } 
 
@@ -37,7 +44,7 @@ class InputMessageInterface extends Component {
           </div>
           <div className='input-message-input'>
             <form onSubmit={this.handleSubmit}>
-              <textarea onChange={this.handleChange}/>
+              <textarea onChange={this.handleChange} value={this.state.body}/>
               <div className='icon-set'>
                 <i className="fa fa-paperclip" aria-hidden="true"></i>
                 <i className="fa fa-picture-o" aria-hidden="true"></i>

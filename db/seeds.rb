@@ -7,7 +7,18 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 bruceUser = User.create({username: "Bruce", password: "qqqqqq", profile_id: 1})
-bruceUser.save
+
+alexUser = User.create({username: "Alex", password: "qqqqqq", profile_id: 2})
+
+ronUser = User.create({username: "Ron", password: "qqqqqq", profile_id: 3})
 
 firstRoom = Room.create({})
-firstRoom.save
+
+secondRoom = Room.create({})
+
+bruceFirstRoomMembership = RoomMembership.create(room_id: 1, user_id: 1)
+alexFirstRoomMembership = RoomMembership.create(room_id: 1, user_id: 2)
+
+ronSecondRoomMembership = RoomMembership.create(room_id: 2, user_id: 3)
+
+

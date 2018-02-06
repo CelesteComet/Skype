@@ -3,7 +3,11 @@ import SideBar from './SideBar';
 import Main from './Main';
 import Footer from './Footer';
 import ModalProfile from './ModalProfile/ModalProfile';
+
+// Actions
 import { logoutUser } from '../actions/sessionActions';
+import { fetchRoomMemberships } from '../actions/roomMembershipActions'
+
 import { connect } from 'react-redux';
 import titleService from '../services/titleService';
 
@@ -11,6 +15,11 @@ import titleService from '../services/titleService';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchRoomMemberships());
   }
 
   render() {
