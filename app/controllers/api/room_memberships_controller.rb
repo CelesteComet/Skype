@@ -3,7 +3,7 @@ class Api::RoomMembershipsController < ApplicationController
   before_action :require_login # check application controller
 
   def index
-    @room_memberships = current_user.room_memberships.includes(:users)
+    @room_memberships = current_user.room_memberships
   end
 
   def create

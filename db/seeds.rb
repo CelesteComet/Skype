@@ -12,13 +12,18 @@ alexUser = User.create({username: "Alex", password: "qqqqqq", profile_id: 2})
 
 ronUser = User.create({username: "Ron", password: "qqqqqq", profile_id: 3})
 
-firstRoom = Room.create({})
 
+
+firstRoom = Room.create({})
 secondRoom = Room.create({})
 
 bruceFirstRoomMembership = RoomMembership.create(room_id: 1, user_id: 1)
 alexFirstRoomMembership = RoomMembership.create(room_id: 1, user_id: 2)
 
 ronSecondRoomMembership = RoomMembership.create(room_id: 2, user_id: 3)
+
+# give friends
+Friendship.create(user_id: bruceUser.id, friend_id: 2)
+Friendship.create(user_id: bruceUser.id, friend_id: 3)
 
 

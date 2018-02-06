@@ -7,6 +7,7 @@ import ModalProfile from './ModalProfile/ModalProfile';
 // Actions
 import { logoutUser } from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
+import { fetchAllFriends } from '../actions/friendActions';
 
 import { connect } from 'react-redux';
 import titleService from '../services/titleService';
@@ -19,7 +20,9 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchRoomMemberships());
+
+    // get all friends 
+    dispatch(fetchAllFriends());
   }
 
   render() {
