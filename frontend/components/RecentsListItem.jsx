@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as uuid from 'uuid/v1';
 
 import ProfileItem from './ProfileItem';
 
-const profileItemStyles = {
-
-};
 
 class RecentsListItem extends Component {
   render() {
-    const {name, msg} = this.props;
+    const {roommates} = this.props;
+
+    // the name string to show room participants
+    const nameArray = roommates.map(userObj => (userObj.username))
+    const nameString = nameArray.join(' ');
     return (
       <li>
         <ProfileItem 
-          name={'Bruce Wong'} 
+          key={uuid.default()}
+          name={nameString} 
           status={'Online'}
           src={'images/myicon.jpeg'} 
           handleClick={() => {console.log("HELLO")}} />    
@@ -33,6 +36,8 @@ const mSTP = state => {
     })
   };
 };
+
+
 
 const mDTP = dispatch => {
   return {

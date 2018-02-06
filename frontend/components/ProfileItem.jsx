@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CircleImageIcon from './CircleImageIcon';
+import * as uuid from 'uuid/v1';
 
 function ProfileItem({name, src, status, handleClick}) {
   return (

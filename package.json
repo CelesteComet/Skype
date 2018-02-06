@@ -19,6 +19,7 @@
     "redux-thunk": "^2.2.0",
     "style-loader": "^0.20.1",
     "typed.js": "^2.0.6",
+    "uuid": "^3.2.1",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
   },
