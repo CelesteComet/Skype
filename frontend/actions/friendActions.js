@@ -3,7 +3,7 @@ import * as APIUtil from '../services/friendAPIService';
 
 export const receiveAllFriends = (friends) => {
   return {
-    action: RECEIVE_ALL_FRIENDS,
+    type: RECEIVE_ALL_FRIENDS,
     payload: friends
   } 
 }

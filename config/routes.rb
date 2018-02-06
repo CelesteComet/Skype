@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  root 'static_pages#root'
   # config/routes.rb
   mount ActionCable.server => '/cable'
 
@@ -12,5 +13,4 @@ Rails.application.routes.draw do
     resources :rooms, only: [:index]
   end
 
-  root 'static_pages#root'
 end

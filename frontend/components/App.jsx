@@ -8,7 +8,6 @@ import Dashboard from './Dashboard';
 import SessionForm from './SessionForm';
 import RegistrationForm from './SessionForm/RegistrationForm';
 
-import configureSocket from '../configureSocket';
 
 
 
@@ -18,12 +17,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.createSocket();
+    // this.createSocket();
   }
 
   createSocket() {
-    const { dispatch } = this.props;
-    configureSocket(this, dispatch);
+    // const { dispatch } = this.props;
+    // configureSocket(this, dispatch);
   }
   
   render() {
@@ -39,11 +38,7 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return { dispatch }
-}
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;
 
 
 

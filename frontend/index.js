@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.store = store;
-
+  
   ReactDOM.render(
     <HashRouter>
       <Provider store={ store }>

@@ -3,6 +3,7 @@ import SideBar from './SideBar';
 import Main from './Main';
 import Footer from './Footer';
 import ModalProfile from './ModalProfile/ModalProfile';
+import configureSocket from '../configureSocket';
 
 // Actions
 import { logoutUser } from '../actions/sessionActions';
@@ -12,7 +13,6 @@ import { fetchAllFriends } from '../actions/friendActions';
 import { connect } from 'react-redux';
 import titleService from '../services/titleService';
 
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -20,9 +20,11 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-
-    // get all friends 
-    dispatch(fetchAllFriends());
+    configureSocket(this, dispatch);
+    // get all friends, then get all the memberships
+    dispatch(fetchAllFriends()).then(() => {
+      dispatch(fetchRoomMemberships());
+    });
   }
 
   render() {
@@ -39,7 +41,6 @@ class Dashboard extends Component {
     );
   }
 }
-
 
 const mapStateToProps = state => {
   return {

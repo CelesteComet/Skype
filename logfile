@@ -1,0 +1,7 @@
+2018-02-06 01:17:08.469 PST [4069] LOG:  listening on IPv6 address "::1", port 5432
+2018-02-06 01:17:08.469 PST [4069] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2018-02-06 01:17:08.470 PST [4069] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2018-02-06 01:17:08.482 PST [4070] LOG:  database system was shut down at 2018-02-06 01:16:40 PST
+2018-02-06 01:17:08.487 PST [4069] LOG:  database system is ready to accept connections
+2018-02-06 01:17:21.247 PST [4097] FATAL:  database "skype_development" does not exist
+2018-02-06 01:17:30.027 PST [4114] FATAL:  database "skype_development" does not exist
