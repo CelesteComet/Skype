@@ -4,6 +4,10 @@ class User < ApplicationRecord
 
   before_validation :ensure_session_token
 
+  # MODEL ASSOCIATIONS
+  has_many :room_memberships
+  has_many :rooms, through: :room_memberships
+
   attr_reader :password
 
   def password=(password)

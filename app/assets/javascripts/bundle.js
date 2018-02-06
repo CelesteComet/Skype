@@ -21602,7 +21602,7 @@ var _SessionFooter2 = _interopRequireDefault(_SessionFooter);
 
 var _sessionActions = __webpack_require__(7);
 
-var _typed = __webpack_require__(152);
+var _typed = __webpack_require__(154);
 
 var _typed2 = _interopRequireDefault(_typed);
 
@@ -21853,7 +21853,7 @@ exports.default = Fade;
 
 
 
-module.exports = __webpack_require__(153);
+module.exports = __webpack_require__(155);
 
 
 /***/ }),
@@ -41084,6 +41084,10 @@ var _messagesReducer = __webpack_require__(113);
 
 var _messagesReducer2 = _interopRequireDefault(_messagesReducer);
 
+var _roomMembershipsReducer = __webpack_require__(170);
+
+var _roomMembershipsReducer2 = _interopRequireDefault(_roomMembershipsReducer);
+
 var _uiReducer = __webpack_require__(115);
 
 var _uiReducer2 = _interopRequireDefault(_uiReducer);
@@ -41093,6 +41097,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var rootReducer = (0, _redux.combineReducers)({
   session: _sessionReducer2.default,
   messages: _messagesReducer2.default,
+  roomMemberships: _roomMembershipsReducer2.default,
   ui: _uiReducer2.default
 });
 
@@ -43665,15 +43670,15 @@ var _Dashboard = __webpack_require__(138);
 
 var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
-var _SessionForm = __webpack_require__(151);
+var _SessionForm = __webpack_require__(153);
 
 var _SessionForm2 = _interopRequireDefault(_SessionForm);
 
-var _RegistrationForm = __webpack_require__(163);
+var _RegistrationForm = __webpack_require__(165);
 
 var _RegistrationForm2 = _interopRequireDefault(_RegistrationForm);
 
-var _configureSocket = __webpack_require__(167);
+var _configureSocket = __webpack_require__(169);
 
 var _configureSocket2 = _interopRequireDefault(_configureSocket);
 
@@ -43873,7 +43878,7 @@ var _ModalProfile2 = _interopRequireDefault(_ModalProfile);
 
 var _sessionActions = __webpack_require__(7);
 
-var _roomMembershipActions = __webpack_require__(168);
+var _roomMembershipActions = __webpack_require__(151);
 
 var _reactRedux = __webpack_require__(4);
 
@@ -44235,7 +44240,9 @@ var mSTP = function mSTP(state) {
 };
 
 var mDTP = function mDTP(dispatch) {
-  return {};
+  return {
+    dispatch: dispatch
+  };
 };
 
 RecentsList.propTypes = {
@@ -45001,6 +45008,66 @@ exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(ModalProfil
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
+
+var _roomMembershipAPIService = __webpack_require__(152);
+
+var APIUtil = _interopRequireWildcard(_roomMembershipAPIService);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var RECEIVE_ALL_ROOM_MEMBERSHIPS = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = 'RECEIVE_ALL_ROOM_MEMBERSHIPS';
+
+var receiveRoomMemberships = exports.receiveRoomMemberships = function receiveRoomMemberships(roomMemberships) {
+  return {
+    type: RECEIVE_ALL_ROOM_MEMBERSHIPS,
+    payload: roomMemberships
+  };
+};
+
+var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemberships() {
+  return function (dispatch) {
+    return APIUtil.fetchRoomMemberships().then(function (roomMemberships) {
+      dispatch(receiveRoomMemberships(roomMemberships));
+    }, function (err) {
+      console.log(err);
+    });
+  };
+};
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemberships() {
+  return $.ajax({
+    url: 'api/room_memberships'
+  });
+};
+
+var logoutUser = exports.logoutUser = function logoutUser() {
+  return $.ajax({
+    url: 'api/session',
+    method: 'DELETE'
+  });
+};
+
+/***/ }),
+/* 153 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -45159,7 +45226,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SessionForm);
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -46200,7 +46267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46218,11 +46285,11 @@ var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _TransitionGroup = __webpack_require__(154);
+var _TransitionGroup = __webpack_require__(156);
 
 var _TransitionGroup2 = _interopRequireDefault(_TransitionGroup);
 
-var _CSSTransitionGroupChild = __webpack_require__(157);
+var _CSSTransitionGroupChild = __webpack_require__(159);
 
 var _CSSTransitionGroupChild2 = _interopRequireDefault(_CSSTransitionGroupChild);
 
@@ -46301,7 +46368,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46311,7 +46378,7 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _chainFunction = __webpack_require__(155);
+var _chainFunction = __webpack_require__(157);
 
 var _chainFunction2 = _interopRequireDefault(_chainFunction);
 
@@ -46327,7 +46394,7 @@ var _warning = __webpack_require__(3);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _ChildMapping = __webpack_require__(156);
+var _ChildMapping = __webpack_require__(158);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46577,7 +46644,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports) {
 
 
@@ -46603,7 +46670,7 @@ module.exports = function chain(){
 
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46700,7 +46767,7 @@ function mergeChildMappings(prev, next) {
 }
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46710,19 +46777,19 @@ exports.__esModule = true;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _addClass = __webpack_require__(158);
+var _addClass = __webpack_require__(160);
 
 var _addClass2 = _interopRequireDefault(_addClass);
 
-var _removeClass = __webpack_require__(160);
+var _removeClass = __webpack_require__(162);
 
 var _removeClass2 = _interopRequireDefault(_removeClass);
 
-var _requestAnimationFrame = __webpack_require__(161);
+var _requestAnimationFrame = __webpack_require__(163);
 
 var _requestAnimationFrame2 = _interopRequireDefault(_requestAnimationFrame);
 
-var _properties = __webpack_require__(162);
+var _properties = __webpack_require__(164);
 
 var _react = __webpack_require__(0);
 
@@ -46936,7 +47003,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46947,7 +47014,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = addClass;
 
-var _hasClass = __webpack_require__(159);
+var _hasClass = __webpack_require__(161);
 
 var _hasClass2 = _interopRequireDefault(_hasClass);
 
@@ -46959,7 +47026,7 @@ function addClass(element, className) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46975,7 +47042,7 @@ function hasClass(element, className) {
 module.exports = exports["default"];
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46990,7 +47057,7 @@ module.exports = function removeClass(element, className) {
 };
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47049,7 +47116,7 @@ exports.default = compatRaf;
 module.exports = exports['default'];
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47165,7 +47232,7 @@ function getTransitionProperties() {
 }
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47181,7 +47248,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _RegistrationCreateAccount = __webpack_require__(164);
+var _RegistrationCreateAccount = __webpack_require__(166);
 
 var _RegistrationCreateAccount2 = _interopRequireDefault(_RegistrationCreateAccount);
 
@@ -47276,7 +47343,7 @@ var RegistrationForm = function (_Component) {
 exports.default = RegistrationForm;
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47296,7 +47363,7 @@ var _reactRouterDom = __webpack_require__(15);
 
 var _reactRedux = __webpack_require__(4);
 
-var _userActions = __webpack_require__(165);
+var _userActions = __webpack_require__(167);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47437,7 +47504,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RegistrationCreateAccount));
 
 /***/ }),
-/* 165 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47450,7 +47517,7 @@ exports.createUser = exports.CREATE_USER = undefined;
 
 var _sessionActions = __webpack_require__(7);
 
-var _userAPIService = __webpack_require__(166);
+var _userAPIService = __webpack_require__(168);
 
 var APIUtil = _interopRequireWildcard(_userAPIService);
 
@@ -47468,7 +47535,7 @@ var createUser = exports.createUser = function createUser(user) {
 };
 
 /***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47487,7 +47554,7 @@ var createUser = exports.createUser = function createUser(user) {
 };
 
 /***/ }),
-/* 167 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47527,7 +47594,7 @@ var configureSocket = function configureSocket(context, dispatch) {
 exports.default = configureSocket;
 
 /***/ }),
-/* 168 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47536,32 +47603,32 @@ exports.default = configureSocket;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
 
-var _roomMembershipAPIService = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../services/roomMembershipAPIService\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+var _lodash = __webpack_require__(24);
 
-var APIUtil = _interopRequireWildcard(_roomMembershipAPIService);
+var _lodash2 = _interopRequireDefault(_lodash);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _roomMembershipActions = __webpack_require__(151);
 
-var RECEIVE_ALL_ROOM_MEMBERSHIPS = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = 'RECEIVE_ALL_ROOM_MEMBERSHIPS';
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var receiveRoomMemberships = exports.receiveRoomMemberships = function receiveRoomMemberships(roomMemberships) {
-  return {
-    type: RECEIVE_ALL_ROOM_MEMBERSHIPS,
-    payload: roomMemberships
-  };
+var initialState = {};
+
+var roomMembershipsReducer = function roomMembershipsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments[1];
+
+  var newState = _lodash2.default.merge({}, state);
+  switch (action.type) {
+    case _roomMembershipActions.RECEIVE_ALL_ROOM_MEMBERSHIPS:
+      newState[action.payload] = action.payload;
+      return newState;
+    default:
+      return state;
+  }
 };
 
-var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemberships() {
-  return function (dispatch) {
-    return APIUtil.fetchRoomMemberships().then(function (roomMemberships) {
-      dispatch(receiveRoomMemberships(roomMemberships));
-    }, function (err) {
-      console.log(err);
-    });
-  };
-};
+exports.default = roomMembershipsReducer;
 
 /***/ })
 /******/ ]);

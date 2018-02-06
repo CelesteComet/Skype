@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resource :session, only: [:create, :destroy]
     resources :users, only: [:create, :destroy]
     resources :messages, only: [:create]
+    resources :room_memberships, only: [:index, :create, :destroy] 
 
   end
 

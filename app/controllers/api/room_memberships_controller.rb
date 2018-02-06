@@ -2,6 +2,10 @@ class Api::RoomMembershipsController < ApplicationController
 
   before_action :require_login # check application controller
 
+  def index
+    @room_memberships = current_user.room_memberships.includes(:users)
+  end
+
   def create
     @room_membership = RoomMembership.new(room_membership_params)
     @room_membership.user_id = current_user.id
