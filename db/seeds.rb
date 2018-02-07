@@ -18,6 +18,10 @@ User.create({username: "David", password: "qqqqqq", profile_id: 7})
 User.create({username: "Ron", password: "qqqqqq", profile_id: 8})
 User.create({username: "Rose", password: "qqqqqq", profile_id: 9})
 
+User.create({username: "Daisy", password: "qqqqqq", profile_id: 10})
+User.create({username: "Tulip", password: "qqqqqq", profile_id: 11})
+User.create({username: "Rose", password: "qqqqqq", profile_id: 9})
+
 firstRoom = Room.create({})
 secondRoom = Room.create({})
 thirdRoom = Room.create({})
