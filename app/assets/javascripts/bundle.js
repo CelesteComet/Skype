@@ -45214,21 +45214,21 @@ var InputMessageInterface = function (_Component) {
   }, {
     key: 'handleChange',
     value: function handleChange(e) {
+      var _this2 = this;
+
       e.preventDefault();
 
       this.adjustTextArea();
 
       this.setState({
         body: e.target.value
+      }, function () {
+        if (_this2.state.body.length > 0) {
+          _this2.dispatch((0, _uiActions.showMediaUpload)());
+        } else {
+          _this2.dispatch((0, _uiActions.hideMediaUpload)());
+        }
       });
-
-      // if the body length is empty, dispatch show media
-
-      if (this.state.body.length > 0) {
-        this.dispatch((0, _uiActions.showMediaUpload)());
-      } else {
-        this.dispatch((0, _uiActions.hideMediaUpload)());
-      }
     }
   }, {
     key: 'resetForm',
@@ -45240,21 +45240,26 @@ var InputMessageInterface = function (_Component) {
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
+      var _this3 = this;
+
       e.preventDefault();
       var dispatch = this.props.dispatch;
 
       this.resetForm();
-      dispatch((0, _messageActions.createMessage)(this.state));
+      dispatch((0, _messageActions.createMessage)(this.state)).then(function () {
+        _this3.dispatch((0, _uiActions.hideMediaUpload)());
+      });
     }
   }, {
     key: 'handleFocus',
     value: function handleFocus() {
+
       this.baseScrollHeight = this.textArea.scrollHeight;
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this4 = this;
 
       var mediaUploadView = this.props.mediaUploadView;
 
@@ -45292,17 +45297,20 @@ var InputMessageInterface = function (_Component) {
                 'data-min-rows': '2',
                 placeholder: 'Type a message here',
                 ref: function ref(textarea) {
-                  _this2.textArea = textarea;
+                  _this4.textArea = textarea;
                 } }),
               _react2.default.createElement(
                 'div',
                 { className: 'icon-set' },
-                mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-paperclip', 'aria-hidden': 'true' }),
-                _react2.default.createElement('i', { className: 'fa fa-picture-o', 'aria-hidden': 'true' }),
-                _react2.default.createElement('i', { className: 'fa fa-id-card', 'aria-hidden': 'true' }),
-                _react2.default.createElement('i', { className: 'fa fa-smile-o', 'aria-hidden': 'true' })
-              ),
-              _react2.default.createElement('input', { type: 'submit', value: 'send message' })
+                mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-paperclip icon-paperclip', 'aria-hidden': 'true' }),
+                !mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-picture-o icon-picture', 'aria-hidden': 'true' }),
+                _react2.default.createElement('i', { className: 'fa fa-smile-o', 'aria-hidden': 'true' }),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'airplane' },
+                  _react2.default.createElement('i', { 'class': 'fa fa-paper-plane-o icon-airplane', 'aria-hidden': 'true' })
+                )
+              )
             )
           )
         )

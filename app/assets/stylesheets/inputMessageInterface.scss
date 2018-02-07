@@ -13,8 +13,7 @@
   }
 
   .icon-set {
-    vertical-align: top;
-    display: inline-block;
+    display: flex;
   }
 
   .form-holder {
@@ -25,7 +24,29 @@
 
   form {
     display: flex;
-    align-items: center;
+    align-items: top;
+  }
+
+  button {
+    border-radius: 100%;
+    border: 1px solid black;
+    background: blue;
+    width: 43px;
+    height: 43px;
+  }
+
+  .icon-airplane {
+    font-size: 21px;
+    transform: rotate(25deg);
+    color: white;
+  }
+
+  .icon-paperclip {
+
+  }
+
+  .icon-paper {
+  
   }
 
   textarea::-webkit-input-placeholder {

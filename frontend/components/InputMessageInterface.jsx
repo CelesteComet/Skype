@@ -34,15 +34,14 @@ class InputMessageInterface extends Component {
 
     this.setState({
       body: e.target.value
+    }, () => {
+      if (this.state.body.length > 0) {
+        this.dispatch(showMediaUpload());
+      } else {
+        this.dispatch(hideMediaUpload());
+      }
     })
 
-    // if the body length is empty, dispatch show media
-
-    if (this.state.body.length > 0) {
-      this.dispatch(showMediaUpload());
-    } else {
-      this.dispatch(hideMediaUpload());
-    }
 
   }
 
@@ -56,10 +55,13 @@ class InputMessageInterface extends Component {
     e.preventDefault();
     const { dispatch } = this.props;
     this.resetForm();
-    dispatch(createMessage(this.state));
+    dispatch(createMessage(this.state)).then(() => {
+      this.dispatch(hideMediaUpload());
+    });
   } 
 
   handleFocus() {
+
     this.baseScrollHeight = this.textArea.scrollHeight;
   }
 
@@ -82,12 +84,14 @@ class InputMessageInterface extends Component {
                 placeholder="Type a message here"
                 ref={(textarea) => { this.textArea = textarea; }} />
               <div className='icon-set'>
-                {mediaUploadView && <i className="fa fa-paperclip" aria-hidden="true"></i> }
-                <i className="fa fa-picture-o" aria-hidden="true"></i>
-                <i className="fa fa-id-card" aria-hidden="true"></i>
+                {mediaUploadView && <i className="fa fa-paperclip icon-paperclip" aria-hidden="true"></i> }
+                {!mediaUploadView && <i className="fa fa-picture-o icon-picture" aria-hidden="true"></i>}
+                {/*<i className="fa fa-id-card" aria-hidden="true"></i>*/}
                 <i className="fa fa-smile-o" aria-hidden="true"></i>
+                <button className='airplane'>
+                  <i class="fa fa-paper-plane-o icon-airplane" aria-hidden="true"></i>
+                </button>
               </div>
-              <input type='submit' value='send message' />
             </form>
           </div>
         </div>
