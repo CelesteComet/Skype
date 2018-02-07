@@ -18079,6 +18079,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
 var TOGGLE_CONTACTS_LIST = exports.TOGGLE_CONTACTS_LIST = "TOGGLE_CONTACTS_LIST";
+var SHOW_MEDIA_UPLOAD = exports.SHOW_MEDIA_UPLOAD = "SHOW_MEDIA_UPLOAD";
+var HIDE_MEDIA_UPLOAD = exports.HIDE_MEDIA_UPLOAD = "HIDE_MEDIA_UPLOAD";
 
 var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModal() {
   return {
@@ -18089,6 +18091,18 @@ var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModa
 var toggleContactsList = exports.toggleContactsList = function toggleContactsList() {
   return {
     type: TOGGLE_CONTACTS_LIST
+  };
+};
+
+var showMediaUpload = exports.showMediaUpload = function showMediaUpload() {
+  return {
+    type: SHOW_MEDIA_UPLOAD
+  };
+};
+
+var hideMediaUpload = exports.hideMediaUpload = function hideMediaUpload() {
+  return {
+    type: HIDE_MEDIA_UPLOAD
   };
 };
 
@@ -41571,6 +41585,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var initialState = {
   profileModalView: false,
   contactsListView: false,
+  mediaUploadView: true, // media upload icon for input
   currentRoomId: 1 // change this later when implementing changing rooms
 };
 
@@ -41585,6 +41600,12 @@ var uiReducer = function uiReducer() {
       return newState;
     case _uiActions.TOGGLE_CONTACTS_LIST:
       newState.contactsListView = !newState.contactsListView;
+      return newState;
+    case _uiActions.SHOW_MEDIA_UPLOAD:
+      newState.mediaUploadView = true;
+      return newState;
+    case _uiActions.HIDE_MEDIA_UPLOAD:
+      newState.mediaUploadView = false;
       return newState;
     default:
       return state;
@@ -44250,9 +44271,9 @@ var Dashboard = function (_Component) {
           { className: 'dashboard' },
           modalView && _react2.default.createElement(_ModalProfile2.default, null),
           _react2.default.createElement(_SideBar2.default, null),
-          _react2.default.createElement(_Main2.default, null)
-        ),
-        _react2.default.createElement(_Footer2.default, null)
+          _react2.default.createElement(_Main2.default, null),
+          _react2.default.createElement(_Footer2.default, null)
+        )
       );
     }
   }]);
@@ -44343,6 +44364,7 @@ var SideBar = function (_Component) {
           _react2.default.createElement(
             'div',
             { className: 'cloud-background' },
+            _react2.default.createElement('div', { className: 'white-circle cloud-5' }),
             _react2.default.createElement('div', { className: 'white-circle cloud-4' }),
             _react2.default.createElement('div', { className: 'white-circle cloud-3' }),
             _react2.default.createElement('div', { className: 'white-circle cloud-2' }),
@@ -44835,51 +44857,35 @@ var AsideButtons = function (_Component) {
         'ul',
         { className: 'aside-buttons' },
         _react2.default.createElement(
-          'li',
+          'span',
           null,
           _react2.default.createElement(
-            'span',
-            { onClick: function onClick() {
+            'li',
+            { className: 'aside-contacts', onClick: function onClick() {
                 dispatch((0, _uiActions.toggleContactsList)());
               } },
-            'Contacts List'
+            _react2.default.createElement('span', null)
+          ),
+          _react2.default.createElement(
+            'li',
+            { className: 'aside-robot' },
+            _react2.default.createElement('span', null)
+          ),
+          _react2.default.createElement(
+            'li',
+            { className: 'aside-phonepad' },
+            _react2.default.createElement('span', null)
+          ),
+          _react2.default.createElement(
+            'li',
+            { className: 'aside-gear' },
+            _react2.default.createElement('span', null)
           )
         ),
         _react2.default.createElement(
           'li',
-          null,
-          _react2.default.createElement(
-            'span',
-            null,
-            'Other stuff'
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(
-            'span',
-            null,
-            'Other stuff'
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(
-            'span',
-            null,
-            'Other stuff'
-          )
-        ),
-        _react2.default.createElement(
-          'li',
-          null,
-          _react2.default.createElement(
-            'span',
-            null,
-            'Other stuff'
-          )
+          { className: 'aside-plus' },
+          _react2.default.createElement('span', null)
         )
       );
     }
@@ -44944,8 +44950,8 @@ var Main = function (_Component) {
       return _react2.default.createElement(
         'main',
         null,
-        this.props.contactsListView && _react2.default.createElement(_MessageInterface2.default, null),
-        !this.props.contactsListView && _react2.default.createElement(_ContactsListView2.default, null)
+        !this.props.contactsListView && _react2.default.createElement(_MessageInterface2.default, null),
+        this.props.contactsListView && _react2.default.createElement(_ContactsListView2.default, null)
       );
     }
   }]);
@@ -45165,6 +45171,8 @@ var _reactRedux = __webpack_require__(4);
 
 var _messageActions = __webpack_require__(26);
 
+var _uiActions = __webpack_require__(16);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45172,6 +45180,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var minRows = 3;
 
 var InputMessageInterface = function (_Component) {
   _inherits(InputMessageInterface, _Component);
@@ -45188,16 +45198,37 @@ var InputMessageInterface = function (_Component) {
     };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
+    _this.handleFocus = _this.handleFocus.bind(_this);
+    _this.adjustTextArea = _this.adjustTextArea.bind(_this);
+    _this.baseScrollHeight = 0;
+    _this.dispatch = _this.props.dispatch;
     return _this;
   }
 
   _createClass(InputMessageInterface, [{
+    key: 'adjustTextArea',
+    value: function adjustTextArea() {
+      var rows = Math.ceil((this.textArea.scrollHeight - this.baseScrollHeight) / 16);
+      this.textArea.rows = rows;
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(e) {
       e.preventDefault();
+
+      this.adjustTextArea();
+
       this.setState({
         body: e.target.value
       });
+
+      // if the body length is empty, dispatch show media
+
+      if (this.state.body.length > 0) {
+        this.dispatch((0, _uiActions.showMediaUpload)());
+      } else {
+        this.dispatch((0, _uiActions.hideMediaUpload)());
+      }
     }
   }, {
     key: 'resetForm',
@@ -45216,8 +45247,17 @@ var InputMessageInterface = function (_Component) {
       dispatch((0, _messageActions.createMessage)(this.state));
     }
   }, {
+    key: 'handleFocus',
+    value: function handleFocus() {
+      this.baseScrollHeight = this.textArea.scrollHeight;
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var mediaUploadView = this.props.mediaUploadView;
+
       return _react2.default.createElement(
         'div',
         { className: 'input-message-interface' },
@@ -45244,11 +45284,20 @@ var InputMessageInterface = function (_Component) {
             _react2.default.createElement(
               'form',
               { onSubmit: this.handleSubmit },
-              _react2.default.createElement('textarea', { onChange: this.handleChange, value: this.state.body }),
+              _react2.default.createElement('textarea', {
+                onFocus: this.handleFocus,
+                onChange: this.handleChange,
+                value: this.state.body,
+                rows: '2',
+                'data-min-rows': '2',
+                placeholder: 'Type a message here',
+                ref: function ref(textarea) {
+                  _this2.textArea = textarea;
+                } }),
               _react2.default.createElement(
                 'div',
                 { className: 'icon-set' },
-                _react2.default.createElement('i', { className: 'fa fa-paperclip', 'aria-hidden': 'true' }),
+                mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-paperclip', 'aria-hidden': 'true' }),
                 _react2.default.createElement('i', { className: 'fa fa-picture-o', 'aria-hidden': 'true' }),
                 _react2.default.createElement('i', { className: 'fa fa-id-card', 'aria-hidden': 'true' }),
                 _react2.default.createElement('i', { className: 'fa fa-smile-o', 'aria-hidden': 'true' })
@@ -45266,7 +45315,8 @@ var InputMessageInterface = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    roomId: state.ui.currentRoomId
+    roomId: state.ui.currentRoomId,
+    mediaUploadView: state.ui.mediaUploadView
   };
 };
 
@@ -45275,6 +45325,21 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(InputMessageInterface);
+
+// Applied globally on all textareas with the "autoExpand" class
+// $(document)
+//     .one('focus.autoExpand', 'textarea.autoExpand', function(){
+//         var savedValue = this.value;
+//         this.value = '';
+//         this.baseScrollHeight = this.scrollHeight;
+//         this.value = savedValue;
+//     })
+//     .on('input.autoExpand', 'textarea.autoExpand', function(){
+//         var minRows = this.getAttribute('data-min-rows')|0, rows;
+//         this.rows = minRows;
+// rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+// this.rows = minRows + rows;
+//     });
 
 /***/ }),
 /* 159 */
@@ -45376,28 +45441,32 @@ var ContactsListView = function (_Component) {
             null,
             _react2.default.createElement('i', { 'class': 'exclamation fa fa-exclamation-circle' }),
             'Hint: you can add new contacts by searching'
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'contacts-menu' },
+          ),
           _react2.default.createElement(
-            'ul',
-            { className: 'menu-items' },
+            'div',
+            { className: 'block-container' },
             _react2.default.createElement(
-              'li',
-              { className: 'active' },
-              'All Contacts'
-            ),
-            _react2.default.createElement(
-              'li',
-              null,
-              'Online'
-            ),
-            _react2.default.createElement(
-              'li',
-              null,
-              'Bots'
+              'div',
+              { className: 'contacts-menu' },
+              _react2.default.createElement(
+                'ul',
+                { className: 'menu-items' },
+                _react2.default.createElement(
+                  'li',
+                  { className: 'active' },
+                  'All Contacts'
+                ),
+                _react2.default.createElement(
+                  'li',
+                  null,
+                  'Online'
+                ),
+                _react2.default.createElement(
+                  'li',
+                  null,
+                  'Bots'
+                )
+              )
             )
           )
         ),

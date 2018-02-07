@@ -1,9 +1,36 @@
 .contacts-list-view {
 
+  width: 100%;
+
   .header-container {
     padding-top: 40px;
     padding-left: 54px;
     padding-right: 40px;
+    background: white;
+    z-index: 10;
+    box-sizing: border-box;
+    
+    .block-container {
+      display: block;
+    }
+
+    .contacts-menu {
+      display: inline-block;
+    }
+
+    span {
+      display: inline-block;
+      float: right;
+      background-color: #E4EEF2;
+      padding: 5px 10px 6px 10px;
+      margin-top: 2px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      font-size: 0.78em;
+      line-height: 1.5385em;
+      top: .3592307692em;
+      font-weight: 300;
+    }
   }
 
   li {
@@ -33,10 +60,7 @@
     color: black;
   }
 
-  .contacts-menu {
-    display: inline-block;
-    padding-left: 54px;
-  }
+
 
   .contacts-container > div {
     overflow: auto;
@@ -44,25 +68,15 @@
 
   .contacts-list-container {
     padding-left: 16px;
+    width: 100%;
     display: flex;
   }
 
-  span {
-    display: inline-block;
-    float: right;
-    background-color: #E4EEF2;
-    padding: 5px 10px 6px 10px;
-    margin-top: 2px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    font-size: 0.78em;
-    line-height: 1.5385em;
-    top: .3592307692em;
-    font-weight: 300;
-  }
+
 
   .contacts-list {
     overflow: scroll;
+    height: 100vh;
     padding-left: 50px;
   }
 

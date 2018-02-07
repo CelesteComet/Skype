@@ -14,11 +14,34 @@
 
   .icon-set {
     vertical-align: top;
+    display: inline-block;
   }
 
   .form-holder {
     max-width: 840px;
     margin: 0 auto;
+    margin-bottom: 42px;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+  }
+
+  textarea::-webkit-input-placeholder {
+    color: #4AAEEA;
+    font-weight: 300;
+  }
+
+  .input-message-input {
+    padding-left: 30px;
+    padding-right: 30px;
+
+    textarea {
+      display: inline-block;
+      width: 79%;
+      font-size: 0.8em;
+    }
   }
 }
 

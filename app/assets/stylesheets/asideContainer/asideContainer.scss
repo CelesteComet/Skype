@@ -6,5 +6,65 @@ aside {
   }
 }
 
+.aside-buttons {
+  padding: 0px 15px 0 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.aside-buttons li {
+  display: inline-block;
+  background: url(../../images/button-icons.png);
+  background-size: 162px;
+  width: 43px;
+  background-position-x: 2px;
+  background-position-y: 4px;
+  height: 43px;
+  border-radius: 100%;  
+}
+
+.aside-buttons li:hover {
+  background-color: #E0F3FC;
+}
+
+
+.aside-contacts {
+  background-position-x: 2px;
+  background-position-y: 4px;
+}
+
+.aside-robot {
+    background-position-x: -32px !important;
+    background-position-y: -18px !important;
+}
+
+.aside-phonepad {
+    background-position-x: -64px !important;
+    background-position-y: -45px !important;
+}
+
+.aside-gear {
+    background-position-x: -92px !important;
+    background-position-y: -71px !important;
+}
+
+.aside-plus {
+    background-position-x: -117.5px !important;
+    background-position-y: -100px !important;
+}
+
+@media (max-width: 600px) {
+  .aside-buttons {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .aside-buttons li {
+    border-radius: 0%;  
+    width: 57px;
+  }
+}
+
 
 

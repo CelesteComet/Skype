@@ -12,8 +12,8 @@ class Main extends Component {
   render() {
     return (
       <main>
-        {this.props.contactsListView && <MessageInterface /> }
-        {!this.props.contactsListView && <ContactsListView /> }
+        {!this.props.contactsListView && <MessageInterface /> }
+        {this.props.contactsListView && <ContactsListView /> }
       </main>
     );
   }

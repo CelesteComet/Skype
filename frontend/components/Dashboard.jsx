@@ -35,8 +35,10 @@ class Dashboard extends Component {
           { modalView && <ModalProfile /> }
           <SideBar />
           <Main />
+
+          <Footer />
         </div>
-        <Footer />
+        
       </Fragment>
     );
   }

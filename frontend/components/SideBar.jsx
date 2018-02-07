@@ -17,6 +17,7 @@ class SideBar extends Component {
         <aside> 
           {/* Cloud Background*/}
           <div className="cloud-background">
+            <div className="white-circle cloud-5"></div>
             <div className="white-circle cloud-4"></div>
             <div className="white-circle cloud-3"></div>
             <div className="white-circle cloud-2"></div>

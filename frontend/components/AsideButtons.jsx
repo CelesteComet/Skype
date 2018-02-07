@@ -8,11 +8,13 @@ class AsideButtons extends Component {
     const { dispatch } = this.props;
     return (
       <ul className="aside-buttons">
-        <li><span onClick={() => { dispatch(toggleContactsList())}}>Contacts List</span></li>
-        <li><span>Other stuff</span></li>
-        <li><span>Other stuff</span></li>
-        <li><span>Other stuff</span></li>
-        <li><span>Other stuff</span></li>
+        <span>
+          <li className='aside-contacts' onClick={() => { dispatch(toggleContactsList())}}><span></span></li>
+          <li className='aside-robot'><span></span></li>
+          <li className='aside-phonepad'><span></span></li>
+          <li className='aside-gear'><span></span></li>
+        </span>
+        <li className='aside-plus'><span></span></li>
       </ul>
     );
   }

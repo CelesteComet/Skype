@@ -51,14 +51,17 @@ class ContactsListView extends Component {
             <i class="exclamation fa fa-exclamation-circle"></i>
             Hint: you can add new contacts by searching
           </span>
+          <div className='block-container'>
+            <div className='contacts-menu'>
+              <ul className='menu-items'>
+                <li className='active'>All Contacts</li>
+                <li>Online</li>
+                <li>Bots</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div className='contacts-menu'>
-          <ul className='menu-items'>
-            <li className='active'>All Contacts</li>
-            <li>Online</li>
-            <li>Bots</li>
-          </ul>
-        </div>
+
         <div>
           <ul className='contacts-list'>
             { contactsJSX }

@@ -20,7 +20,10 @@ User.create({username: "Rose", password: "qqqqqq", profile_id: 9})
 
 User.create({username: "Daisy", password: "qqqqqq", profile_id: 10})
 User.create({username: "Tulip", password: "qqqqqq", profile_id: 11})
-User.create({username: "Rose", password: "qqqqqq", profile_id: 9})
+User.create({username: "BWW", password: "qqqqqq", profile_id: 12})
+User.create({username: "Mercedes", password: "qqqqqq", profile_id: 13})
+User.create({username: "Aston Martin", password: "qqqqqq", profile_id: 14})
+User.create({username: "Apple Macbook", password: "qqqqqq", profile_id: 15})
 
 firstRoom = Room.create({})
 secondRoom = Room.create({})
@@ -50,5 +53,12 @@ Friendship.create(user_id: bruceUser.id, friend_id: 5)
 Friendship.create(user_id: bruceUser.id, friend_id: 6)
 Friendship.create(user_id: bruceUser.id, friend_id: 8)
 Friendship.create(user_id: bruceUser.id, friend_id: 9)
+
+Friendship.create(user_id: bruceUser.id, friend_id: 10)
+Friendship.create(user_id: bruceUser.id, friend_id: 11)
+Friendship.create(user_id: bruceUser.id, friend_id: 12)
+Friendship.create(user_id: bruceUser.id, friend_id: 13)
+Friendship.create(user_id: bruceUser.id, friend_id: 14)
+Friendship.create(user_id: bruceUser.id, friend_id: 15)
 
 
