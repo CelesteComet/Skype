@@ -40,6 +40,8 @@ class ContactsListView extends Component {
         }
       }
     }
+
+
     
 
 
@@ -62,11 +64,14 @@ class ContactsListView extends Component {
           </div>
         </div>
 
-        <div>
+        <div className='contacts-list-scroll'>
           <ul className='contacts-list'>
             { contactsJSX }
+
           </ul>
+
         </div>
+
       </div>
     );
   }

@@ -7,7 +7,7 @@ class MessageItem extends Component {
 
   render() {
     const { message } = this.props;
-    const { body, created_at } = message;
+    const { body, created_at, status } = message;
     return(
       <div className='message-item'>
         <div className='bubble'>
@@ -19,7 +19,7 @@ class MessageItem extends Component {
           </div> 
         </div>
         <div className='delivery-status'>
-          <span>{'sent'}</span>
+          <span>{status === 0 ? 'Sent' : 'Sending'}</span>
         </div>
       </div>
     );

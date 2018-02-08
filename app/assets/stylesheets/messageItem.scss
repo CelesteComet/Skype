@@ -6,7 +6,7 @@
   .bubble {
     background-color: #DCF2FA;
     margin-left: 5em;
-    margin-right: 3em;
+    margin-right: 5em;
     border-bottom: 1px solid transparent;
     border-bottom-left-radius: .15em;
     border-bottom-right-radius: .15em;
@@ -15,18 +15,21 @@
 
   .delivery-status {
     text-align: right;
-    margin-right: 3em;
+    margin-right: 7.1em;
     flex-direction: row-reverse;
     margin-bottom: .6em;
     display: flex;
     align-items: center;
+    font-size: 0.7em;
   }
 
   .timestamp {
     display: block;
-    right: -3em;
+    right: -5.9em;
     position: absolute;
     top: 0.5em;
+    font-size: 0.63em;
+    color: #A0B3BE;    
   }
 
   .content {
@@ -37,6 +40,7 @@
       word-wrap: break-word;
       -webkit-font-smoothing: antialiased;
       white-space: pre-wrap;
+      font-size: 0.8em;
     }
   }
 }

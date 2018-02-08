@@ -52270,7 +52270,8 @@ var MessageItem = function (_Component) {
     value: function render() {
       var message = this.props.message;
       var body = message.body,
-          created_at = message.created_at;
+          created_at = message.created_at,
+          status = message.status;
 
       return _react2.default.createElement(
         'div',
@@ -52303,7 +52304,7 @@ var MessageItem = function (_Component) {
           _react2.default.createElement(
             'span',
             null,
-            'sent'
+            status === 0 ? 'Sent' : 'Sending'
           )
         )
       );
@@ -52645,7 +52646,7 @@ var ContactsListView = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          null,
+          { className: 'contacts-list-scroll' },
           _react2.default.createElement(
             'ul',
             { className: 'contacts-list' },
