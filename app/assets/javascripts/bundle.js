@@ -52284,9 +52284,11 @@ var MessageItem = function (_Component) {
           status = message.status,
           user_id = message.user_id;
 
+      console.log("received message user id", user_id);
+      console.log("my user id", currentUserId);
       // check whether or not the message is by the current user
-
       if (user_id !== currentUserId) {
+        console.log("COMON!");
         var _receivedMessage = true;
       }
 
