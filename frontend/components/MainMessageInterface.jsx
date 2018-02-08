@@ -10,7 +10,8 @@ class MainMessageInterface extends Component {
           return (
             <MessageItem 
               key={msg.id}
-              message={msg}/>
+              message={msg}
+              currentUserId={currentUserId}/>
             )
           })}
       </div>
@@ -20,7 +21,8 @@ class MainMessageInterface extends Component {
 
 const mapStateToProps = state => {
   return {
-    messages: Object.values(state.messages)
+    messages: Object.values(state.messages),
+    currentUserId: state.session.currentUser.id
   }
 }
 

@@ -52214,7 +52214,8 @@ var MainMessageInterface = function (_Component) {
         this.props.messages.map(function (msg) {
           return _react2.default.createElement(_MessageItem2.default, {
             key: msg.id,
-            message: msg });
+            message: msg,
+            currentUserId: currentUserId });
         })
       );
     }
@@ -52225,7 +52226,8 @@ var MainMessageInterface = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    messages: Object.values(state.messages)
+    messages: Object.values(state.messages),
+    currentUserId: state.session.currentUser.id
   };
 };
 
@@ -52277,8 +52279,6 @@ var MessageItem = function (_Component) {
       var _props = this.props,
           message = _props.message,
           currentUserId = _props.currentUserId;
-
-      console.log(this.props);
       var body = message.body,
           created_at = message.created_at,
           status = message.status,
@@ -52333,13 +52333,7 @@ var MessageItem = function (_Component) {
   return MessageItem;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    currentUserId: state.session.currentUser.id
-  };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(MessageItem);
+exports.default = MessageItem;
 
 /***/ }),
 /* 188 */

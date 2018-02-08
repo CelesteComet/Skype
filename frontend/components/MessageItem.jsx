@@ -12,7 +12,6 @@ class MessageItem extends Component {
     let receivedMessage = false;
 
     const { message, currentUserId} = this.props;
-    console.log(this.props);
     const { body, created_at, status, user_id} = message;
     console.log("received message user id", user_id);
     console.log("my user id", currentUserId)
@@ -40,11 +39,5 @@ class MessageItem extends Component {
   } 
 }
 
-const mapStateToProps = state => {
-  return {
-    currentUserId: state.session.currentUser.id
-  }
-}
 
-export default connect(mapStateToProps, null)(MessageItem);
-
+export default MessageItem;
