@@ -1,5 +1,6 @@
 development:
   adapter: redis
+  url: redis://redistogo:d0ed635634356d4408c1effb00bc9493@hoki.redistogo.com:9247/
 
 test:
   adapter: redis
@@ -8,3 +9,5 @@ production:
   adapter: redis
   url: redis://localhost:6379/1
   channel_prefix: skype_production
+
+

@@ -1,6 +1,11 @@
 Rails.application.configure do
 
   # DO MY OWN STUFF
+  config.web_socket_server_url = "wss://skypii.herokuapp.com/cable" 
+
+  # config/environments/production.rb
+
+  config.action_cable.allowed_request_origins = ['https://skypii.herokuapp.com', 'http://skypii.herokuapp.com']
 
   config.serve_static_assets = true
   
