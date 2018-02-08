@@ -87,11 +87,11 @@ class InputMessageInterface extends Component {
                 {mediaUploadView && <i className="fa fa-paperclip icon-paperclip" aria-hidden="true"></i> }
                 {!mediaUploadView && <i className="fa fa-picture-o icon-picture" aria-hidden="true"></i>}
                 {/*<i className="fa fa-id-card" aria-hidden="true"></i>*/}
-                <i className="fa fa-smile-o" aria-hidden="true"></i>
-                <button className='airplane'>
-                  <i class="fa fa-paper-plane-o icon-airplane" aria-hidden="true"></i>
-                </button>
+                <i className="fa fa-smile-o icon-smile" aria-hidden="true"></i>
               </div>
+              <button className='airplane'>
+                <i class="fa fa-paper-plane-o icon-airplane" aria-hidden="true"></i>
+              </button>
             </form>
           </div>
         </div>

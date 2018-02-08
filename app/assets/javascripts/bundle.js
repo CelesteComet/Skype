@@ -45304,12 +45304,12 @@ var InputMessageInterface = function (_Component) {
                 { className: 'icon-set' },
                 mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-paperclip icon-paperclip', 'aria-hidden': 'true' }),
                 !mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-picture-o icon-picture', 'aria-hidden': 'true' }),
-                _react2.default.createElement('i', { className: 'fa fa-smile-o', 'aria-hidden': 'true' }),
-                _react2.default.createElement(
-                  'button',
-                  { className: 'airplane' },
-                  _react2.default.createElement('i', { 'class': 'fa fa-paper-plane-o icon-airplane', 'aria-hidden': 'true' })
-                )
+                _react2.default.createElement('i', { className: 'fa fa-smile-o icon-smile', 'aria-hidden': 'true' })
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'airplane' },
+                _react2.default.createElement('i', { 'class': 'fa fa-paper-plane-o icon-airplane', 'aria-hidden': 'true' })
               )
             )
           )

@@ -12,10 +12,6 @@
     }
   }
 
-  .icon-set {
-    display: flex;
-  }
-
   .form-holder {
     max-width: 840px;
     margin: 0 auto;
@@ -29,8 +25,8 @@
 
   button {
     border-radius: 100%;
-    border: 1px solid black;
-    background: blue;
+    border: none;
+    background: #4AAEEA;
     width: 43px;
     height: 43px;
   }
@@ -41,12 +37,28 @@
     color: white;
   }
 
-  .icon-paperclip {
-
+  .icon-set {
+    display: flex;
+    color: #4AAEEA;
+    font-size: 21px;
+    align-items: center;
   }
 
-  .icon-paper {
-  
+  .icon-paperclip {
+    transform: rotateY(180deg);
+    padding-right: 36px;
+  }
+
+  .icon-smile {
+    padding-left: 21px;
+  }
+
+  .icon-picture {
+    padding-left: 30px;
+  }
+
+  .airplane {
+    margin-left: 20px;
   }
 
   textarea::-webkit-input-placeholder {
@@ -62,6 +74,12 @@
       display: inline-block;
       width: 79%;
       font-size: 0.8em;
+      border: none;
+      overflow: auto;
+      outline: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
     }
   }
 }
