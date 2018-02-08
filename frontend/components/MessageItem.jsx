@@ -6,12 +6,13 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { body, sender, status, date } = this.props;
+    const { message } = this.props;
+    const { body } = message;
     return(
       <div className='message-item'>
         <div className='bubble'>
           <div className='content'>
-            <p>Im some content</p>
+            <p>{body}</p>
           </div>
           <div className='timestamp'>
             <p>Im a timestamp</p>

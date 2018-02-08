@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MessageItem from './MessageItem';
 
-
 class MainMessageInterface extends Component {
   render() {
     return (
@@ -10,10 +9,10 @@ class MainMessageInterface extends Component {
         {this.props.messages.map(msg => {
           return (
             <MessageItem 
-              key={msg.id}>
-              {msg.body}
-            </MessageItem>)
-        })}
+              key={msg.id}
+              message={msg}/>
+            )
+          })}
       </div>
     );
   }

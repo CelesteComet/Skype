@@ -2,6 +2,15 @@ class Api::MessagesController < ApplicationController
 
   before_action :require_login 
 
+  def index
+    @messages = current_user.messages 
+    if @messages 
+      render json: @messages
+    else 
+      render json: @messages.errors.full_messages, status: 400
+    end
+  end
+
   def create
     @message = Message.new(message_params);
     @message.user_id = current_user.id

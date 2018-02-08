@@ -1,12 +1,29 @@
 import * as APIUtil from '../services/messageAPIService';
 
 export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
+export const RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
 
 export const receiveMessage = message => {
   return {
     type: RECEIVE_MESSAGE,
     payload: message
   }
+}
+
+export const receiveAllMessages = (messages) => {
+  return {
+    type: RECEIVE_ALL_MESSAGES,
+    payload: messages
+  }
+}
+
+export const fetchAllMessages = () => dispatch => {
+  return APIUtil.fetchAllMessages()
+    .then(messages => {
+      dispatch(receiveAllMessages(messages));
+    }, err => {
+      console.log(err);
+    })
 }
 
 export const createMessage = message => dispatch => {
@@ -17,3 +34,5 @@ export const createMessage = message => dispatch => {
       console.log(err);
     }) 
 }
+
+

@@ -6,4 +6,10 @@ export const createMessage = message => {
   })
 };
 
+export const fetchAllMessages = () => {
+  return $.ajax({
+    url: 'api/messages'
+  })
+}
+
 

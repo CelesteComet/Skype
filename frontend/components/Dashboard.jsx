@@ -9,6 +9,7 @@ import configureSocket from '../configureSocket';
 import { logoutUser } from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
 import { fetchAllFriends } from '../actions/friendActions';
+import { fetchAllMessages } from '../actions/messageActions';
 
 import { connect } from 'react-redux';
 import titleService from '../services/titleService';
@@ -23,7 +24,9 @@ class Dashboard extends Component {
     configureSocket(this, dispatch);
     // get all friends, then get all the memberships
     dispatch(fetchAllFriends()).then(() => {
-      dispatch(fetchRoomMemberships());
+      dispatch(fetchRoomMemberships()).then(() => {
+        dispatch(fetchAllMessages());
+      });
     });
   }
 
