@@ -90,7 +90,7 @@ class InputMessageInterface extends Component {
                 <i className="fa fa-smile-o icon-smile" aria-hidden="true"></i>
               </div>
               <button className='airplane'>
-                <i class="fa fa-paper-plane-o icon-airplane" aria-hidden="true"></i>
+                <i className="fa fa-paper-plane-o icon-airplane" aria-hidden="true"></i>
               </button>
             </form>
           </div>

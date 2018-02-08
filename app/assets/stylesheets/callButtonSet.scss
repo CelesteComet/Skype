@@ -1,0 +1,44 @@
+.call-button-set {
+  padding: 0px 15px 0 15px;
+  display: flex;
+  justify-content: space-between;
+
+  li {
+    display: inline-block;
+    background: url(../../images/heads.png);
+    background-size: 109px;
+    width: 41px;
+    background-position-x: 2px;
+    background-position-y: 4px;
+    height: 41px;
+    border-radius: 100%;  
+    background-color: #4AAEEA;
+    margin-left: 16px;
+    border: 2px solid #4AAEEA;
+    box-sizing: border-box;
+
+
+  }
+
+  .video {
+    background-position-x: -4px;
+    background-position-y: 0px;
+  }
+
+  .phone {
+    background-position-x: -59px;
+    background-position-y: 77px;
+  }
+
+  .friend {
+    background-position-x: -6px;
+    background-position-y: 44px;
+    background-color: white;
+  }
+}
+
+
+.call-button-set li:hover {
+  background-color: #3682B0;
+  border-color: #3682B0;
+}

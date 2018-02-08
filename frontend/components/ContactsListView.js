@@ -21,20 +21,20 @@ class ContactsListView extends Component {
         // then dump the person in
         if (i == 0) {
           let firstLetter = contacts[0].username[0];
-          contactsJSX.push(<li className='alphabet-row'>{firstLetter}</li>)
+          contactsJSX.push(<li key={i} className='alphabet-row'>{firstLetter}</li>)
           //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
-          contactsJSX.push(<ContactsListItem contact={ contacts[i] }/>)
+          contactsJSX.push(<ContactsListItem key={contacts[i].id} contact={ contacts[i] }/>)
         } else {
           // if we are not on the first one, check if the last letter is 
           // the same as the current letter, if it is dump it in
           let lastLetter = contacts[i-1].username[0];
           let currentLetter = contacts[i].username[0];
           if (lastLetter === currentLetter) {
-            contactsJSX.push(<ContactsListItem contact={ contacts[i] }/>)
+            contactsJSX.push(<ContactsListItem key={contacts[i].id} contact={ contacts[i] }/>)
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
           } else {
-            contactsJSX.push(<li className='alphabet-row'>{currentLetter}</li>)
-            contactsJSX.push(<ContactsListItem contact={ contacts[i] }/>)
+            contactsJSX.push(<li key={i} className='alphabet-row'>{currentLetter}</li>)
+            contactsJSX.push(<ContactsListItem key={contacts[i].id} contact={ contacts[i] }/>)
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
           }
         }

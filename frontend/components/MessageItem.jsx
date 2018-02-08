@@ -7,7 +7,7 @@ class MessageItem extends Component {
 
   render() {
     const { message } = this.props;
-    const { body } = message;
+    const { body, created_at } = message;
     return(
       <div className='message-item'>
         <div className='bubble'>
@@ -15,7 +15,7 @@ class MessageItem extends Component {
             <p>{body}</p>
           </div>
           <div className='timestamp'>
-            <p>Im a timestamp</p>
+            <p>{ new Date(created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }</p>
           </div> 
         </div>
         <div className='delivery-status'>

@@ -18009,6 +18009,7 @@ var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL"
 var TOGGLE_CONTACTS_LIST = exports.TOGGLE_CONTACTS_LIST = "TOGGLE_CONTACTS_LIST";
 var SHOW_MEDIA_UPLOAD = exports.SHOW_MEDIA_UPLOAD = "SHOW_MEDIA_UPLOAD";
 var HIDE_MEDIA_UPLOAD = exports.HIDE_MEDIA_UPLOAD = "HIDE_MEDIA_UPLOAD";
+var MOVE_TO_ROOM = exports.MOVE_TO_ROOM = "MOVE_TO_ROOM";
 
 var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModal() {
   return {
@@ -18031,6 +18032,12 @@ var showMediaUpload = exports.showMediaUpload = function showMediaUpload() {
 var hideMediaUpload = exports.hideMediaUpload = function hideMediaUpload() {
   return {
     type: HIDE_MEDIA_UPLOAD
+  };
+};
+
+var moveToRoom = exports.moveToRoom = function moveToRoom(roomId) {
+  return {
+    type: MOVE_TO_ROOM
   };
 };
 
@@ -49646,14 +49653,7 @@ var RecentsListItem = function (_Component) {
 }(_react.Component);
 
 var mSTP = function mSTP(state) {
-  return {
-    recents: Object.values({
-      1: { id: 1, name: 'Alice', msg: "Nothing is impossible to a willing hear" },
-      2: { id: 2, name: 'busuu', msg: "3 participants" },
-      3: { id: 3, name: 'San Sae', msg: "Away" },
-      4: { id: 4, name: 'Bruce Wong', msg: "Cupertino, US" }
-    })
-  };
+  return {};
 };
 
 var mDTP = function mDTP(dispatch) {
@@ -49910,6 +49910,10 @@ var _ContactsListItem = __webpack_require__(73);
 
 var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
 
+var _CallButtonSet = __webpack_require__(210);
+
+var _CallButtonSet2 = _interopRequireDefault(_CallButtonSet);
+
 var _reactRedux = __webpack_require__(3);
 
 var _simplePeer = __webpack_require__(171);
@@ -49962,12 +49966,7 @@ var HeaderMessageInterface = function (_Component) {
         'div',
         { className: 'header-message-interface' },
         _react2.default.createElement(_ContactsListItem2.default, { contact: { username: "Bruce" } }),
-        _react2.default.createElement(
-          'button',
-          { onClick: this.handleCall },
-          'CLICK TO CALL'
-        ),
-        _react2.default.createElement('input', { type: 'text' })
+        _react2.default.createElement(_CallButtonSet2.default, null)
       );
     }
   }]);
@@ -52270,7 +52269,8 @@ var MessageItem = function (_Component) {
     key: 'render',
     value: function render() {
       var message = this.props.message;
-      var body = message.body;
+      var body = message.body,
+          created_at = message.created_at;
 
       return _react2.default.createElement(
         'div',
@@ -52293,7 +52293,7 @@ var MessageItem = function (_Component) {
             _react2.default.createElement(
               'p',
               null,
-              'Im a timestamp'
+              new Date(created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             )
           )
         ),
@@ -52474,7 +52474,7 @@ var InputMessageInterface = function (_Component) {
               _react2.default.createElement(
                 'button',
                 { className: 'airplane' },
-                _react2.default.createElement('i', { 'class': 'fa fa-paper-plane-o icon-airplane', 'aria-hidden': 'true' })
+                _react2.default.createElement('i', { className: 'fa fa-paper-plane-o icon-airplane', 'aria-hidden': 'true' })
               )
             )
           )
@@ -52572,26 +52572,26 @@ var ContactsListView = function (_Component) {
             var firstLetter = contacts[0].username[0];
             contactsJSX.push(_react2.default.createElement(
               'li',
-              { className: 'alphabet-row' },
+              { key: i, className: 'alphabet-row' },
               firstLetter
             ));
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
-            contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { contact: contacts[i] }));
+            contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: contacts[i].id, contact: contacts[i] }));
           } else {
             // if we are not on the first one, check if the last letter is 
             // the same as the current letter, if it is dump it in
             var lastLetter = contacts[i - 1].username[0];
             var currentLetter = contacts[i].username[0];
             if (lastLetter === currentLetter) {
-              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { contact: contacts[i] }));
+              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: contacts[i].id, contact: contacts[i] }));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             } else {
               contactsJSX.push(_react2.default.createElement(
                 'li',
-                { className: 'alphabet-row' },
+                { key: i, className: 'alphabet-row' },
                 currentLetter
               ));
-              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { contact: contacts[i] }));
+              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: contacts[i].id, contact: contacts[i] }));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             }
           }
@@ -55490,6 +55490,58 @@ var fetchAllMessages = exports.fetchAllMessages = function fetchAllMessages() {
     url: 'api/messages'
   });
 };
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CallButtonSet = function (_Component) {
+  _inherits(CallButtonSet, _Component);
+
+  function CallButtonSet(props) {
+    _classCallCheck(this, CallButtonSet);
+
+    return _possibleConstructorReturn(this, (CallButtonSet.__proto__ || Object.getPrototypeOf(CallButtonSet)).call(this, props));
+  }
+
+  _createClass(CallButtonSet, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'ul',
+        { className: 'call-button-set' },
+        _react2.default.createElement('li', { className: 'video' }),
+        _react2.default.createElement('li', { className: 'phone' }),
+        _react2.default.createElement('li', { className: 'friend' })
+      );
+    }
+  }]);
+
+  return CallButtonSet;
+}(_react.Component);
+
+exports.default = CallButtonSet;
 
 /***/ })
 /******/ ]);

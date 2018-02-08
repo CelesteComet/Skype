@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ContactsListItem from './ContactsListItem';
+import CallButtonSet from './CallButtonSet';
 import { connect } from 'react-redux';
 import Peer from 'simple-peer';
 
@@ -34,8 +35,7 @@ class HeaderMessageInterface extends Component {
     return (
       <div className='header-message-interface'>
         <ContactsListItem contact={ {username: "Bruce"} }/>
-        <button onClick={this.handleCall}>CLICK TO CALL</button>
-        <input type='text' />
+        <CallButtonSet />
       </div>
     );
   }

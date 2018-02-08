@@ -1,5 +1,31 @@
 .header-message-interface {
   height: 127px;
-  background: lightgreen;
+  
   display: flex;
+  justify-content: space-between;
+  padding-top: 17px;
+  padding-bottom: 33px;
+
+  .name-status-container {
+    display: inline-block;
+    padding-left: 20px;
+  }
 }
+
+.header-message-interface:after {
+  border-top: 1px solid #D6E6EC;
+  content: "";
+  height: 1px;
+  left: 0;
+  margin: 0 30px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: margin 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+
+
+
+
+
