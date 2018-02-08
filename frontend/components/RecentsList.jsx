@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getRecentsInfo } from './Selectors';
+import { moveToRoom } from '../actions/uiActions';
 
 import RecentsListItem from './RecentsListItem';
 
@@ -11,15 +12,16 @@ class RecentsList extends Component {
     this.handleSwitchRoom = this.handleSwitchRoom.bind(this);
   }
 
-  handleSwitchRoom(e, room) {
-    console.log(e);
-    console.log(room);
+  handleSwitchRoom(roomId, e) {
+    const { dispatch } = this.props;
+    e.preventDefault();
+
+    // Go to the room 
+    dispatch(moveToRoom(roomId));
   }
 
   render() {
     const {recentRoomsArray, recentRoomsObject} = this.props;
-    console.log(recentRoomsArray);
-    console.log(recentRoomsObject);
 
     let recentsJSX = [];
     for (let id in recentRoomsObject) {

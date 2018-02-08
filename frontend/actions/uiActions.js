@@ -30,7 +30,8 @@ export const hideMediaUpload = () => {
 
 export const moveToRoom = (roomId) => {
   return {
-    type: MOVE_TO_ROOM
+    type: MOVE_TO_ROOM,
+    payload: roomId
   };
 };
 

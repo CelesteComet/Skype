@@ -20,9 +20,7 @@ class RecentsListItem extends Component {
           name={nameString} 
           status={'Online'}
           src={'images/myicon.jpeg'} 
-
           />
-
       </li>
     );
   }

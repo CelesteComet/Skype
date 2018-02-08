@@ -18037,7 +18037,8 @@ var hideMediaUpload = exports.hideMediaUpload = function hideMediaUpload() {
 
 var moveToRoom = exports.moveToRoom = function moveToRoom(roomId) {
   return {
-    type: MOVE_TO_ROOM
+    type: MOVE_TO_ROOM,
+    payload: roomId
   };
 };
 
@@ -49117,6 +49118,8 @@ var _titleService2 = _interopRequireDefault(_titleService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -49138,12 +49141,23 @@ var Dashboard = function (_Component) {
   _createClass(Dashboard, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
       var dispatch = this.props.dispatch;
 
-      (0, _configureSocket2.default)(this, dispatch);
       // get all friends, then get all the memberships
+
       dispatch((0, _friendActions.fetchAllFriends)()).then(function () {
-        dispatch((0, _roomMembershipActions.fetchRoomMemberships)()).then(function () {
+        dispatch((0, _roomMembershipActions.fetchRoomMemberships)()).then(function (e) {
+          var _props = _this2.props,
+              dispatch = _props.dispatch,
+              state = _props.state;
+
+          var roomMemberships = Object.values(state.roomMemberships);
+          var chatroomIds = [].concat(_toConsumableArray(new Set(roomMemberships.map(function (m) {
+            return m.room_id;
+          }))));
+          (0, _configureSocket2.default)(_this2, chatroomIds, dispatch);
           dispatch((0, _messageActions.fetchAllMessages)());
         });
       });
@@ -49151,9 +49165,9 @@ var Dashboard = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          dispatch = _props.dispatch,
-          modalView = _props.modalView;
+      var _props2 = this.props,
+          dispatch = _props2.dispatch,
+          modalView = _props2.modalView;
 
       return _react2.default.createElement(
         _react.Fragment,
@@ -49175,7 +49189,8 @@ var Dashboard = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    modalView: state.ui.profileModalView
+    modalView: state.ui.profileModalView,
+    state: state
   };
 };
 
@@ -49495,6 +49510,8 @@ var _reactRedux = __webpack_require__(3);
 
 var _Selectors = __webpack_require__(166);
 
+var _uiActions = __webpack_require__(14);
+
 var _RecentsListItem = __webpack_require__(167);
 
 var _RecentsListItem2 = _interopRequireDefault(_RecentsListItem);
@@ -49521,9 +49538,13 @@ var RecentsList = function (_Component) {
 
   _createClass(RecentsList, [{
     key: 'handleSwitchRoom',
-    value: function handleSwitchRoom(e, room) {
-      console.log(e);
-      console.log(room);
+    value: function handleSwitchRoom(roomId, e) {
+      var dispatch = this.props.dispatch;
+
+      e.preventDefault();
+
+      // Go to the room 
+      dispatch((0, _uiActions.moveToRoom)(roomId));
     }
   }, {
     key: 'render',
@@ -49532,8 +49553,6 @@ var RecentsList = function (_Component) {
           recentRoomsArray = _props.recentRoomsArray,
           recentRoomsObject = _props.recentRoomsObject;
 
-      console.log(recentRoomsArray);
-      console.log(recentRoomsObject);
 
       var recentsJSX = [];
       for (var id in recentRoomsObject) {
@@ -49698,7 +49717,6 @@ var RecentsListItem = function (_Component) {
           name: nameString,
           status: 'Online',
           src: 'images/myicon.jpeg'
-
         })
       );
     }
@@ -53077,18 +53095,29 @@ Object.defineProperty(exports, "__esModule", {
 
 var _messageActions = __webpack_require__(21);
 
-var configureSocket = function configureSocket(context, dispatch) {
+var configureSocket = function configureSocket(context, chatRoomIds, dispatch) {
+  console.log('aawdawdawwdwad');
+  console.log(chatRoomIds);
 
-  console.log("Subscribing to chat channel");
-  App.messages = App.cable.subscriptions.create({ channel: 'ChatChannel', room: 1 });
+  chatRoomIds.forEach(function (chatroomId) {
 
-  App.messages.received = function (data) {
-    dispatch((0, _messageActions.receiveMessage)(data));
-  };
+    var roomName = 'room #' + chatroomId;
 
-  App.messages.disconnected = function () {
-    console.log("Disconnected");
-  };
+    // Create a subscription to each chatroom that the user is currently in
+    App[roomName] = App.cable.subscriptions.create({
+      channel: "ChatChannel", room: chatroomId
+    });
+    console.log('Created a subscription to ' + roomName);
+
+    // When a message is received
+    App[roomName].received = function (data) {
+      dispatch((0, _messageActions.receiveMessage)(data));
+    };
+
+    App[roomName].disconnected = function () {
+      console.log('Disconnected from ' + roomName);
+    };
+  });
 
   console.log("Subscribing to appearance channel");
   App.appearances = App.cable.subscriptions.create({ channel: 'AppearanceChannel', id: 1 });

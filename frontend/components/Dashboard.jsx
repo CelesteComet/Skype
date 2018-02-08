@@ -21,14 +21,20 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    configureSocket(this, dispatch);
+
     // get all friends, then get all the memberships
     dispatch(fetchAllFriends()).then(() => {
-      dispatch(fetchRoomMemberships()).then(() => {
+      dispatch(fetchRoomMemberships()).then((e) => {
+        const { dispatch, state} = this.props;
+        const roomMemberships = Object.values(state.roomMemberships);
+        const chatroomIds = [...new Set(roomMemberships.map(m => m.room_id))];
+        configureSocket(this, chatroomIds, dispatch);
         dispatch(fetchAllMessages());
       });
     });
   }
+
+
 
   render() {
     const { dispatch, modalView } = this.props;
@@ -38,7 +44,6 @@ class Dashboard extends Component {
           { modalView && <ModalProfile /> }
           <SideBar />
           <Main />
-
           <Footer />
         </div>
         
@@ -49,7 +54,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
   return {
-    modalView: state.ui.profileModalView
+    modalView: state.ui.profileModalView,
+    state
   }
 };
 
