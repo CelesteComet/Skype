@@ -1,0 +1,42 @@
+.message-item {
+  margin-top: 0.75em;
+  width: 100%;
+  float: left;
+
+  .bubble {
+    background-color: #DCF2FA;
+    margin-left: 5em;
+    margin-right: 3em;
+    border-bottom: 1px solid transparent;
+    border-bottom-left-radius: .15em;
+    border-bottom-right-radius: .15em;
+    position: relative;
+  }
+
+  .delivery-status {
+    text-align: right;
+    margin-right: 3em;
+    flex-direction: row-reverse;
+    margin-bottom: .6em;
+    display: flex;
+    align-items: center;
+  }
+
+  .timestamp {
+    display: block;
+    right: -3em;
+    position: absolute;
+    top: 0.5em;
+  }
+
+  .content {
+    padding: .25em 1.5em .75em 1em;
+    position: relative;
+
+    p {
+      word-wrap: break-word;
+      -webkit-font-smoothing: antialiased;
+      white-space: pre-wrap;
+    }
+  }
+}

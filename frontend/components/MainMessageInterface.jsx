@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import MessageItem from './MessageItem';
 
 
 class MainMessageInterface extends Component {
   render() {
     return (
       <div className="main-message-interface">
-        <h1>I AM MAIN MESSAGE INTERFACE</h1>
         {this.props.messages.map(msg => {
-          return <li key={msg.id}>{msg.body}</li>
+          return (
+            <MessageItem 
+              key={msg.id}>
+              {msg.body}
+            </MessageItem>)
         })}
       </div>
     );
