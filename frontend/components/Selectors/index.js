@@ -25,5 +25,7 @@ export const getRecentsInfo = state => {
       delete rooms[id];
     }
   }
+
   return rooms;
 }
+

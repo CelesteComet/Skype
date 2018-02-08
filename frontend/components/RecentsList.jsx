@@ -6,17 +6,41 @@ import { getRecentsInfo } from './Selectors';
 import RecentsListItem from './RecentsListItem';
 
 class RecentsList extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSwitchRoom = this.handleSwitchRoom.bind(this);
+  }
+
+  handleSwitchRoom(e, room) {
+    console.log(e);
+    console.log(room);
+  }
+
   render() {
-    const {recentRooms} = this.props;
-    
-    const recentsJSX = recentRooms.map((recentRoom, index) => {
-      return (
+    const {recentRoomsArray, recentRoomsObject} = this.props;
+    console.log(recentRoomsArray);
+    console.log(recentRoomsObject);
+
+    let recentsJSX = [];
+    for (let id in recentRoomsObject) {
+      recentsJSX.push(
         <RecentsListItem 
-          key={index}
-          roommates={recentRoom}
-        />
+          key={id} 
+          roomId={id} 
+          roommates={Object.values(recentRoomsObject[id])}
+          switchRoomHandler={this.handleSwitchRoom.bind(null, id)}
+          />
       );
-    });
+    }
+    // const recentsJSX = recentRoomsArray.map((recentRoom, index) => {
+    //   return (
+    //     <RecentsListItem 
+    //       key={index}
+    //       roommates={recentRoom}
+    //       switchRoomHandler={this.handleSwitchRoom.bind(null, recentRoom)}
+    //     />
+    //   );
+    // });
 
     return (
       <ul className="recents-list">
@@ -28,7 +52,8 @@ class RecentsList extends Component {
   
 const mSTP = state => {
   return {
-    recentRooms: Object.values(getRecentsInfo(state))
+    recentRoomsArray: Object.values(getRecentsInfo(state)),
+    recentRoomsObject: getRecentsInfo(state)
   };
 };
 
