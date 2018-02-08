@@ -9,7 +9,7 @@ import configureSocket from '../configureSocket';
 import { logoutUser } from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
 import { fetchAllFriends } from '../actions/friendActions';
-import { fetchAllMessages } from '../actions/messageActions';
+import { fetchAllMessages, fetchRoomMessages } from '../actions/messageActions';
 
 import { connect } from 'react-redux';
 import titleService from '../services/titleService';
@@ -29,7 +29,7 @@ class Dashboard extends Component {
         const roomMemberships = Object.values(state.roomMemberships);
         const chatroomIds = [...new Set(roomMemberships.map(m => m.room_id))];
         configureSocket(this, chatroomIds, dispatch);
-        dispatch(fetchAllMessages());
+        dispatch(fetchRoomMessages(1));
       });
     });
   }

@@ -18465,7 +18465,7 @@ module.exports = warning;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createMessage = exports.fetchAllMessages = exports.receiveAllMessages = exports.receiveMessage = exports.RECEIVE_ALL_MESSAGES = exports.RECEIVE_MESSAGE = undefined;
+exports.createMessage = exports.fetchRoomMessages = exports.fetchAllMessages = exports.receiveAllMessages = exports.receiveRoomMessages = exports.receiveMessage = exports.RECEIVE_ROOM_MESSAGES = exports.RECEIVE_ALL_MESSAGES = exports.RECEIVE_MESSAGE = undefined;
 
 var _messageAPIService = __webpack_require__(132);
 
@@ -18475,11 +18475,19 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var RECEIVE_MESSAGE = exports.RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 var RECEIVE_ALL_MESSAGES = exports.RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
+var RECEIVE_ROOM_MESSAGES = exports.RECEIVE_ROOM_MESSAGES = 'RECEIVE_ROOM_MESSAGES';
 
 var receiveMessage = exports.receiveMessage = function receiveMessage(message) {
   return {
     type: RECEIVE_MESSAGE,
     payload: message
+  };
+};
+
+var receiveRoomMessages = exports.receiveRoomMessages = function receiveRoomMessages(messages) {
+  return {
+    type: RECEIVE_ROOM_MESSAGES,
+    payload: messages
   };
 };
 
@@ -18494,6 +18502,16 @@ var fetchAllMessages = exports.fetchAllMessages = function fetchAllMessages() {
   return function (dispatch) {
     return APIUtil.fetchAllMessages().then(function (messages) {
       dispatch(receiveAllMessages(messages));
+    }, function (err) {
+      console.log(err);
+    });
+  };
+};
+
+var fetchRoomMessages = exports.fetchRoomMessages = function fetchRoomMessages(roomId) {
+  return function (dispatch) {
+    return APIUtil.fetchRoomMessages(roomId).then(function (messages) {
+      dispatch(receiveRoomMessages(messages));
     }, function (err) {
       console.log(err);
     });
@@ -46301,11 +46319,12 @@ var messagesReducer = function messagesReducer() {
 
   var newState = _lodash2.default.merge({}, state);
   switch (action.type) {
-
     case _messageActions.RECEIVE_MESSAGE:
       newState[action.payload.id] = action.payload;
       return newState;
     case _messageActions.RECEIVE_ALL_MESSAGES:
+      return action.payload;
+    case _messageActions.RECEIVE_ROOM_MESSAGES:
       return action.payload;
     default:
       return state;
@@ -46335,6 +46354,12 @@ var createMessage = exports.createMessage = function createMessage(message) {
 var fetchAllMessages = exports.fetchAllMessages = function fetchAllMessages() {
   return $.ajax({
     url: 'api/messages'
+  });
+};
+
+var fetchRoomMessages = exports.fetchRoomMessages = function fetchRoomMessages(roomId) {
+  return $.ajax({
+    url: 'api/messages/' + roomId
   });
 };
 
@@ -49158,7 +49183,7 @@ var Dashboard = function (_Component) {
             return m.room_id;
           }))));
           (0, _configureSocket2.default)(_this2, chatroomIds, dispatch);
-          dispatch((0, _messageActions.fetchAllMessages)());
+          dispatch((0, _messageActions.fetchRoomMessages)(1));
         });
       });
     }

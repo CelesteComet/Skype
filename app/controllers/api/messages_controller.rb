@@ -11,6 +11,15 @@ class Api::MessagesController < ApplicationController
     end
   end
 
+  def show
+    @messages = current_user.messages.where(room_id: params[:id])
+    if @messages 
+      render json: @messages
+    else 
+      render json @messages.errors.full_messages, status: 400
+    end
+  end
+
   def create
     @message = Message.new(message_params);
     @message.user_id = current_user.id

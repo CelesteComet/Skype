@@ -12,4 +12,10 @@ export const fetchAllMessages = () => {
   })
 }
 
+export const fetchRoomMessages = (roomId) => {
+  return $.ajax({
+    url: `api/messages/${roomId}`
+  })
+}
+
 
