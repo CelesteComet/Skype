@@ -52248,6 +52248,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52268,14 +52270,29 @@ var MessageItem = function (_Component) {
   _createClass(MessageItem, [{
     key: 'render',
     value: function render() {
-      var message = this.props.message;
+
+      // at first assume that the message is a sent message 
+      var receivedMessage = false;
+
+      var _props = this.props,
+          message = _props.message,
+          currentUserId = _props.currentUserId;
+
+      console.log(this.props);
       var body = message.body,
           created_at = message.created_at,
-          status = message.status;
+          status = message.status,
+          user_id = message.user_id;
+
+      // check whether or not the message is by the current user
+
+      if (user_id !== currentUserId) {
+        var _receivedMessage = true;
+      }
 
       return _react2.default.createElement(
         'div',
-        { className: 'message-item' },
+        { className: 'message-item ' + (receivedMessage ? 'received' : '') },
         _react2.default.createElement(
           'div',
           { className: 'bubble' },
@@ -52314,7 +52331,13 @@ var MessageItem = function (_Component) {
   return MessageItem;
 }(_react.Component);
 
-exports.default = MessageItem;
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    currentUserId: state.session.currentUser.id
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(MessageItem);
 
 /***/ }),
 /* 188 */

@@ -1,7 +1,22 @@
+.message-item.received .bubble {
+  background-color: #C7E8F7;
+  margin-right: 7.8em;
+}
+
+.message-item.received .bubble .timestamp {
+  right: -10.4em; 
+}
+
+.message-item.received .delivery-status {
+  margin-right: 11.1em; 
+}
+
 .message-item {
   margin-top: 0.75em;
   width: 100%;
   float: left;
+
+
 
   .bubble {
     background-color: #DCF2FA;
