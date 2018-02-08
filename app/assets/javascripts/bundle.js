@@ -52210,14 +52210,20 @@ var MainMessageInterface = function (_Component) {
     value: function render() {
       var currentUserId = this.props.currentUserId;
 
+      var received = false;
       return _react2.default.createElement(
         'div',
         { className: 'main-message-interface' },
         this.props.messages.map(function (msg) {
+
+          if (currentUserId !== msg.user_id) {
+            received = true;
+          }
+
           return _react2.default.createElement(_MessageItem2.default, {
             key: msg.id,
             message: msg,
-            currentUserId: currentUserId });
+            received: received });
         })
       );
     }
@@ -52280,23 +52286,15 @@ var MessageItem = function (_Component) {
 
       var _props = this.props,
           message = _props.message,
-          currentUserId = _props.currentUserId;
+          received = _props.received;
       var body = message.body,
           created_at = message.created_at,
-          status = message.status,
-          user_id = message.user_id;
+          status = message.status;
 
-      console.log("received message user id", user_id);
-      console.log("my user id", currentUserId);
-      // check whether or not the message is by the current user
-      if (user_id !== currentUserId) {
-        console.log("COMON!");
-        var _receivedMessage = true;
-      }
 
       return _react2.default.createElement(
         'div',
-        { className: 'message-item ' + (receivedMessage ? 'received' : '') },
+        { className: 'message-item ' + (received ? 'received' : '') },
         _react2.default.createElement(
           'div',
           { className: 'bubble' },

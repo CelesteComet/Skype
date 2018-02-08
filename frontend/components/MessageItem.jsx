@@ -11,18 +11,11 @@ class MessageItem extends Component {
     // at first assume that the message is a sent message 
     let receivedMessage = false;
 
-    const { message, currentUserId} = this.props;
-    const { body, created_at, status, user_id} = message;
-    console.log("received message user id", user_id);
-    console.log("my user id", currentUserId)
-    // check whether or not the message is by the current user
-    if (user_id !== currentUserId) {
-      console.log("COMON!")
-      let receivedMessage = true
-    }
+    const { message, received} = this.props;
+    const { body, created_at, status } = message;
 
     return(
-      <div className={'message-item ' + (receivedMessage ? 'received' : '')}>
+      <div className={'message-item ' + (received ? 'received' : '')}>
         <div className='bubble'>
           <div className='content'>
             <p>{body}</p>

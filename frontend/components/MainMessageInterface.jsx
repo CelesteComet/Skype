@@ -5,14 +5,20 @@ import MessageItem from './MessageItem';
 class MainMessageInterface extends Component {
   render() {
     const {currentUserId} = this.props;
+    let received = false;
     return (
       <div className="main-message-interface">
         {this.props.messages.map(msg => {
+
+          if (currentUserId !== msg.user_id) {
+            received = true;
+          }
+
           return (
             <MessageItem 
               key={msg.id}
               message={msg}
-              currentUserId={currentUserId}/>
+              received={received}/>
             )
           })}
       </div>
