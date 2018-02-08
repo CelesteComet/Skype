@@ -1,13 +1,14 @@
 development:
   adapter: redis
-  url: redis://redistogo:d0ed635634356d4408c1effb00bc9493@hoki.redistogo.com:9247/
+  url: redis://localhost:6379/1
 
 test:
   adapter: redis
 
 production:
   adapter: redis
-  url: redis://localhost:6379/1
+  url: redis://redistogo:eae517d14b3db91410c9ea93c6d05672@soldierfish.redistogo.com:11023
   channel_prefix: skype_production
+
 
 
