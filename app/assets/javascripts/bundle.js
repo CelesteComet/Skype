@@ -46468,6 +46468,9 @@ var uiReducer = function uiReducer() {
     case _uiActions.HIDE_MEDIA_UPLOAD:
       newState.mediaUploadView = false;
       return newState;
+    case _uiActions.MOVE_TO_ROOM:
+      newState.currentRoomId = action.payload;
+      return newState;
     default:
       return state;
   }

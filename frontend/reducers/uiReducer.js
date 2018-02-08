@@ -2,7 +2,8 @@ import {
   TOGGLE_PROFILE_MODAL, 
   TOGGLE_CONTACTS_LIST, 
   SHOW_MEDIA_UPLOAD,
-  HIDE_MEDIA_UPLOAD } from '../actions/uiActions';
+  HIDE_MEDIA_UPLOAD,
+  MOVE_TO_ROOM } from '../actions/uiActions';
 import _ from 'lodash';
 
 const initialState = {
@@ -26,6 +27,9 @@ const uiReducer = (state = initialState, action) => {
       return newState;
     case HIDE_MEDIA_UPLOAD:
       newState.mediaUploadView = false;
+      return newState;
+    case MOVE_TO_ROOM:
+      newState.currentRoomId = action.payload;
       return newState;
     default: 
       return state;
