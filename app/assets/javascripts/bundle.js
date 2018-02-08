@@ -52208,6 +52208,8 @@ var MainMessageInterface = function (_Component) {
   _createClass(MainMessageInterface, [{
     key: 'render',
     value: function render() {
+      var currentUserId = this.props.currentUserId;
+
       return _react2.default.createElement(
         'div',
         { className: 'main-message-interface' },

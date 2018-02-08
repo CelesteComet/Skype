@@ -4,6 +4,7 @@ import MessageItem from './MessageItem';
 
 class MainMessageInterface extends Component {
   render() {
+    const {currentUserId} = this.props;
     return (
       <div className="main-message-interface">
         {this.props.messages.map(msg => {
