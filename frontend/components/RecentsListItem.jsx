@@ -4,22 +4,39 @@ import { connect } from 'react-redux';
 import * as uuid from 'uuid/v1';
 
 import ProfileItem from './ProfileItem';
+import ContactsListItem from './ContactsListItem';
 
 
 class RecentsListItem extends Component {
   render() {
-    const {roommates, switchRoomHandler } = this.props;
+
+    // difference between currentRoomId and room_id is that room_id is the selection and 
+    // currentRoomId is where you are currently at
+    const { roommates, switchRoomHandler, currentRoomId, roomId } = this.props;
 
     // the name string to show room participants
     const nameArray = roommates.map(userObj => (userObj.username))
+
+    // if there are more than one member, use a different default icon
+    let imageSource = false;
+    if (nameArray.length > 1) {
+      imageSource = `images/default-avatar-group.svg`
+      status = `${nameArray.length} participants`
+    } else {
+      imageSource = `images/default-avatar.svg`;
+      status = `Online`;
+    }
+
+
     const nameString = nameArray.join(' ');
     return (
-      <li onClick={ switchRoomHandler }>
+      <li className={currentRoomId === roomId ? 'active' : ''} onClick={ switchRoomHandler }>
         <ProfileItem 
           key={uuid.default()}
           name={nameString} 
-          status={'Online'}
-          src={'images/myicon.jpeg'} 
+          status={status}
+          src={imageSource}
+          statusIcon={false}
           />
       </li>
     );
@@ -28,6 +45,7 @@ class RecentsListItem extends Component {
   
 const mSTP = state => {
   return {
+    currentRoomId: state.ui.currentRoomId
   };
 };
 

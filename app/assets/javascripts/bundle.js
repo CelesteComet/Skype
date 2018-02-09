@@ -19688,7 +19688,8 @@ var CircleImageIcon = function (_React$Component) {
       var _props = this.props,
           status = _props.status,
           src = _props.src,
-          handleHover = _props.handleHover;
+          handleHover = _props.handleHover,
+          statusIcon = _props.statusIcon;
       var circleHover = this.state.circleHover;
 
 
@@ -19702,7 +19703,7 @@ var CircleImageIcon = function (_React$Component) {
         _react2.default.createElement('img', {
           style: styles.img,
           src: src }),
-        _react2.default.createElement('div', {
+        statusIcon && _react2.default.createElement('div', {
           style: circleState,
           onMouseOver: function onMouseOver() {
             _this2.handleHover(true);
@@ -19720,7 +19721,8 @@ var CircleImageIcon = function (_React$Component) {
 var styles = {
   img: {
     borderRadius: '100%',
-    width: '40px'
+    width: '40px',
+    backgroundColor: '#97D8F5'
   },
   hovered: {
     backgroundColor: 'blue',
@@ -24009,7 +24011,8 @@ var ContactsListItem = function (_Component) {
           { className: 'contacts-list-container' },
           _react2.default.createElement(_CircleImageIcon2.default, {
             src: '/images/myicon.jpeg',
-            status: 'hello' }),
+            status: 'hello',
+            statusIcon: true }),
           _react2.default.createElement(
             'div',
             { className: 'name-status-container' },
@@ -49307,7 +49310,7 @@ var SideBar = function (_Component) {
           _react2.default.createElement(_ProfileItem2.default, {
             name: currentUsername,
             status: 'Online',
-            src: 'images/myicon.jpeg',
+            src: 'images/default-avatar.svg',
             handleClick: function handleClick() {
               dispatch((0, _uiActions.toggleProfileModal)());
             } }),
@@ -49537,6 +49540,8 @@ var _Selectors = __webpack_require__(166);
 
 var _uiActions = __webpack_require__(14);
 
+var _messageActions = __webpack_require__(21);
+
 var _RecentsListItem = __webpack_require__(167);
 
 var _RecentsListItem2 = _interopRequireDefault(_RecentsListItem);
@@ -49570,6 +49575,7 @@ var RecentsList = function (_Component) {
 
       // Go to the room 
       dispatch((0, _uiActions.moveToRoom)(roomId));
+      dispatch((0, _messageActions.fetchRoomMessages)(roomId));
     }
   }, {
     key: 'render',
@@ -49702,6 +49708,10 @@ var _ProfileItem = __webpack_require__(37);
 
 var _ProfileItem2 = _interopRequireDefault(_ProfileItem);
 
+var _ContactsListItem = __webpack_require__(73);
+
+var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -49724,24 +49734,41 @@ var RecentsListItem = function (_Component) {
   _createClass(RecentsListItem, [{
     key: 'render',
     value: function render() {
+
+      // difference between currentRoomId and room_id is that room_id is the selection and 
+      // currentRoomId is where you are currently at
       var _props = this.props,
           roommates = _props.roommates,
-          switchRoomHandler = _props.switchRoomHandler;
+          switchRoomHandler = _props.switchRoomHandler,
+          currentRoomId = _props.currentRoomId,
+          roomId = _props.roomId;
 
       // the name string to show room participants
 
       var nameArray = roommates.map(function (userObj) {
         return userObj.username;
       });
+
+      // if there are more than one member, use a different default icon
+      var imageSource = false;
+      if (nameArray.length > 1) {
+        imageSource = 'images/default-avatar-group.svg';
+        status = nameArray.length + ' participants';
+      } else {
+        imageSource = 'images/default-avatar.svg';
+        status = 'Online';
+      }
+
       var nameString = nameArray.join(' ');
       return _react2.default.createElement(
         'li',
-        { onClick: switchRoomHandler },
+        { className: currentRoomId === roomId ? 'active' : '', onClick: switchRoomHandler },
         _react2.default.createElement(_ProfileItem2.default, {
           key: uuid.default(),
           name: nameString,
-          status: 'Online',
-          src: 'images/myicon.jpeg'
+          status: status,
+          src: imageSource,
+          statusIcon: false
         })
       );
     }
@@ -49751,7 +49778,9 @@ var RecentsListItem = function (_Component) {
 }(_react.Component);
 
 var mSTP = function mSTP(state) {
-  return {};
+  return {
+    currentRoomId: state.ui.currentRoomId
+  };
 };
 
 var mDTP = function mDTP(dispatch) {
@@ -52410,6 +52439,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(3);
 
+var _Emoji = __webpack_require__(211);
+
+var _Emoji2 = _interopRequireDefault(_Emoji);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52455,7 +52488,8 @@ var MessageItem = function (_Component) {
               'p',
               null,
               body
-            )
+            ),
+            _react2.default.createElement(_Emoji2.default, null)
           ),
           _react2.default.createElement(
             'div',
@@ -52742,26 +52776,26 @@ var ContactsListView = function (_Component) {
             var firstLetter = contacts[0].username[0];
             contactsJSX.push(_react2.default.createElement(
               'li',
-              { key: i, className: 'alphabet-row' },
+              { key: Math.random(), className: 'alphabet-row' },
               firstLetter
             ));
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
-            contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: contacts[i].id, contact: contacts[i] }));
+            contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
           } else {
             // if we are not on the first one, check if the last letter is 
             // the same as the current letter, if it is dump it in
             var lastLetter = contacts[i - 1].username[0];
             var currentLetter = contacts[i].username[0];
             if (lastLetter === currentLetter) {
-              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: contacts[i].id, contact: contacts[i] }));
+              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             } else {
               contactsJSX.push(_react2.default.createElement(
                 'li',
-                { key: i, className: 'alphabet-row' },
+                { key: Math.random(), className: 'alphabet-row' },
                 currentLetter
               ));
-              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: contacts[i].id, contact: contacts[i] }));
+              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             }
           }
@@ -52782,7 +52816,7 @@ var ContactsListView = function (_Component) {
           _react2.default.createElement(
             'span',
             null,
-            _react2.default.createElement('i', { 'class': 'exclamation fa fa-exclamation-circle' }),
+            _react2.default.createElement('i', { className: 'exclamation fa fa-exclamation-circle' }),
             'Hint: you can add new contacts by searching'
           ),
           _react2.default.createElement(
@@ -55647,6 +55681,109 @@ var createUser = exports.createUser = function createUser(user) {
     data: { user: user }
   });
 };
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// create emojis
+var emojiPaths = {
+  'cool': '/emojis/default_160_anim.png'
+};
+
+var emojiImages = {};
+
+for (var name in emojiPaths) {
+  var image = new Image(180, 180);
+  image.src = emojiPaths[name];
+  emojiImages[name] = image;
+}
+
+var Emoji = function (_Component) {
+  _inherits(Emoji, _Component);
+
+  function Emoji(props) {
+    _classCallCheck(this, Emoji);
+
+    var _this = _possibleConstructorReturn(this, (Emoji.__proto__ || Object.getPrototypeOf(Emoji)).call(this, props));
+
+    _this.init = _this.init.bind(_this);
+    _this.draw = _this.draw.bind(_this);
+
+    _this.x = 0;
+    _this.y = 0;
+    return _this;
+  }
+
+  _createClass(Emoji, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      // get canvas context 
+
+
+      this.ctx = this.canvas.getContext('2d');
+      this.init();
+    }
+  }, {
+    key: 'init',
+    value: function init() {
+      var self = this;
+      window.requestAnimationFrame(self.draw);
+    }
+  }, {
+    key: 'draw',
+    value: function draw() {
+      this.x += 1;
+      this.y += 1;
+      var self = this;
+      //this.ctx.fillRect(this.x, this.y, 50, 50);
+
+      this.ctx.drawImage(emojiImages['cool'], 0, 0);
+      window.requestAnimationFrame(self.draw);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'canvas',
+        {
+          className: 'cool',
+          'data-id': Math.random(),
+          ref: function ref(canvas) {
+            _this2.canvas = canvas;
+          } },
+        '(cool)'
+      );
+    }
+  }]);
+
+  return Emoji;
+}(_react.Component);
+
+exports.default = Emoji;
 
 /***/ })
 /******/ ]);

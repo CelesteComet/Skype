@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getRecentsInfo } from './Selectors';
 import { moveToRoom } from '../actions/uiActions';
+import { fetchRoomMessages } from '../actions/messageActions';
 
 import RecentsListItem from './RecentsListItem';
 
@@ -18,6 +19,7 @@ class RecentsList extends Component {
 
     // Go to the room 
     dispatch(moveToRoom(roomId));
+    dispatch(fetchRoomMessages(roomId));
   }
 
   render() {

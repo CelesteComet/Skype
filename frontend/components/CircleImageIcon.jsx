@@ -18,7 +18,7 @@ class CircleImageIcon extends React.Component {
 
   render() {
     
-    const {status, src, handleHover} = this.props;
+    const {status, src, handleHover, statusIcon} = this.props;
     const {circleHover} = this.state;
 
     const circleState = circleHover ? {...styles.div, ...styles.hovered} : {...styles.div} 
@@ -30,11 +30,11 @@ class CircleImageIcon extends React.Component {
           <img
             style={styles.img}
             src={src} />
-          <div 
+          { statusIcon && <div 
             style={circleState}
             onMouseOver={() => {this.handleHover(true)}}
             onMouseOut={() => {this.handleHover(false)}}>
-          </div>
+          </div>}
       </div>
     );
   }
@@ -43,7 +43,8 @@ class CircleImageIcon extends React.Component {
 const styles = {
   img: {
     borderRadius: '100%',
-    width: '40px'
+    width: '40px',
+    backgroundColor: '#97D8F5'
   },
   hovered: {
     backgroundColor: 'blue',

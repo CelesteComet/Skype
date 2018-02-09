@@ -29,7 +29,7 @@ class SideBar extends Component {
           <ProfileItem 
             name={currentUsername} 
             status={'Online'}
-            src={'images/myicon.jpeg'} 
+            src={'images/default-avatar.svg'} 
             handleClick={() => { dispatch(toggleProfileModal()) }} />
 
           <div className="me-container">

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Emoji from './Emoji';
 
 class MessageItem extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class MessageItem extends Component {
         <div className='bubble'>
           <div className='content'>
             <p>{body}</p>
+            <Emoji />
           </div>
           <div className='timestamp'>
             <p>{ new Date(created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }</p>
