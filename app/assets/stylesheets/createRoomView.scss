@@ -39,15 +39,22 @@
     height: 300px;
     overflow: scroll;
     margin-bottom: 0;
-    border-bottom: 1px solid rgb(214, 230, 236);
     border-left: 1px solid rgb(214, 230, 236);
     border-right: 1px solid rgb(214, 230, 236);
   }
 
   .friend-adder-bottom-buttons {
-    height: 76px;
     position: relative;
-    width: 100%;
+    padding: 10px;
+    overflow: auto;
+    border-bottom: 1px solid rgb(214, 230, 236);
+    border-left: 1px solid rgb(214, 230, 236);
+    border-right: 1px solid rgb(214, 230, 236);
+  }
+
+  .contacts-pane {
+    border-left: 1px solid rgb(214, 230, 236);
+    border-right: 1px solid rgb(214, 230, 236);
   }
 
   .contacts-list {
@@ -67,4 +74,58 @@
   .contacts-list-item:hover {
     background: #F0F6F9;
   }
+
+  .button-set {
+    float: right;
+
+    .cancel {
+      background-color: #66cff6;
+      margin-right: 12px;
+    }
+
+    .cancel:hover {
+      background-color: #6DC5F0;
+    }
+
+    .confirm {
+      background-color: #4AAEEA;
+    }
+
+    .confirm:hover {
+      background-color: #3682B0;
+    }
+  }
+
+  button:focus {
+    outline: none; 
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  button {
+    width: auto;
+    min-width: 130px;
+    height: 30px;
+    border-radius: 3em;
+    color: white;
+    border: none;
+
+
+    span {
+      font-weight: 600;
+      line-height: 1.3334em;
+      padding: 0 22px;
+    }
+
+
+  }
+
+
+
+
+
+
+
 }

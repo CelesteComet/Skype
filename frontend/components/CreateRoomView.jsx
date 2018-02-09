@@ -6,11 +6,32 @@ import ContactsListItem from './ContactsListItem';
 class CreateRoomView extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      contactsInput: '',
+      contacts: this.props.contacts,
+      filtered: this.props.contacts
+    };
+    this.handleInput = this.handleInput.bind(this);
+    this.filterContacts = this.filterContacts.bind(this);
   }
 
-  render() {
-    const { contacts } = this.props;
+  filterContacts() {
+    this.setState({
+      filtered: this.props.contacts.filter(contact => contact.username.match(this.state.contactsInput))
+    })
+  }
 
+  handleInput(e) {
+    this.setState({
+      contactsInput: e.target.value
+    })
+  }
+
+
+
+
+  render() {
+    let contacts  = this.state.filtered;
     let contactsJSX = [];
 
     // if we have contacts 
@@ -41,26 +62,41 @@ class CreateRoomView extends Component {
       }
     }
 
+ 
+
     return (
       <div className='create-room-view'>
         <HeaderMessageInterface type="addFriends" />
         <div className='colored-container'>
 
           <div className='input-container'>
-            <input className='friend-adder' placeholder='Type contact name' />
+            <input className='friend-adder' 
+              placeholder='Type contact name' 
+              value={this.state.contactsInput}
+              onChange={this.handleInput}/>
           </div>
  
+          <div className='contacts-pane'>
+            <p>All Contacts</p>
+            <ul>
+              <li>awdawd</li>
+            </ul>
+          </div>
+
 
           <div className='contacts-list-scroll'>
+
             <ul className='contacts-list'>
               { contactsJSX }
-
             </ul>
 
 
           </div>
           <div className='friend-adder-bottom-buttons'>
-            <p>buttonskajdlkjwkdjadkwdwjlw</p>
+            <div className='button-set'>
+              <button className='cancel'><span>Cancel</span></button>
+              <button className='confirm'><span>Confirm</span></button>
+            </div>
           </div>
         </div>
       </div>
@@ -69,6 +105,7 @@ class CreateRoomView extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log("MAPPING")
   return {
     contacts: Object.values(state.friends)
   }

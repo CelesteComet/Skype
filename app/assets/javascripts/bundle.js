@@ -55949,15 +55949,40 @@ var CreateRoomView = function (_Component) {
   function CreateRoomView(props) {
     _classCallCheck(this, CreateRoomView);
 
-    return _possibleConstructorReturn(this, (CreateRoomView.__proto__ || Object.getPrototypeOf(CreateRoomView)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (CreateRoomView.__proto__ || Object.getPrototypeOf(CreateRoomView)).call(this, props));
+
+    _this.state = {
+      contactsInput: '',
+      contacts: _this.props.contacts,
+      filtered: _this.props.contacts
+    };
+    _this.handleInput = _this.handleInput.bind(_this);
+    _this.filterContacts = _this.filterContacts.bind(_this);
+    return _this;
   }
 
   _createClass(CreateRoomView, [{
+    key: 'filterContacts',
+    value: function filterContacts() {
+      var _this2 = this;
+
+      this.setState({
+        filtered: this.props.contacts.filter(function (contact) {
+          return contact.username.match(_this2.state.contactsInput);
+        })
+      });
+    }
+  }, {
+    key: 'handleInput',
+    value: function handleInput(e) {
+      this.setState({
+        contactsInput: e.target.value
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var contacts = this.props.contacts;
-
-
+      var contacts = this.state.filtered;
       var contactsJSX = [];
 
       // if we have contacts 
@@ -56006,7 +56031,28 @@ var CreateRoomView = function (_Component) {
           _react2.default.createElement(
             'div',
             { className: 'input-container' },
-            _react2.default.createElement('input', { className: 'friend-adder', placeholder: 'Type contact name' })
+            _react2.default.createElement('input', { className: 'friend-adder',
+              placeholder: 'Type contact name',
+              value: this.state.contactsInput,
+              onChange: this.handleInput })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'contacts-pane' },
+            _react2.default.createElement(
+              'p',
+              null,
+              'All Contacts'
+            ),
+            _react2.default.createElement(
+              'ul',
+              null,
+              _react2.default.createElement(
+                'li',
+                null,
+                'awdawd'
+              )
+            )
           ),
           _react2.default.createElement(
             'div',
@@ -56021,9 +56067,26 @@ var CreateRoomView = function (_Component) {
             'div',
             { className: 'friend-adder-bottom-buttons' },
             _react2.default.createElement(
-              'p',
-              null,
-              'buttonskajdlkjwkdjadkwdwjlw'
+              'div',
+              { className: 'button-set' },
+              _react2.default.createElement(
+                'button',
+                { className: 'cancel' },
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  'Cancel'
+                )
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'confirm' },
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  'Confirm'
+                )
+              )
             )
           )
         )
@@ -56035,6 +56098,7 @@ var CreateRoomView = function (_Component) {
 }(_react.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
+  console.log("MAPPING");
   return {
     contacts: Object.values(state.friends)
   };
