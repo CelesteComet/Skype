@@ -11,17 +11,21 @@ import rootReducer from './reducers/rootReducer';
 // Router stuff
 import { HashRouter, Route } from 'react-router-dom';
 
+// Middleware stuff
+import smileyParser from './middleware/index';
+
 // My own components
 import App from './components/App'; 
 
 let store;
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root');
 
   if (window.currentUser) {
     const preloadedState = { session: { currentUser: window.currentUser } };
-    store = createStore(rootReducer, preloadedState, applyMiddleware(thunk, logger));
+    store = createStore(rootReducer, preloadedState, applyMiddleware(thunk, smileyParser, logger));
     delete window.currentUser;
   } else {
     store = createStore(rootReducer, applyMiddleware(thunk, logger));

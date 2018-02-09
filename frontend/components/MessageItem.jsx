@@ -8,7 +8,6 @@ class MessageItem extends Component {
   }
 
   render() {
-
     // at first assume that the message is a sent message 
     let receivedMessage = false;
 
@@ -20,7 +19,6 @@ class MessageItem extends Component {
         <div className='bubble'>
           <div className='content'>
             <p>{body}</p>
-            <Emoji name='cool'/>
           </div>
           <div className='timestamp'>
             <p>{ new Date(created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }</p>

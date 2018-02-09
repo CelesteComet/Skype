@@ -27,8 +27,8 @@ class SessionLogin extends Component {
     e.preventDefault();
     const { dispatch, history } = this.props;
     const user = {
-      username: "demoUser",
-      password: "demoPassword"
+      username: "Bruce",
+      password: "qqqqqq"
     };
     dispatch(loginUser(user)).then(() => {
       history.push('/dashboard');

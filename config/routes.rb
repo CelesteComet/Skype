@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   root 'static_pages#root'
   # config/routes.rb
-  mount ActionCable.server => '/cable'
+  mount ActionCable.server => '/cable '
 
   namespace :api, :defaults => {:format => :json} do
     resource :session, only: [:create, :destroy]

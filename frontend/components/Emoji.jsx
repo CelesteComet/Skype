@@ -40,6 +40,8 @@ class Emoji extends Component {
 
 
     this.ctx = this.canvas.getContext('2d');
+    this.canvas.width = 500;
+    this.canvas.height = 500;
     this.init();
 
   }
@@ -62,14 +64,17 @@ class Emoji extends Component {
     let self = this;
     //this.ctx.fillRect(this.x, this.y, 50, 50);
     this.ctx.clearRect(0,0, 500, 500);
-    this.ctx.drawImage(emojiImages[this.emojiName], 0, 160 * this.y, 160, 172, 0, 0, 160, 160);
+    this.ctx.drawImage(emojiImages[this.emojiName], 
+      0, 160 * this.y, 160, 160, 
+      0, 0, this.canvas.height, this.canvas.width
+    );
     window.requestAnimationFrame(self.draw);
   }
 
   render() {
     return (
       <canvas 
-        className='cool'
+        className='emoji'
         data-id={Math.random()}
         ref={(canvas) => { this.canvas = canvas; }} >
       </canvas>
