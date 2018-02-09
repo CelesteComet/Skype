@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resources :messages, only: [:index, :show, :create]
     resources :friendships, only: [:index, :create, :destroy]
     resources :room_memberships, only: [:index, :create, :destroy] 
-    resources :rooms, only: [:index]
+    resources :rooms, only: [:create, :index]
   end
 
 end

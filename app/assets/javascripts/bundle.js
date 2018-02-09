@@ -46664,6 +46664,16 @@ var logoutUser = exports.logoutUser = function logoutUser() {
   });
 };
 
+// Refactor into different service later
+
+var createRoom = exports.createRoom = function createRoom(roomIds) {
+  return $.ajax({
+    url: 'api/rooms',
+    method: 'POST',
+    data: { room_Ids: roomIds }
+  });
+};
+
 /***/ }),
 /* 137 */
 /***/ (function(module, exports, __webpack_require__) {

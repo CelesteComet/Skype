@@ -4,5 +4,24 @@ class Api::RoomsController < ApplicationController
     @rooms = current_user.rooms.includes(:room_memberships)
   end
 
+  def create
+    @room = Room.new
+    room_params.room_Ids.each do |id|
+      @room.room_memberships.create(room_id: @room.id, user_id: id)
+    end
+
+    if @room.save 
+      render json: @room
+    else 
+      render json: @room.errors.full_messages
+    end 
+  end
+
+  private
+
+  def room_params
+    params.require(:room).permit(:room_Ids)
+  end
+
   
 end

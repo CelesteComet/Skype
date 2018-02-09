@@ -11,3 +11,13 @@ export const logoutUser = () => {
   })
 };
 
+// Refactor into different service later
+
+export const createRoom = (roomIds) => {
+  return $.ajax({
+    url: 'api/rooms',
+    method: 'POST',
+    data: {room_Ids: roomIds}
+  })   
+}
+
