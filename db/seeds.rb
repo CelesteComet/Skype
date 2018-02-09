@@ -10,6 +10,7 @@
 
 bruceUser = User.create({username: "Bruce", password: "qqqqqq", profile_id: 1})
 alexUser = User.create({username: "Alex", password: "qqqqqq", profile_id: 2})
+
 User.create({username: "Edward", password: "qqqqqq", profile_id: 3})
 User.create({username: "Emmanuel", password: "qqqqqq", profile_id: 4})
 User.create({username: "Wyatt", password: "qqqqqq", profile_id: 5})
@@ -39,12 +40,14 @@ RoomMembership.create(room_id: 3, user_id: 1)
 RoomMembership.create(room_id: 45, user_id: 1)
 
 # three different rooms
+RoomMembership.create(room_id: 1, user_id: 2)
 RoomMembership.create(room_id: 1, user_id: 8)
 RoomMembership.create(room_id: 1, user_id: 3)
 
 RoomMembership.create(room_id: 2, user_id: 4)
 RoomMembership.create(room_id: 2, user_id: 9)
 
+RoomMembership.create(room_id: 45, user_id: 2)
 RoomMembership.create(room_id: 45, user_id: 8)
 RoomMembership.create(room_id: 45, user_id: 3)
 
@@ -65,6 +68,8 @@ Friendship.create(user_id: bruceUser.id, friend_id: 14)
 Friendship.create(user_id: bruceUser.id, friend_id: 15)
 
 Friendship.create(user_id: alexUser.id, friend_id: 1);
+Friendship.create(user_id: alexUser.id, friend_id: 8);
+Friendship.create(user_id: alexUser.id, friend_id: 3);
 
 
 
