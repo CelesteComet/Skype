@@ -1,9 +1,13 @@
 # Readme
 
-Please do not sue me. I love Skype. Thank you.
+Please do not sue me. I love Skype. Thank you. 
 
-Live App at
-https://skypii.herokuapp.com
+Live App at https://skypii.herokuapp.com 
+In order to talk to the demo user, please login as 
+
+username: Alex, 
+password: "qqqqqq",
+
 
 # For Development
 
