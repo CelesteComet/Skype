@@ -3,6 +3,11 @@ import { connect } from 'react-redux';
 import MessageItem from './MessageItem';
 
 class MainMessageInterface extends Component {
+
+  // componentDidMount() {
+  //   console.log("NEW MOUNT")
+  // }
+
   render() {
     const {currentUserId} = this.props;
     let received = false;

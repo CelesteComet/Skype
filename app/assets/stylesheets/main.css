@@ -48,6 +48,10 @@ textarea {
   resize: none;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 /* UNIVERSAL STYLES */
 
 .flex-row {
@@ -319,6 +323,10 @@ footer a:hover {
 @media (max-width: 666px) {
   .form-holder {
     margin-bottom: 112px !important;
+  }
+
+  .contacts-list-scroll {
+    margin-bottom: 26px;
   }
 
 }

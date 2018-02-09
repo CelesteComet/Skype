@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { toggleContactsList } from '../actions/uiActions';
+import { 
+  toggleContactsList, 
+  toggleCreateRoomView
+} from '../actions/uiActions';
 import { connect } from 'react-redux';
 
 class AsideButtons extends Component {
@@ -9,12 +12,12 @@ class AsideButtons extends Component {
     return (
       <ul className="aside-buttons">
         <span>
-          <li className='aside-contacts' onClick={() => { dispatch(toggleContactsList())}}><span></span></li>
+          <li className='aside-contacts' onClick={() => { dispatch(toggleContactsList())}}></li>
           <li className='aside-robot'><span></span></li>
           <li className='aside-phonepad'><span></span></li>
           <li className='aside-gear'><span></span></li>
         </span>
-        <li className='aside-plus'><span></span></li>
+        <li className='aside-plus' onClick={() => { dispatch(toggleCreateRoomView())}}></li>
       </ul>
     );
   }

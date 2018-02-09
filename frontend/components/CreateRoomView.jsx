@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import HeaderMessageInterface from './HeaderMessageInterface';
 import ContactsListItem from './ContactsListItem';
 
-
-
-class ContactsListView extends Component {
+class CreateRoomView extends Component {
   constructor(props) {
     super(props);
   }
@@ -42,33 +41,27 @@ class ContactsListView extends Component {
       }
     }
 
-
-    
-
-
     return (
-      <div className='contacts-list-view'>
-        <div className="header-container"> 
-          <h1>Contacts</h1>
-          <span>
-            <i className="exclamation fa fa-exclamation-circle"></i>
-            Hint: you can add new contacts by searching
-          </span>
-          <div className='block-container'>
-            <div className='contacts-menu'>
-              <ul className='menu-items'>
-                <li className='active'>All Contacts</li>
-                <li>Online</li>
-                <li>Bots</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div className='create-room-view'>
+        <HeaderMessageInterface type="addFriends" />
+        <div className='colored-container'>
 
-        <div className='contacts-list-scroll'>
-          <ul className='contacts-list'>
-            { contactsJSX }
-          </ul>
+          <div className='input-container'>
+            <input className='friend-adder' placeholder='Type contact name' />
+          </div>
+ 
+
+          <div className='contacts-list-scroll'>
+            <ul className='contacts-list'>
+              { contactsJSX }
+
+            </ul>
+
+
+          </div>
+          <div className='friend-adder-bottom-buttons'>
+            <p>buttonskajdlkjwkdjadkwdwjlw</p>
+          </div>
         </div>
       </div>
     );
@@ -85,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
   return { dispatch }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsListView);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRoomView);

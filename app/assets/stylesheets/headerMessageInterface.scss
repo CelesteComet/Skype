@@ -24,6 +24,24 @@
   transition: margin 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+/* FRIEND ADDING PAGE */
+
+.friend-adder {
+  flex: 1 1 120px;
+  margin-bottom: .6em;
+  display: inline-block;
+  position: relative;
+  top: -.15em;
+  background-color: transparent;
+  border: 2px solid transparent;
+  color: #2B2B30;
+  margin-left: .1em;
+  padding: .5em;
+  padding-top: .35em;
+}
+
+
+
 
 
 

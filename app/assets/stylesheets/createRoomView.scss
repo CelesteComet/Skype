@@ -1,0 +1,70 @@
+.create-room-view {
+  height: 100%;
+  background: #F6FAFC !important;
+  .colored-container {
+    margin: 0 20px 0 20px;
+  }
+
+  .input-container {
+    padding: 20px;
+    border-bottom: 1px solid rgb(214, 230, 236);
+    border-left: 1px solid rgb(214, 230, 236);
+    border-right: 1px solid rgb(214, 230, 236);
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-size: 0.84em;
+    }
+
+    input:focus {
+      outline: none;
+    }
+  }
+
+  .header-message-interface {
+    height: 60px;
+  }
+
+  .header-message-interface:before {
+    margin: 0;
+  }
+
+  div {
+    background: white;
+  }
+
+  .contacts-list-scroll {
+    height: 300px;
+    overflow: scroll;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgb(214, 230, 236);
+    border-left: 1px solid rgb(214, 230, 236);
+    border-right: 1px solid rgb(214, 230, 236);
+  }
+
+  .friend-adder-bottom-buttons {
+    height: 76px;
+    position: relative;
+    width: 100%;
+  }
+
+  .contacts-list {
+    overflow: scroll;
+    padding-left: 50px;
+    height: 300px;
+  }
+
+  .contacts-list-item {
+    background: transparent;
+
+    div {
+      background: transparent;
+    }
+  }
+
+  .contacts-list-item:hover {
+    background: #F0F6F9;
+  }
+}

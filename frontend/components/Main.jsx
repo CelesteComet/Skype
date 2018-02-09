@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MessageInterface from './MessageInterface';
 import ContactsListView from './ContactsListView';
+import CreateRoomView from './CreateRoomView';
 import { connect } from 'react-redux';
 
 class Main extends Component {
@@ -12,8 +13,9 @@ class Main extends Component {
   render() {
     return (
       <main>
-        {!this.props.contactsListView && <MessageInterface /> }
-        {this.props.contactsListView && <ContactsListView /> }
+        {!this.props.contactsListView && !this.props.createRoomView && <MessageInterface /> }
+        {this.props.contactsListView && !this.props.createRoomView && <ContactsListView /> }
+        {this.props.createRoomView && <CreateRoomView />}
       </main>
     );
   }
@@ -22,7 +24,8 @@ class Main extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    contactsListView: state.ui.contactsListView
+    contactsListView: state.ui.contactsListView,
+    createRoomView: state.ui.createRoomView
   }
 }
 

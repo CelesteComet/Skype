@@ -68,7 +68,7 @@ class Emoji extends Component {
       0, 160 * this.y, 160, 160, 
       0, 0, this.canvas.height, this.canvas.width
     );
-    window.requestAnimationFrame(self.draw);
+    this.id = window.requestAnimationFrame(self.draw);
   }
 
   render() {

@@ -8,7 +8,7 @@ class MessageInterface extends Component {
   render() {
     return (
       <div className='message-interface'>
-        <HeaderMessageInterface />
+        <HeaderMessageInterface type='message' />
         <MainMessageInterface />
         <InputMessageInterface />
       </div>

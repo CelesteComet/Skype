@@ -24,7 +24,7 @@ class Api::MessagesController < ApplicationController
     @message = Message.new(message_params);
     @message.user_id = current_user.id
     if @message.save 
-      CreateMessageJob.perform('chat_1', @message);
+      CreateMessageJob.perform("chat_#{message_params[:room_id]}", @message);
       render json: @message
     else
       render json: @message, status: 400

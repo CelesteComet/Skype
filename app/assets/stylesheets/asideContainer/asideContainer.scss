@@ -15,7 +15,7 @@ aside {
 .aside-buttons li {
   display: inline-block;
   background: url(../../images/button-icons.png);
-  background-size: 162px;
+  background-size: 14.9em;
   width: 43px;
   background-position-x: 2px;
   background-position-y: 4px;
@@ -29,28 +29,28 @@ aside {
 
 
 .aside-contacts {
-  background-position-x: 2px;
-  background-position-y: 4px;
+    background-position-x: -20.8px !important;
+    background-position-y: 4px !important;
 }
 
 .aside-robot {
-    background-position-x: -32px !important;
-    background-position-y: -18px !important;
+    background-position-x: -55px !important;
+    background-position-y: -49px !important;
 }
 
 .aside-phonepad {
-    background-position-x: -64px !important;
-    background-position-y: -45px !important;
+    background-position-x: -97px !important;
+    background-position-y: -80px !important;
 }
 
 .aside-gear {
-    background-position-x: -92px !important;
-    background-position-y: -71px !important;
+    background-position-x: -135px !important;
+    background-position-y: -48px !important;
 }
 
 .aside-plus {
-    background-position-x: -117.5px !important;
-    background-position-y: -100px !important;
+    background-position-x: -160.5px !important;
+    background-position-y: -82px !important;
 }
 
 @media (max-width: 600px) {

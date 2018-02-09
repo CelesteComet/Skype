@@ -34,7 +34,13 @@ class HeaderMessageInterface extends Component {
   render() {
     return (
       <div className='header-message-interface'>
-        <ContactsListItem contact={ {username: "Bruce"} }/>
+        {this.props.type === 'message' && <ContactsListItem contact={ {username: "Bruce"} }/> }
+        {this.props.type === 'addFriends' && 
+          <div>
+            <h1>Untitled Conversation</h1>
+            <p>0 participants</p>
+          </div>
+        }
         <CallButtonSet />
       </div>
     );

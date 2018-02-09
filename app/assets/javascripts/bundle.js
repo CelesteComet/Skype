@@ -599,6 +599,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
 var TOGGLE_CONTACTS_LIST = exports.TOGGLE_CONTACTS_LIST = "TOGGLE_CONTACTS_LIST";
+var TOGGLE_CREATE_ROOM_VIEW = exports.TOGGLE_CREATE_ROOM_VIEW = "TOGGLE_CREATE_ROOM_VIEW";
 var SHOW_MEDIA_UPLOAD = exports.SHOW_MEDIA_UPLOAD = "SHOW_MEDIA_UPLOAD";
 var HIDE_MEDIA_UPLOAD = exports.HIDE_MEDIA_UPLOAD = "HIDE_MEDIA_UPLOAD";
 var MOVE_TO_ROOM = exports.MOVE_TO_ROOM = "MOVE_TO_ROOM";
@@ -612,6 +613,12 @@ var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModa
 var toggleContactsList = exports.toggleContactsList = function toggleContactsList() {
   return {
     type: TOGGLE_CONTACTS_LIST
+  };
+};
+
+var toggleCreateRoomView = exports.toggleCreateRoomView = function toggleCreateRoomView() {
+  return {
+    type: TOGGLE_CREATE_ROOM_VIEW
   };
 };
 
@@ -19802,7 +19809,7 @@ var ContactsListItem = function (_Component) {
           'div',
           { className: 'contacts-list-container' },
           _react2.default.createElement(_CircleImageIcon2.default, {
-            src: '/images/myicon.jpeg',
+            src: '/images/default-avatar.svg',
             status: 'hello',
             statusIcon: true }),
           _react2.default.createElement(
@@ -46506,6 +46513,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var initialState = {
   profileModalView: false,
   contactsListView: false,
+  createRoomView: false,
   mediaUploadView: true, // media upload icon for input
   currentRoomId: 1 // change this later when implementing changing rooms
 };
@@ -46521,6 +46529,9 @@ var uiReducer = function uiReducer() {
       return newState;
     case _uiActions.TOGGLE_CONTACTS_LIST:
       newState.contactsListView = !newState.contactsListView;
+      return newState;
+    case _uiActions.TOGGLE_CREATE_ROOM_VIEW:
+      newState.createRoomView = !newState.createRoomView;
       return newState;
     case _uiActions.SHOW_MEDIA_UPLOAD:
       newState.mediaUploadView = true;
@@ -49851,13 +49862,9 @@ var AsideButtons = function (_Component) {
         _react2.default.createElement(
           'span',
           null,
-          _react2.default.createElement(
-            'li',
-            { className: 'aside-contacts', onClick: function onClick() {
-                dispatch((0, _uiActions.toggleContactsList)());
-              } },
-            _react2.default.createElement('span', null)
-          ),
+          _react2.default.createElement('li', { className: 'aside-contacts', onClick: function onClick() {
+              dispatch((0, _uiActions.toggleContactsList)());
+            } }),
           _react2.default.createElement(
             'li',
             { className: 'aside-robot' },
@@ -49874,11 +49881,9 @@ var AsideButtons = function (_Component) {
             _react2.default.createElement('span', null)
           )
         ),
-        _react2.default.createElement(
-          'li',
-          { className: 'aside-plus' },
-          _react2.default.createElement('span', null)
-        )
+        _react2.default.createElement('li', { className: 'aside-plus', onClick: function onClick() {
+            dispatch((0, _uiActions.toggleCreateRoomView)());
+          } })
       );
     }
   }]);
@@ -49917,6 +49922,10 @@ var _ContactsListView = __webpack_require__(192);
 
 var _ContactsListView2 = _interopRequireDefault(_ContactsListView);
 
+var _CreateRoomView = __webpack_require__(214);
+
+var _CreateRoomView2 = _interopRequireDefault(_CreateRoomView);
+
 var _reactRedux = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -49942,8 +49951,9 @@ var Main = function (_Component) {
       return _react2.default.createElement(
         'main',
         null,
-        !this.props.contactsListView && _react2.default.createElement(_MessageInterface2.default, null),
-        this.props.contactsListView && _react2.default.createElement(_ContactsListView2.default, null)
+        !this.props.contactsListView && !this.props.createRoomView && _react2.default.createElement(_MessageInterface2.default, null),
+        this.props.contactsListView && !this.props.createRoomView && _react2.default.createElement(_ContactsListView2.default, null),
+        this.props.createRoomView && _react2.default.createElement(_CreateRoomView2.default, null)
       );
     }
   }]);
@@ -49953,7 +49963,8 @@ var Main = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    contactsListView: state.ui.contactsListView
+    contactsListView: state.ui.contactsListView,
+    createRoomView: state.ui.createRoomView
   };
 };
 
@@ -50011,7 +50022,7 @@ var MessageInterface = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'message-interface' },
-        _react2.default.createElement(_HeaderMessageInterface2.default, null),
+        _react2.default.createElement(_HeaderMessageInterface2.default, { type: 'message' }),
         _react2.default.createElement(_MainMessageInterface2.default, null),
         _react2.default.createElement(_InputMessageInterface2.default, null)
       );
@@ -50099,7 +50110,21 @@ var HeaderMessageInterface = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'header-message-interface' },
-        _react2.default.createElement(_ContactsListItem2.default, { contact: { username: "Bruce" } }),
+        this.props.type === 'message' && _react2.default.createElement(_ContactsListItem2.default, { contact: { username: "Bruce" } }),
+        this.props.type === 'addFriends' && _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Untitled Conversation'
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '0 participants'
+          )
+        ),
         _react2.default.createElement(_CallButtonSet2.default, null)
       );
     }
@@ -52393,6 +52418,12 @@ var MainMessageInterface = function (_Component) {
 
   _createClass(MainMessageInterface, [{
     key: 'render',
+
+
+    // componentDidMount() {
+    //   console.log("NEW MOUNT")
+    // }
+
     value: function render() {
       var currentUserId = this.props.currentUserId;
 
@@ -52619,7 +52650,7 @@ var Emoji = function (_Component) {
       //this.ctx.fillRect(this.x, this.y, 50, 50);
       this.ctx.clearRect(0, 0, 500, 500);
       this.ctx.drawImage(emojiImages[this.emojiName], 0, 160 * this.y, 160, 160, 0, 0, this.canvas.height, this.canvas.width);
-      window.requestAnimationFrame(self.draw);
+      this.id = window.requestAnimationFrame(self.draw);
     }
   }, {
     key: 'render',
@@ -52681,10 +52712,8 @@ var InputMessageInterface = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (InputMessageInterface.__proto__ || Object.getPrototypeOf(InputMessageInterface)).call(this, props));
 
-    var roomId = props.roomId;
     _this.state = {
-      body: '',
-      room_id: props.roomId
+      body: ''
     };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -52733,9 +52762,13 @@ var InputMessageInterface = function (_Component) {
       var _this3 = this;
 
       e.preventDefault();
-      var dispatch = this.props.dispatch;
+      var _props = this.props,
+          dispatch = _props.dispatch,
+          roomId = _props.roomId;
 
       this.resetForm();
+      var data = this.state;
+      data.room_id = roomId;
       dispatch((0, _messageActions.createMessage)(this.state)).then(function () {
         _this3.dispatch((0, _uiActions.hideMediaUpload)());
       });
@@ -55873,6 +55906,145 @@ var smileyParser = function smileyParser(store) {
 };
 
 exports.default = smileyParser;
+
+/***/ }),
+/* 213 */,
+/* 214 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(3);
+
+var _HeaderMessageInterface = __webpack_require__(171);
+
+var _HeaderMessageInterface2 = _interopRequireDefault(_HeaderMessageInterface);
+
+var _ContactsListItem = __webpack_require__(39);
+
+var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CreateRoomView = function (_Component) {
+  _inherits(CreateRoomView, _Component);
+
+  function CreateRoomView(props) {
+    _classCallCheck(this, CreateRoomView);
+
+    return _possibleConstructorReturn(this, (CreateRoomView.__proto__ || Object.getPrototypeOf(CreateRoomView)).call(this, props));
+  }
+
+  _createClass(CreateRoomView, [{
+    key: 'render',
+    value: function render() {
+      var contacts = this.props.contacts;
+
+
+      var contactsJSX = [];
+
+      // if we have contacts 
+      if (contacts.length > 0) {
+        // go through all contacts
+        for (var i = 0; i < contacts.length; i++) {
+          // if we are on the first one, grab the letter and dump it in
+          // then dump the person in
+          if (i == 0) {
+            var firstLetter = contacts[0].username[0];
+            contactsJSX.push(_react2.default.createElement(
+              'li',
+              { key: Math.random(), className: 'alphabet-row' },
+              firstLetter
+            ));
+            //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
+            contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
+          } else {
+            // if we are not on the first one, check if the last letter is 
+            // the same as the current letter, if it is dump it in
+            var lastLetter = contacts[i - 1].username[0];
+            var currentLetter = contacts[i].username[0];
+            if (lastLetter === currentLetter) {
+              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
+              //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
+            } else {
+              contactsJSX.push(_react2.default.createElement(
+                'li',
+                { key: Math.random(), className: 'alphabet-row' },
+                currentLetter
+              ));
+              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
+              //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
+            }
+          }
+        }
+      }
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'create-room-view' },
+        _react2.default.createElement(_HeaderMessageInterface2.default, { type: 'addFriends' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'colored-container' },
+          _react2.default.createElement(
+            'div',
+            { className: 'input-container' },
+            _react2.default.createElement('input', { className: 'friend-adder', placeholder: 'Type contact name' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'contacts-list-scroll' },
+            _react2.default.createElement(
+              'ul',
+              { className: 'contacts-list' },
+              contactsJSX
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'friend-adder-bottom-buttons' },
+            _react2.default.createElement(
+              'p',
+              null,
+              'buttonskajdlkjwkdjadkwdwjlw'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return CreateRoomView;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    contacts: Object.values(state.friends)
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CreateRoomView);
 
 /***/ })
 /******/ ]);

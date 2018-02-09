@@ -9,10 +9,8 @@ class InputMessageInterface extends Component {
 
   constructor(props) {
     super(props);
-    const roomId = props.roomId;
     this.state = {
-      body: '',
-      room_id: props.roomId
+      body: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,8 +51,10 @@ class InputMessageInterface extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch } = this.props;
+    const { dispatch, roomId } = this.props;
     this.resetForm();
+    let data = this.state;
+    data.room_id = roomId;
     dispatch(createMessage(this.state)).then(() => {
       this.dispatch(hideMediaUpload());
     });

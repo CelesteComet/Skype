@@ -12,7 +12,7 @@ class ContactsListItem extends Component {
       <div className="contacts-list-item">
         <div className="contacts-list-container">
           <CircleImageIcon 
-            src='/images/myicon.jpeg'
+            src='/images/default-avatar.svg'
             status='hello' 
             statusIcon={true} />
           <div className='name-status-container'>
