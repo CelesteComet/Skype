@@ -9,7 +9,7 @@
 # create all friends
 
 bruceUser = User.create({username: "Bruce", password: "qqqqqq", profile_id: 1})
-User.create({username: "Alex", password: "qqqqqq", profile_id: 2})
+alexUser = User.create({username: "Alex", password: "qqqqqq", profile_id: 2})
 User.create({username: "Edward", password: "qqqqqq", profile_id: 3})
 User.create({username: "Emmanuel", password: "qqqqqq", profile_id: 4})
 User.create({username: "Wyatt", password: "qqqqqq", profile_id: 5})
@@ -65,5 +65,7 @@ Friendship.create(user_id: bruceUser.id, friend_id: 12)
 Friendship.create(user_id: bruceUser.id, friend_id: 13)
 Friendship.create(user_id: bruceUser.id, friend_id: 14)
 Friendship.create(user_id: bruceUser.id, friend_id: 15)
+
+Friendship.create(user_id: alexUser.id, friend_id: 1);
 
 

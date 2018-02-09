@@ -9,21 +9,46 @@ class CreateRoomView extends Component {
     this.state = {
       contactsInput: '',
       contacts: this.props.contacts,
-      filtered: this.props.contacts
+      filtered: this.props.contacts,
+      room: {},
+      participants: 0
     };
     this.handleInput = this.handleInput.bind(this);
     this.filterContacts = this.filterContacts.bind(this);
   }
 
+
   filterContacts() {
     this.setState({
       filtered: this.props.contacts.filter(contact => contact.username.match(this.state.contactsInput))
-    })
+    });
   }
 
   handleInput(e) {
     this.setState({
       contactsInput: e.target.value
+    }, () => {
+      this.filterContacts();
+    });
+  }
+
+  addToRoom(contact) {
+    let newState = Object.assign({}, this.state);
+    if (newState.room[contact.id] === undefined) {
+      newState.participants = newState.participants + 1;
+      newState.room[contact.id] = contact;
+    }
+    
+    this.setState(newState, () => {
+      
+    });
+  }
+
+  cancelAll() {
+    this.setState({
+      room: {},
+      contactsInput: '',
+      participants: 0
     })
   }
 
@@ -31,6 +56,22 @@ class CreateRoomView extends Component {
 
 
   render() {
+
+    // Do room stuff for adding people and removing people
+
+    let roomJSX = Object.values(this.state.room).map(contact => {
+      return (
+        <span 
+          key={Math.random()} 
+          onClick={() => {this.addToRoom(contact)}}>
+        <ContactsListItem 
+          contact={ contact }/>
+        </span>
+      );
+    })
+
+
+
     let contacts  = this.state.filtered;
     let contactsJSX = [];
 
@@ -44,18 +85,39 @@ class CreateRoomView extends Component {
           let firstLetter = contacts[0].username[0];
           contactsJSX.push(<li key={Math.random()} className='alphabet-row'>{firstLetter}</li>)
           //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
-          contactsJSX.push(<ContactsListItem key={Math.random()} contact={ contacts[i] }/>)
+          contactsJSX.push(
+            <span 
+              key={Math.random()} 
+              onClick={() => {this.addToRoom(contacts[i])}}>
+            <ContactsListItem 
+              contact={ contacts[i] }/>
+            </span>
+          )
         } else {
           // if we are not on the first one, check if the last letter is 
           // the same as the current letter, if it is dump it in
           let lastLetter = contacts[i-1].username[0];
           let currentLetter = contacts[i].username[0];
           if (lastLetter === currentLetter) {
-            contactsJSX.push(<ContactsListItem key={Math.random()} contact={ contacts[i] }/>)
+            contactsJSX.push(
+              <span 
+                key={Math.random()} 
+                onClick={() => {this.addToRoom(contacts[i])}}>
+              <ContactsListItem 
+                contact={ contacts[i] }/>
+              </span>
+            )
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
           } else {
             contactsJSX.push(<li key={Math.random()} className='alphabet-row'>{currentLetter}</li>)
-            contactsJSX.push(<ContactsListItem key={Math.random()} contact={ contacts[i] }/>)
+            contactsJSX.push(
+              <span 
+                key={Math.random()} 
+                onClick={() => {this.addToRoom(contacts[i])}}>
+              <ContactsListItem 
+                contact={ contacts[i] }/>
+              </span>
+            )
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
           }
         }
@@ -66,8 +128,14 @@ class CreateRoomView extends Component {
 
     return (
       <div className='create-room-view'>
-        <HeaderMessageInterface type="addFriends" />
+        <HeaderMessageInterface 
+          type="addFriends" 
+          participants={this.state.participants}/>
         <div className='colored-container'>
+
+          <div className='room-to-add'>
+            { roomJSX }
+          </div>
 
           <div className='input-container'>
             <input className='friend-adder' 
@@ -75,12 +143,11 @@ class CreateRoomView extends Component {
               value={this.state.contactsInput}
               onChange={this.handleInput}/>
           </div>
+
+
  
           <div className='contacts-pane'>
             <p>All Contacts</p>
-            <ul>
-              <li>awdawd</li>
-            </ul>
           </div>
 
 
@@ -94,7 +161,11 @@ class CreateRoomView extends Component {
           </div>
           <div className='friend-adder-bottom-buttons'>
             <div className='button-set'>
-              <button className='cancel'><span>Cancel</span></button>
+              <button 
+                className='cancel'
+                onClick={() => {this.cancelAll()}}>
+                <span>Cancel</span>
+              </button>
               <button className='confirm'><span>Confirm</span></button>
             </div>
           </div>
@@ -105,7 +176,6 @@ class CreateRoomView extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("MAPPING")
   return {
     contacts: Object.values(state.friends)
   }

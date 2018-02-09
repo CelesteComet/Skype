@@ -38,7 +38,7 @@ class HeaderMessageInterface extends Component {
         {this.props.type === 'addFriends' && 
           <div>
             <h1>Untitled Conversation</h1>
-            <p>0 participants</p>
+            <p>{this.props.participants} participants</p>
           </div>
         }
         <CallButtonSet />

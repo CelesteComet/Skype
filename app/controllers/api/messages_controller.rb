@@ -12,7 +12,7 @@ class Api::MessagesController < ApplicationController
   end
 
   def show
-    @messages = current_user.messages.where(room_id: params[:id])
+    @messages = Message.where(room_id: params[:id])
     if @messages 
       render json: @messages
     else 
