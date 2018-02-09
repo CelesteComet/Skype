@@ -52489,7 +52489,7 @@ var MessageItem = function (_Component) {
               null,
               body
             ),
-            _react2.default.createElement(_Emoji2.default, null)
+            _react2.default.createElement(_Emoji2.default, { name: 'cool' })
           ),
           _react2.default.createElement(
             'div',
@@ -53155,18 +53155,16 @@ Object.defineProperty(exports, "__esModule", {
 var _messageActions = __webpack_require__(21);
 
 var configureSocket = function configureSocket(context, chatRoomIds, dispatch) {
-  console.log('aawdawdawwdwad');
-  console.log(chatRoomIds);
 
   chatRoomIds.forEach(function (chatroomId) {
 
-    var roomName = 'room #' + chatroomId;
+    var roomName = "room #" + chatroomId;
 
     // Create a subscription to each chatroom that the user is currently in
     App[roomName] = App.cable.subscriptions.create({
       channel: "ChatChannel", room: chatroomId
     });
-    console.log('Created a subscription to ' + roomName);
+    console.log("Created a subscription to " + roomName);
 
     // When a message is received
     App[roomName].received = function (data) {
@@ -53174,7 +53172,7 @@ var configureSocket = function configureSocket(context, chatRoomIds, dispatch) {
     };
 
     App[roomName].disconnected = function () {
-      console.log('Disconnected from ' + roomName);
+      console.log("Disconnected from " + roomName);
     };
   });
 
@@ -55709,14 +55707,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // create emojis
 var emojiPaths = {
-  'cool': '/emojis/default_160_anim.png'
+  'cool': { path: '/emojis/cool.png', height: 6080 },
+  'kiss': { path: '/emojis/kiss.png', height: 8000 },
+  'crying': { path: '/emojis/crying.png', height: 8000 },
+  'smirk': { path: '/emojis/smirk.png', height: 5760 }
 };
 
 var emojiImages = {};
 
 for (var name in emojiPaths) {
-  var image = new Image(180, 180);
-  image.src = emojiPaths[name];
+  var image = new Image(160, emojiPaths[name].height);
+  image.src = emojiPaths[name].path;
   emojiImages[name] = image;
 }
 
@@ -55731,8 +55732,13 @@ var Emoji = function (_Component) {
     _this.init = _this.init.bind(_this);
     _this.draw = _this.draw.bind(_this);
 
-    _this.x = 0;
-    _this.y = 0;
+    // set emoji name
+    _this.emojiName = props.name;
+
+    _this.y = 1;
+
+    _this.frames = 0;
+    _this.animationSpeed = 1;
     return _this;
   }
 
@@ -55754,12 +55760,19 @@ var Emoji = function (_Component) {
   }, {
     key: 'draw',
     value: function draw() {
-      this.x += 1;
-      this.y += 1;
+      this.frames += 1;
+      if (this.frames > this.animationSpeed) {
+        this.y += 1;
+        if (this.y >= emojiPaths[this.emojiName].height / 160) {
+          this.y = 0;
+        }
+        this.frames = 0;
+      }
+
       var self = this;
       //this.ctx.fillRect(this.x, this.y, 50, 50);
-
-      this.ctx.drawImage(emojiImages['cool'], 0, 0);
+      this.ctx.clearRect(0, 0, 500, 500);
+      this.ctx.drawImage(emojiImages[this.emojiName], 0, 160 * this.y, 160, 172, 0, 0, 160, 160);
       window.requestAnimationFrame(self.draw);
     }
   }, {
@@ -55767,16 +55780,12 @@ var Emoji = function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      return _react2.default.createElement(
-        'canvas',
-        {
-          className: 'cool',
-          'data-id': Math.random(),
-          ref: function ref(canvas) {
-            _this2.canvas = canvas;
-          } },
-        '(cool)'
-      );
+      return _react2.default.createElement('canvas', {
+        className: 'cool',
+        'data-id': Math.random(),
+        ref: function ref(canvas) {
+          _this2.canvas = canvas;
+        } });
     }
   }]);
 

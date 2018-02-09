@@ -20,7 +20,7 @@ class MessageItem extends Component {
         <div className='bubble'>
           <div className='content'>
             <p>{body}</p>
-            <Emoji />
+            <Emoji name='cool'/>
           </div>
           <div className='timestamp'>
             <p>{ new Date(created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }</p>

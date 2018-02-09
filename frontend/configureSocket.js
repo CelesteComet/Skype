@@ -1,8 +1,7 @@
 import { receiveMessage } from './actions/messageActions';
 
 const configureSocket = (context, chatRoomIds, dispatch) => {
-  console.log('aawdawdawwdwad');
-  console.log(chatRoomIds);
+
 
   chatRoomIds.forEach(chatroomId => {
 
