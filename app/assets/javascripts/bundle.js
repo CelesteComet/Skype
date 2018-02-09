@@ -22908,7 +22908,7 @@ function verifyPlainObject(value, displayName, methodName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
+exports.createRoom = exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.CREATE_ROOM = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
 
 var _roomMembershipAPIService = __webpack_require__(136);
 
@@ -22917,6 +22917,7 @@ var APIUtil = _interopRequireWildcard(_roomMembershipAPIService);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var RECEIVE_ALL_ROOM_MEMBERSHIPS = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = 'RECEIVE_ALL_ROOM_MEMBERSHIPS';
+var CREATE_ROOM = exports.CREATE_ROOM = 'CREATE_ROOM';
 
 var receiveRoomMemberships = exports.receiveRoomMemberships = function receiveRoomMemberships(roomMemberships) {
   return {
@@ -22929,6 +22930,16 @@ var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemb
   return function (dispatch) {
     return APIUtil.fetchRoomMemberships().then(function (roomMemberships) {
       dispatch(receiveRoomMemberships(roomMemberships));
+    }, function (err) {
+      console.log(err);
+    });
+  };
+};
+
+var createRoom = exports.createRoom = function createRoom(roomIds) {
+  return function (dispatch) {
+    return APIUtil.createRoom(roomIds).then(function () {
+      dispatch(fetchRoomMemberships());
     }, function (err) {
       console.log(err);
     });
@@ -27074,7 +27085,8 @@ var SessionLogin = function (_Component) {
         commandTextComponent = _react2.default.createElement(
           'p',
           null,
-          'Enter the password for brucewong21'
+          'Enter the password for ',
+          this.props.user.username
         );
         inputPlaceholderText = "Password";
 
@@ -46670,7 +46682,7 @@ var createRoom = exports.createRoom = function createRoom(roomIds) {
   return $.ajax({
     url: 'api/rooms',
     method: 'POST',
-    data: { room_Ids: roomIds }
+    data: { room: { room_Ids: roomIds } }
   });
 };
 
@@ -53140,6 +53152,8 @@ var _ContactsListItem = __webpack_require__(26);
 
 var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
 
+var _roomMembershipActions = __webpack_require__(59);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53165,6 +53179,7 @@ var CreateRoomView = function (_Component) {
     };
     _this.handleInput = _this.handleInput.bind(_this);
     _this.filterContacts = _this.filterContacts.bind(_this);
+    _this.handleCreateRoom = _this.handleCreateRoom.bind(_this);
     return _this;
   }
 
@@ -53189,6 +53204,13 @@ var CreateRoomView = function (_Component) {
       }, function () {
         _this3.filterContacts();
       });
+    }
+  }, {
+    key: 'handleCreateRoom',
+    value: function handleCreateRoom() {
+      var dispatch = this.props.dispatch;
+
+      dispatch((0, _roomMembershipActions.createRoom)(Object.keys(this.state.room)));
     }
   }, {
     key: 'addToRoom',
@@ -53361,7 +53383,11 @@ var CreateRoomView = function (_Component) {
               ),
               _react2.default.createElement(
                 'button',
-                { className: 'confirm' },
+                {
+                  className: 'confirm',
+                  onClick: function onClick() {
+                    _this4.handleCreateRoom();
+                  } },
                 _react2.default.createElement(
                   'span',
                   null,

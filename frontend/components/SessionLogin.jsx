@@ -74,7 +74,7 @@ class SessionLogin extends Component {
       );
     } else {
       headingText = "Enter password";
-      commandTextComponent = <p>Enter the password for brucewong21</p>
+      commandTextComponent = <p>Enter the password for {this.props.user.username}</p>
       inputPlaceholderText = "Password";
 
       buttons = (

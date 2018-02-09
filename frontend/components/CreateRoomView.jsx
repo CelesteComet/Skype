@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import HeaderMessageInterface from './HeaderMessageInterface';
 import ContactsListItem from './ContactsListItem';
+import { createRoom } from '../actions/roomMembershipActions';
 
 class CreateRoomView extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class CreateRoomView extends Component {
     };
     this.handleInput = this.handleInput.bind(this);
     this.filterContacts = this.filterContacts.bind(this);
+    this.handleCreateRoom = this.handleCreateRoom.bind(this);
   }
 
 
@@ -30,6 +32,11 @@ class CreateRoomView extends Component {
     }, () => {
       this.filterContacts();
     });
+  }
+
+  handleCreateRoom() {
+    let { dispatch } = this.props;
+    dispatch(createRoom(Object.keys(this.state.room)));
   }
 
   addToRoom(contact) {
@@ -166,7 +173,11 @@ class CreateRoomView extends Component {
                 onClick={() => {this.cancelAll()}}>
                 <span>Cancel</span>
               </button>
-              <button className='confirm'><span>Confirm</span></button>
+              <button 
+                className='confirm'
+                onClick={() => {this.handleCreateRoom()}}>
+                <span>Confirm</span>
+              </button>
             </div>
           </div>
         </div>

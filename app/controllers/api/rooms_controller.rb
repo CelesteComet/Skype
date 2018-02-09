@@ -5,8 +5,9 @@ class Api::RoomsController < ApplicationController
   end
 
   def create
-    @room = Room.new
-    room_params.room_Ids.each do |id|
+    @room = Room.create({});
+    @room.room_memberships.create(room_id: @room.id, user_id: current_user.id)
+    params[:room][:room_Ids].each do |id|
       @room.room_memberships.create(room_id: @room.id, user_id: id)
     end
 

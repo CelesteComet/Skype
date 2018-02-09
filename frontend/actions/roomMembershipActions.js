@@ -1,6 +1,7 @@
 import * as APIUtil from '../services/roomMembershipAPIService';
 
 export const RECEIVE_ALL_ROOM_MEMBERSHIPS = 'RECEIVE_ALL_ROOM_MEMBERSHIPS';
+export const CREATE_ROOM = 'CREATE_ROOM';
 
 export const receiveRoomMemberships = roomMemberships => {
   return {
@@ -16,4 +17,13 @@ export const fetchRoomMemberships = () => dispatch => {
     }, err => {
       console.log(err);
     }) 
+}
+
+export const createRoom = (roomIds) => dispatch => {
+  return APIUtil.createRoom(roomIds)
+    .then(() => {
+      dispatch(fetchRoomMemberships()); 
+    }, err => {
+      console.log(err);
+    })
 }
