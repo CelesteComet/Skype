@@ -22,8 +22,6 @@ All rights and stuff belongs to my Microsoft overlords
 
 # Skypii
 
-[Live Demo][heroku]
-
 [heroku]: https://skypii.herokuapp.com/
 
 Skypii is a clone of Skype. The project was created in less than two weeks (with a hackathon project in between). I made sure to create my app for future extensions because I am dead set on completing a true to life clone to the best of my abiities. Other than the usual websocket stuff, please see what features I've begun and will be adding.
