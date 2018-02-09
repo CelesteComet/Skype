@@ -38,4 +38,14 @@ Skypii is a clone of Skype. The project was created in less than two weeks (with
 
 I wanted to go one step further in creating emojis by allowing the user to create emojis in between text. This required me to use a custom redux middleware in which I parse the incoming message text for certain emoji keywords. 
 
+![docs/kissy.png]
+
+### Animated Emojis via canvas
+
+These "gifs" are not what they seem to be. In order to create the in between text feature and to use the Skype emojis I love, I created animated canvas elements of the gifs as a React Component.
+
+![docs/sprite.png]
+
+
+
 
