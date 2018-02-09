@@ -39,14 +39,12 @@ RoomMembership.create(room_id: 3, user_id: 1)
 RoomMembership.create(room_id: 45, user_id: 1)
 
 # three different rooms
-RoomMembership.create(room_id: 1, user_id: 2)
 RoomMembership.create(room_id: 1, user_id: 8)
 RoomMembership.create(room_id: 1, user_id: 3)
 
 RoomMembership.create(room_id: 2, user_id: 4)
 RoomMembership.create(room_id: 2, user_id: 9)
 
-RoomMembership.create(room_id: 45, user_id: 2)
 RoomMembership.create(room_id: 45, user_id: 8)
 RoomMembership.create(room_id: 45, user_id: 3)
 
@@ -67,5 +65,6 @@ Friendship.create(user_id: bruceUser.id, friend_id: 14)
 Friendship.create(user_id: bruceUser.id, friend_id: 15)
 
 Friendship.create(user_id: alexUser.id, friend_id: 1);
+
 
 

@@ -28,14 +28,14 @@ class ModalProfile extends Component {
           <header>
           <ProfileItem 
             name={ currentUsername }
-            src='/images/myicon.jpeg'
+            src='/images/default-avatar.svg'
             status='Online'
             handleClick={() => { dispatch(toggleProfileModal()) }} />
 
           </header>
           <div className="modal-main">
             <CircleImageIcon 
-              src='/images/myicon.jpeg'
+              src='/images/default-avatar.svg'
               status='Online' />
             <div className="modal-content">
               <h3>{currentUsername}</h3>

@@ -10,19 +10,29 @@ class PotentialFriendsList extends Component {
 
   render() {
     const { potentialFriends } = this.props;
+
+    if (potentialFriends.length == 0) {
+      return <p>No friends found</p>
+    }
+
+
     let potentialFriendsJSX = potentialFriends.map(contact => {
       return (
         <li>
-          <ContactsListItem 
+          <ContactsListItem
             contact={ contact }/>
         </li>
       );
     });
 
+
     return (
-      <ul className='potential-friends-list'>
-        { potentialFriendsJSX }
-      </ul>
+      <div>
+        <p>Search Results</p>
+        <ul className='potential-friends-list'>
+          { potentialFriendsJSX }
+        </ul>
+      </div>
     );
   }
 }

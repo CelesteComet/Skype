@@ -18918,7 +18918,7 @@ var ContactsListItem = function (_Component) {
           _react2.default.createElement(_CircleImageIcon2.default, {
             src: '/images/default-avatar.svg',
             status: 'hello',
-            statusIcon: true }),
+            statusIcon: false }),
           _react2.default.createElement(
             'div',
             { className: 'name-status-container' },
@@ -49699,7 +49699,7 @@ var SideBar = function (_Component) {
             _react2.default.createElement(_Search2.default, null),
             _react2.default.createElement(_AsideButtons2.default, null),
             this.props.potentialFriends.length > 0 && _react2.default.createElement(_PotentialFriendsList2.default, null),
-            this.props.potentialFriends.length === 0 && _react2.default.createElement(_RecentsList2.default, null)
+            _react2.default.createElement(_RecentsList2.default, null)
           )
         )
       );
@@ -49768,16 +49768,29 @@ var Search = function (_Component) {
   }
 
   _createClass(Search, [{
+    key: 'handleClear',
+    value: function handleClear() {
+      var _this2 = this;
+
+      this.setState({
+        searchTerm: 'Search Skype'
+      }, function () {
+        var dispatch = _this2.props.dispatch;
+
+        dispatch((0, _friendActions.findPotentialFriends)(_this2.state.searchTerm));
+      });
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       var dispatch = this.props.dispatch;
 
       this.setState({
         searchTerm: e.target.value
       }, function () {
-        var searchTerm = _this2.state.searchTerm;
+        var searchTerm = _this3.state.searchTerm;
         dispatch((0, _friendActions.findPotentialFriends)(searchTerm));
       });
     }
@@ -49795,18 +49808,24 @@ var Search = function (_Component) {
   }, {
     key: 'handleFocusOut',
     value: function handleFocusOut(e) {
+      var _this4 = this;
+
       var searchTerm = this.state.searchTerm;
 
       if (searchTerm.length === 0) {
         this.setState({
           searchTerm: 'Search Skype'
+        }, function () {
+          var dispatch = _this4.props.dispatch;
+
+          dispatch((0, _friendActions.findPotentialFriends)(_this4.state.searchTerm));
         });
       }
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this5 = this;
 
       var searchTerm = this.state.searchTerm;
 
@@ -49822,12 +49841,14 @@ var Search = function (_Component) {
             value: searchTerm,
             onChange: this.handleChange,
             onFocus: function onFocus() {
-              return _this3.handleFocus();
+              return _this5.handleFocus();
             },
             onBlur: function onBlur() {
-              return _this3.handleFocusOut();
+              return _this5.handleFocusOut();
             } }),
-          _react2.default.createElement('i', { className: 'fa fa-times icon-blue', 'aria-hidden': 'true' })
+          _react2.default.createElement('i', { className: 'fa fa-times icon-blue', 'aria-hidden': 'true', onClick: function onClick() {
+              _this5.handleClear();
+            } })
         )
       );
     }
@@ -53653,7 +53674,7 @@ var ModalProfile = function (_Component) {
             null,
             _react2.default.createElement(_ProfileItem2.default, {
               name: currentUsername,
-              src: '/images/myicon.jpeg',
+              src: '/images/default-avatar.svg',
               status: 'Online',
               handleClick: function handleClick() {
                 dispatch((0, _uiActions.toggleProfileModal)());
@@ -53663,7 +53684,7 @@ var ModalProfile = function (_Component) {
             'div',
             { className: 'modal-main' },
             _react2.default.createElement(_CircleImageIcon2.default, {
-              src: '/images/myicon.jpeg',
+              src: '/images/default-avatar.svg',
               status: 'Online' }),
             _react2.default.createElement(
               'div',
@@ -56360,6 +56381,15 @@ var PotentialFriendsList = function (_Component) {
     value: function render() {
       var potentialFriends = this.props.potentialFriends;
 
+
+      if (potentialFriends.length == 0) {
+        return _react2.default.createElement(
+          'p',
+          null,
+          'No friends found'
+        );
+      }
+
       var potentialFriendsJSX = potentialFriends.map(function (contact) {
         return _react2.default.createElement(
           'li',
@@ -56370,9 +56400,18 @@ var PotentialFriendsList = function (_Component) {
       });
 
       return _react2.default.createElement(
-        'ul',
-        { className: 'potential-friends-list' },
-        potentialFriendsJSX
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          'Search Results'
+        ),
+        _react2.default.createElement(
+          'ul',
+          { className: 'potential-friends-list' },
+          potentialFriendsJSX
+        )
       );
     }
   }]);

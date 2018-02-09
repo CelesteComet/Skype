@@ -13,6 +13,15 @@ class Search extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  handleClear() {
+    this.setState({
+      searchTerm: 'Search Skype'
+    }, () => {
+      const { dispatch } = this.props;
+      dispatch(findPotentialFriends(this.state.searchTerm));
+    })
+  }
+
   handleChange(e) {
     const { dispatch } = this.props;
     this.setState({
@@ -37,6 +46,9 @@ class Search extends Component {
     if (searchTerm.length === 0) {
       this.setState({
         searchTerm: 'Search Skype'  
+      }, () => {
+        const { dispatch } = this.props;
+        dispatch(findPotentialFriends(this.state.searchTerm));        
       });
     }
   }
@@ -53,7 +65,7 @@ class Search extends Component {
             onChange={ this.handleChange } 
             onFocus={() => (this.handleFocus())} 
             onBlur={() => (this.handleFocusOut())} />
-          <i className="fa fa-times icon-blue" aria-hidden="true"></i>
+          <i className="fa fa-times icon-blue" aria-hidden="true" onClick={() => {this.handleClear()}}></i>
         </div>
       </form>
     );

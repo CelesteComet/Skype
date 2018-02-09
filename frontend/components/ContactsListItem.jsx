@@ -14,7 +14,7 @@ class ContactsListItem extends Component {
           <CircleImageIcon 
             src='/images/default-avatar.svg'
             status='hello' 
-            statusIcon={true} />
+            statusIcon={false} />
           <div className='name-status-container'>
             <p className='name'>{username}</p>
             <p className='status'>{'Online'}</p>

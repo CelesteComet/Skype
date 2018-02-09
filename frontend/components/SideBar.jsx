@@ -38,7 +38,7 @@ class SideBar extends Component {
             <Search />
             <AsideButtons />
             { this.props.potentialFriends.length > 0 && <PotentialFriendsList /> }
-            { this.props.potentialFriends.length === 0 && <RecentsList /> }
+            <RecentsList />
           </div>
         </aside>
       </div>
