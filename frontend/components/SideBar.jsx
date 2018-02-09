@@ -5,6 +5,7 @@ import RecentsList from './RecentsList';
 import AsideButtons from './AsideButtons';
 import { toggleProfileModal } from '../actions/uiActions';
 import { connect } from 'react-redux';
+import PotentialFriendsList from './PotentialFriendsList';
 
 
 class SideBar extends Component {
@@ -36,7 +37,8 @@ class SideBar extends Component {
             {/* Search */}
             <Search />
             <AsideButtons />
-            <RecentsList />
+            { this.props.potentialFriends.length > 0 && <PotentialFriendsList /> }
+            { this.props.potentialFriends.length === 0 && <RecentsList /> }
           </div>
         </aside>
       </div>
@@ -46,7 +48,8 @@ class SideBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUsername: state.session.currentUser.username
+    currentUsername: state.session.currentUser.username,
+    potentialFriends: Object.values(state.potentialFriends)
   }
 };
 

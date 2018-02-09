@@ -13,6 +13,10 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def search 
+    @users = User.where("username LIKE ? and id NOT IN (?)", "%#{params[:search]}%", current_user.id)
+  end
+
   def destroy
   end
 

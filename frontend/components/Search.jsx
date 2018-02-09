@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { findPotentialFriends } from '../actions/friendActions';
 
 class Search extends Component {
 
@@ -12,8 +14,12 @@ class Search extends Component {
   }
 
   handleChange(e) {
+    const { dispatch } = this.props;
     this.setState({
       searchTerm: e.target.value
+    }, () => {
+      let searchTerm = this.state.searchTerm;
+      dispatch(findPotentialFriends(searchTerm));
     });
   }
 
@@ -52,7 +58,14 @@ class Search extends Component {
       </form>
     );
   }
-
 }
 
-export default Search;
+const mapDispatchToProps = dispatch => {
+  return { dispatch }
+};
+
+export default connect(null, mapDispatchToProps)(Search);
+
+
+
+

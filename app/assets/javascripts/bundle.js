@@ -22956,7 +22956,7 @@ var createRoom = exports.createRoom = function createRoom(roomIds) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchAllFriends = exports.receiveAllFriends = exports.RECEIVE_ALL_FRIENDS = undefined;
+exports.createFriendship = exports.findPotentialFriends = exports.fetchAllFriends = exports.receiveAllPotentialFriends = exports.receiveAllFriends = exports.RECEIVE_ALL_POTENTIAL_FRIENDS = exports.RECEIVE_ALL_FRIENDS = undefined;
 
 var _friendAPIService = __webpack_require__(138);
 
@@ -22965,9 +22965,18 @@ var APIUtil = _interopRequireWildcard(_friendAPIService);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var RECEIVE_ALL_FRIENDS = exports.RECEIVE_ALL_FRIENDS = 'RECEIVE_ALL_FRIENDS';
+var RECEIVE_ALL_POTENTIAL_FRIENDS = exports.RECEIVE_ALL_POTENTIAL_FRIENDS = 'RECEIVE_ALL_POTENTIAL_FRIENDS';
+
 var receiveAllFriends = exports.receiveAllFriends = function receiveAllFriends(friends) {
   return {
     type: RECEIVE_ALL_FRIENDS,
+    payload: friends
+  };
+};
+
+var receiveAllPotentialFriends = exports.receiveAllPotentialFriends = function receiveAllPotentialFriends(friends) {
+  return {
+    type: RECEIVE_ALL_POTENTIAL_FRIENDS,
     payload: friends
   };
 };
@@ -22980,6 +22989,22 @@ var fetchAllFriends = exports.fetchAllFriends = function fetchAllFriends() {
       console.log(err);
     });
   };
+};
+
+var findPotentialFriends = exports.findPotentialFriends = function findPotentialFriends(searchTerm) {
+  return function (dispatch) {
+    return APIUtil.findPotentialFriends(searchTerm).then(function (friends) {
+      dispatch(receiveAllPotentialFriends(friends));
+    }, function (err) {
+      console.log(err);
+    });
+  };
+};
+
+// move to other source
+
+var createFriendship = exports.createFriendship = function createFriendship() {
+  return function (dispatch) {};
 };
 
 /***/ }),
@@ -46461,6 +46486,10 @@ var _uiReducer = __webpack_require__(139);
 
 var _uiReducer2 = _interopRequireDefault(_uiReducer);
 
+var _potentialFriendsReducer = __webpack_require__(214);
+
+var _potentialFriendsReducer2 = _interopRequireDefault(_potentialFriendsReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
@@ -46468,6 +46497,7 @@ var rootReducer = (0, _redux.combineReducers)({
   messages: _messagesReducer2.default,
   friends: _friendReducer2.default,
   roomMemberships: _roomMembershipsReducer2.default,
+  potentialFriends: _potentialFriendsReducer2.default,
   ui: _uiReducer2.default
 });
 
@@ -46735,6 +46765,13 @@ Object.defineProperty(exports, "__esModule", {
 var fetchAllFriends = exports.fetchAllFriends = function fetchAllFriends() {
   return $.ajax({
     url: 'api/friendships'
+  });
+};
+
+var findPotentialFriends = exports.findPotentialFriends = function findPotentialFriends(searchTerm) {
+  return $.ajax({
+    url: 'api/find/' + searchTerm,
+    data: { searchTerm: searchTerm }
   });
 };
 
@@ -49603,6 +49640,10 @@ var _uiActions = __webpack_require__(9);
 
 var _reactRedux = __webpack_require__(3);
 
+var _PotentialFriendsList = __webpack_require__(215);
+
+var _PotentialFriendsList2 = _interopRequireDefault(_PotentialFriendsList);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49657,7 +49698,8 @@ var SideBar = function (_Component) {
             { className: 'me-container' },
             _react2.default.createElement(_Search2.default, null),
             _react2.default.createElement(_AsideButtons2.default, null),
-            _react2.default.createElement(_RecentsList2.default, null)
+            this.props.potentialFriends.length > 0 && _react2.default.createElement(_PotentialFriendsList2.default, null),
+            this.props.potentialFriends.length === 0 && _react2.default.createElement(_RecentsList2.default, null)
           )
         )
       );
@@ -49669,7 +49711,8 @@ var SideBar = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    currentUsername: state.session.currentUser.username
+    currentUsername: state.session.currentUser.username,
+    potentialFriends: Object.values(state.potentialFriends)
   };
 };
 
@@ -49695,6 +49738,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(3);
+
+var _friendActions = __webpack_require__(60);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49723,8 +49770,15 @@ var Search = function (_Component) {
   _createClass(Search, [{
     key: 'handleChange',
     value: function handleChange(e) {
+      var _this2 = this;
+
+      var dispatch = this.props.dispatch;
+
       this.setState({
         searchTerm: e.target.value
+      }, function () {
+        var searchTerm = _this2.state.searchTerm;
+        dispatch((0, _friendActions.findPotentialFriends)(searchTerm));
       });
     }
   }, {
@@ -49752,7 +49806,7 @@ var Search = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var searchTerm = this.state.searchTerm;
 
@@ -49768,10 +49822,10 @@ var Search = function (_Component) {
             value: searchTerm,
             onChange: this.handleChange,
             onFocus: function onFocus() {
-              return _this2.handleFocus();
+              return _this3.handleFocus();
             },
             onBlur: function onBlur() {
-              return _this2.handleFocusOut();
+              return _this3.handleFocusOut();
             } }),
           _react2.default.createElement('i', { className: 'fa fa-times icon-blue', 'aria-hidden': 'true' })
         )
@@ -49782,7 +49836,11 @@ var Search = function (_Component) {
   return Search;
 }(_react.Component);
 
-exports.default = Search;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Search);
 
 /***/ }),
 /* 166 */
@@ -56220,6 +56278,119 @@ var createUser = exports.createUser = function createUser(user) {
     data: { user: user }
   });
 };
+
+/***/ }),
+/* 214 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lodash = __webpack_require__(14);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _friendActions = __webpack_require__(60);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {};
+
+var potentialFriendsReducer = function potentialFriendsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments[1];
+
+  var newState = _lodash2.default.merge({}, state);
+  switch (action.type) {
+    case _friendActions.RECEIVE_ALL_POTENTIAL_FRIENDS:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+exports.default = potentialFriendsReducer;
+
+/***/ }),
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(3);
+
+var _ContactsListItem = __webpack_require__(26);
+
+var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PotentialFriendsList = function (_Component) {
+  _inherits(PotentialFriendsList, _Component);
+
+  function PotentialFriendsList(props) {
+    _classCallCheck(this, PotentialFriendsList);
+
+    return _possibleConstructorReturn(this, (PotentialFriendsList.__proto__ || Object.getPrototypeOf(PotentialFriendsList)).call(this, props));
+  }
+
+  _createClass(PotentialFriendsList, [{
+    key: 'render',
+    value: function render() {
+      var potentialFriends = this.props.potentialFriends;
+
+      var potentialFriendsJSX = potentialFriends.map(function (contact) {
+        return _react2.default.createElement(
+          'li',
+          null,
+          _react2.default.createElement(_ContactsListItem2.default, {
+            contact: contact })
+        );
+      });
+
+      return _react2.default.createElement(
+        'ul',
+        { className: 'potential-friends-list' },
+        potentialFriendsJSX
+      );
+    }
+  }]);
+
+  return PotentialFriendsList;
+}(_react.Component);
+
+var mSTP = function mSTP(state) {
+  return {
+    potentialFriends: Object.values(state.potentialFriends)
+  };
+};
+
+var mDTP = function mDTP(dispatch) {
+  return { dispatch: dispatch };
+};
+
+exports.default = (0, _reactRedux.connect)(mSTP, mDTP)(PotentialFriendsList);
 
 /***/ })
 /******/ ]);

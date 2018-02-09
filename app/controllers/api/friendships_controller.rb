@@ -8,4 +8,5 @@ class Api::FriendshipsController < ApplicationController
 
   def destroy
   end
+
 end

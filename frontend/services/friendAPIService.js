@@ -4,4 +4,11 @@ export const fetchAllFriends = () => {
   })
 };
 
+export const findPotentialFriends = (searchTerm) => {
+  return $.ajax({
+    url: `api/find/${searchTerm}`,
+    data: { searchTerm }
+  })
+}
+
 

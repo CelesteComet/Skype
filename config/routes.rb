@@ -6,11 +6,15 @@ Rails.application.routes.draw do
 
   namespace :api, :defaults => {:format => :json} do
     resource :session, only: [:create, :destroy]
+
     resources :users, only: [:create, :destroy]
+    get '/find/:search', to: 'users#search'
     resources :messages, only: [:index, :show, :create]
     resources :friendships, only: [:index, :create, :destroy]
     resources :room_memberships, only: [:index, :create, :destroy] 
     resources :rooms, only: [:create, :index]
+
+
   end
 
 end
