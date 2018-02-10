@@ -40,7 +40,7 @@ Skypii is a clone of Skype. The project was created in less than two weeks (with
 
 I wanted to go one step further in creating emojis by allowing the user to create emojis in between text. This required me to use a custom redux middleware in which I parse the incoming message text for certain emoji keywords. 
 
-![alt text](docs/kissy)
+![alt text](docs/kissy.png)
 
 
 ### Animated Emojis via canvas
@@ -50,6 +50,8 @@ These "gifs" are not what they seem to be. In order to create the in between tex
 ### Window Responsivness
 
 As a chatapp, I fully believe that the site should be responsive even though that was not a goal. That being said, I decided to copy pixel by pixel the responsive feature of the web skype app. 
+
+![alt text](docs/responsive.png)
 
 ### User Fuzzy Search
 
