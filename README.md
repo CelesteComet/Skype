@@ -40,6 +40,8 @@ Skypii is a clone of Skype. The project was created in less than two weeks (with
 
 I wanted to go one step further in creating emojis by allowing the user to create emojis in between text. This required me to use a custom redux middleware in which I parse the incoming message text for certain emoji keywords. 
 
+![alt text](docs/kissy)
+
 
 ### Animated Emojis via canvas
 
