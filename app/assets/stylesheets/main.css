@@ -311,7 +311,7 @@ footer a:hover {
 
   .aside-container {
     width: 9.7%;
-    min-width: 3.6em;
+    min-width: 55px;
     overflow: hidden;
   }
 

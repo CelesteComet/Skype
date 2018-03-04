@@ -14,6 +14,7 @@ class InputMessageInterface extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.adjustTextArea = this.adjustTextArea.bind(this);
     this.baseScrollHeight = 0;
@@ -28,19 +29,30 @@ class InputMessageInterface extends Component {
   handleChange(e) {
     e.preventDefault();
 
+    // If the user has pressed enter
     this.adjustTextArea();
+
 
     this.setState({
       body: e.target.value
     }, () => {
       if (this.state.body.length > 0) {
         this.dispatch(showMediaUpload());
-      } else {
+      } {
         this.dispatch(hideMediaUpload());
       }
     })
+  }
 
+  handleKeyDown(e) {
+    // If the user has pressed enter
+    if (e.keyCode === 13) {
+      this.handleSubmit(e);
+    }
+  }
 
+  scrollDown() {
+    $(".main-message-interface")[0].scrollTop = $(".message-interface")[0].scrollHeight
   }
 
   resetForm() {
@@ -57,6 +69,7 @@ class InputMessageInterface extends Component {
     data.room_id = roomId;
     dispatch(createMessage(this.state)).then(() => {
       this.dispatch(hideMediaUpload());
+      this.scrollDown();
     });
   } 
 
@@ -78,6 +91,7 @@ class InputMessageInterface extends Component {
               <textarea 
                 onFocus={this.handleFocus}
                 onChange={this.handleChange} 
+                onKeyDown={this.handleKeyDown}
                 value={this.state.body}
                 rows='2' 
                 data-min-rows='2'
