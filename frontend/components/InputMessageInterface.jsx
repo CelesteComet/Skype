@@ -52,7 +52,7 @@ class InputMessageInterface extends Component {
   }
 
   scrollDown() {
-    $(".main-message-interface")[0].scrollTop = $(".message-interface")[0].scrollHeight
+    $(".main-message-interface")[0].scrollTop = 10000000000000;
   }
 
   resetForm() {

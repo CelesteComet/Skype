@@ -46794,6 +46794,14 @@ var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var closeAll = function closeAll(state) {
+  for (var key in state) {
+    if (typeof state[key] === 'boolean') {
+      state[key] = false;
+    }
+  }
+};
+
 var initialState = {
   profileModalView: false,
   contactsListView: false,
@@ -46812,10 +46820,12 @@ var uiReducer = function uiReducer() {
       newState.profileModalView = !newState.profileModalView;
       return newState;
     case _uiActions.TOGGLE_CONTACTS_LIST:
-      newState.contactsListView = !newState.contactsListView;
+      closeAll(newState);
+      newState.contactsListView = true;
       return newState;
     case _uiActions.TOGGLE_CREATE_ROOM_VIEW:
-      newState.createRoomView = !newState.createRoomView;
+      closeAll(newState);
+      newState.createRoomView = true;
       return newState;
     case _uiActions.SHOW_MEDIA_UPLOAD:
       newState.mediaUploadView = true;
@@ -46824,6 +46834,8 @@ var uiReducer = function uiReducer() {
       newState.mediaUploadView = false;
       return newState;
     case _uiActions.MOVE_TO_ROOM:
+      closeAll(newState);
+
       newState.currentRoomId = action.payload;
       return newState;
     default:
@@ -52846,6 +52858,7 @@ var MainMessageInterface = function (_Component) {
     //   console.log("NEW MOUNT")
     // }
 
+
     value: function render() {
       var currentUserId = this.props.currentUserId;
 
@@ -53068,7 +53081,7 @@ var InputMessageInterface = function (_Component) {
   }, {
     key: 'scrollDown',
     value: function scrollDown() {
-      $(".main-message-interface")[0].scrollTop = $(".message-interface")[0].scrollHeight;
+      $(".main-message-interface")[0].scrollTop = 10000000000000;
     }
   }, {
     key: 'resetForm',

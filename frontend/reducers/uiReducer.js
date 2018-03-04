@@ -7,6 +7,14 @@ import {
   MOVE_TO_ROOM } from '../actions/uiActions';
 import _ from 'lodash';
 
+const closeAll = state => {
+  for (let key in state) {
+    if (typeof state[key] === 'boolean') {
+      state[key] = false;
+    }
+  } 
+};
+
 const initialState = {
   profileModalView: false,
   contactsListView: false,
@@ -22,10 +30,12 @@ const uiReducer = (state = initialState, action) => {
       newState.profileModalView = !newState.profileModalView;
       return newState;
     case TOGGLE_CONTACTS_LIST:
-      newState.contactsListView = !newState.contactsListView;
+      closeAll(newState);
+      newState.contactsListView = true;
       return newState;
     case TOGGLE_CREATE_ROOM_VIEW: 
-      newState.createRoomView = !newState.createRoomView;
+      closeAll(newState);
+      newState.createRoomView = true;
       return newState;
     case SHOW_MEDIA_UPLOAD: 
       newState.mediaUploadView = true;
@@ -34,6 +44,8 @@ const uiReducer = (state = initialState, action) => {
       newState.mediaUploadView = false;
       return newState;
     case MOVE_TO_ROOM:
+      closeAll(newState);
+
       newState.currentRoomId = action.payload;
       return newState;
     default: 

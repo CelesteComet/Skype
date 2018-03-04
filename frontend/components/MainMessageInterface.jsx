@@ -8,6 +8,7 @@ class MainMessageInterface extends Component {
   //   console.log("NEW MOUNT")
   // }
 
+
   render() {
     const {currentUserId} = this.props;
     let received = false;
