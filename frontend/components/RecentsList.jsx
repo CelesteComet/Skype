@@ -18,7 +18,8 @@ class RecentsList extends Component {
     e.preventDefault();
 
     // Go to the room 
-    dispatch(moveToRoom(roomId));
+
+    dispatch(moveToRoom(Number(roomId)));
     dispatch(fetchRoomMessages(roomId));
   }
 

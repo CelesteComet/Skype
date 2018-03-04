@@ -49725,29 +49725,37 @@ var SideBar = function (_Component) {
           null,
           _react2.default.createElement(
             'div',
-            { className: 'cloud-background' },
-            _react2.default.createElement('div', { className: 'white-circle cloud-5' }),
-            _react2.default.createElement('div', { className: 'white-circle cloud-4' }),
-            _react2.default.createElement('div', { className: 'white-circle cloud-3' }),
-            _react2.default.createElement('div', { className: 'white-circle cloud-2' }),
-            _react2.default.createElement('div', { className: 'white-circle cloud-1' }),
-            _react2.default.createElement('div', { className: 'white-circle cloud-2 deep-blue-cloud' }),
-            _react2.default.createElement('div', { className: 'white-circle cloud-2 light-blue-cloud' })
+            { className: 'sticky-sidebar' },
+            _react2.default.createElement(
+              'div',
+              { className: 'cloud-background' },
+              _react2.default.createElement('div', { className: 'white-circle cloud-5' }),
+              _react2.default.createElement('div', { className: 'white-circle cloud-4' }),
+              _react2.default.createElement('div', { className: 'white-circle cloud-3' }),
+              _react2.default.createElement('div', { className: 'white-circle cloud-2' }),
+              _react2.default.createElement('div', { className: 'white-circle cloud-1' }),
+              _react2.default.createElement('div', { className: 'white-circle cloud-2 deep-blue-cloud' }),
+              _react2.default.createElement('div', { className: 'white-circle cloud-2 light-blue-cloud' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'name-heading' },
+              _react2.default.createElement(_ProfileItem2.default, {
+                name: currentUsername,
+                status: 'Online',
+                src: 'images/default-avatar.svg',
+                handleClick: function handleClick() {
+                  dispatch((0, _uiActions.toggleProfileModal)());
+                } })
+            ),
+            _react2.default.createElement(_Search2.default, null),
+            _react2.default.createElement(_AsideButtons2.default, null)
           ),
-          _react2.default.createElement(_ProfileItem2.default, {
-            name: currentUsername,
-            status: 'Online',
-            src: 'images/default-avatar.svg',
-            handleClick: function handleClick() {
-              dispatch((0, _uiActions.toggleProfileModal)());
-            } }),
           _react2.default.createElement(
             'div',
-            { className: 'me-container' },
-            _react2.default.createElement(_Search2.default, null),
-            _react2.default.createElement(_AsideButtons2.default, null),
-            this.props.potentialFriends.length > 0 && _react2.default.createElement(_PotentialFriendsList2.default, null),
-            _react2.default.createElement(_RecentsList2.default, null)
+            { className: 'big-sidebar-list' },
+            _react2.default.createElement(_RecentsList2.default, null),
+            this.props.potentialFriends.length > 0 && _react2.default.createElement(_PotentialFriendsList2.default, null)
           )
         )
       );
@@ -50039,7 +50047,8 @@ var RecentsList = function (_Component) {
       e.preventDefault();
 
       // Go to the room 
-      dispatch((0, _uiActions.moveToRoom)(roomId));
+
+      dispatch((0, _uiActions.moveToRoom)(Number(roomId)));
       dispatch((0, _messageActions.fetchRoomMessages)(roomId));
     }
   }, {
@@ -50227,7 +50236,7 @@ var RecentsListItem = function (_Component) {
       var nameString = nameArray.join(' ');
       return _react2.default.createElement(
         'li',
-        { className: currentRoomId === roomId ? 'active' : '', onClick: switchRoomHandler },
+        { className: currentRoomId === Number(roomId) ? 'active' : '', onClick: switchRoomHandler },
         _react2.default.createElement(_ProfileItem2.default, {
           key: uuid.default(),
           name: nameString,
@@ -50407,13 +50416,19 @@ var PotentialFriendsList = function (_Component) {
         );
       });
 
+      if (potentialFriendsJSX.length === 0) {
+        return _react2.default.createElement('div', { className: 'loader' });
+      };
+
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'potentials-view' },
         _react2.default.createElement(
-          'p',
-          null,
-          'Search Results'
+          'button',
+          { onClick: function onClick() {
+              next();
+            } },
+          'Search Skype Directory'
         ),
         _react2.default.createElement(
           'ul',
@@ -52851,14 +52866,22 @@ var MainMessageInterface = function (_Component) {
   }
 
   _createClass(MainMessageInterface, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      console.log("NEW MOUNT");
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      console.log(prevProps);
+    }
+  }, {
+    key: 'scrollDown',
+    value: function scrollDown() {
+      $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
+    }
+  }, {
     key: 'render',
-
-
-    // componentDidMount() {
-    //   console.log("NEW MOUNT")
-    // }
-
-
     value: function render() {
       var currentUserId = this.props.currentUserId;
 

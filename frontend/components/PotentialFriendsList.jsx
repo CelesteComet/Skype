@@ -25,10 +25,14 @@ class PotentialFriendsList extends Component {
       );
     });
 
+    if (potentialFriendsJSX.length === 0) {
+      return <div className='loader'></div>
+    };
+
 
     return (
-      <div>
-        <p>Search Results</p>
+      <div className='potentials-view'>
+        <button onClick={() => {next()}}>Search Skype Directory</button>
         <ul className='potential-friends-list'>
           { potentialFriendsJSX }
         </ul>

@@ -4,10 +4,17 @@ import MessageItem from './MessageItem';
 
 class MainMessageInterface extends Component {
 
-  // componentDidMount() {
-  //   console.log("NEW MOUNT")
-  // }
+  componentDidMount() {
+    console.log("NEW MOUNT")
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps);
+  }
+
+  scrollDown() {
+    $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
+  }
 
   render() {
     const {currentUserId} = this.props;

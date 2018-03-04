@@ -30,7 +30,7 @@ class RecentsListItem extends Component {
 
     const nameString = nameArray.join(' ');
     return (
-      <li className={currentRoomId === roomId ? 'active' : ''} onClick={ switchRoomHandler }>
+      <li className={currentRoomId === Number(roomId) ? 'active' : ''} onClick={ switchRoomHandler }>
         <ProfileItem 
           key={uuid.default()}
           name={nameString} 

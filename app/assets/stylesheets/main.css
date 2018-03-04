@@ -105,7 +105,6 @@ aside {
   transition: width .5s ease-in-out,min-width .5s ease-in-out;
   border-right: 1px solid #d6e6ec;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .cloud-background {
@@ -180,11 +179,11 @@ aside {
   left: -5px;
 }
 
-.me-container {
+/*.me-container {
   background-color: white;
   position: relative;
   top: -4px;
-}
+}*/
 
 .profile-name-status {
   position: relative;
@@ -318,6 +317,28 @@ footer a:hover {
   .media-q-display-none {
     display: none;
   }
+}
+
+.big-sidebar-list {
+  padding-top: 190px;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  padding-bottom: 30px;
+}
+
+.sticky-sidebar {
+  position: absolute;
+  background-color: white;
+  z-index: 99;
+  width: 100%;
+}
+
+.name-heading {
+  left: 18px;
+  top: -26px;
+  position: relative;
+  z-index: 100;
 }
 
 @media (max-width: 666px) {

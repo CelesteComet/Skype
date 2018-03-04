@@ -1,3 +1,19 @@
+.potentials-view button {
+  width: 90%;
+  background-color: #4AAEEA;
+  color: #FFF;
+  border: 2px solid transparent;
+  height: 36px;
+  border-radius: 25px;
+  font-size: 15px;
+  margin: 17px 16px 18px 16px;
+}
+
+.potentials-view button:hover {
+  background-color: #0b7db4;
+  cursor: pointer;
+}
+
 .potential-friends-list {
   overflow: auto;
   border-bottom: 1px solid black;
