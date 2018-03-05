@@ -11,9 +11,12 @@ class CircleImageIcon extends React.Component {
   }
 
   handleHover(bool) {
-    this.setState({
-      circleHover: bool 
-    })
+    let { canHover } = this.props;
+    if (canHover) {
+      this.setState({
+        circleHover: bool 
+      })
+    }
   }
 
   render() {

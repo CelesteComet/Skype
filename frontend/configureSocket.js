@@ -1,4 +1,5 @@
 import { receiveMessage } from './actions/messageActions';
+import { logoutUser } from './actions/sessionActions';
 
 const configureSocket = (context, chatRoomIds, dispatch) => {
 
@@ -18,7 +19,6 @@ const configureSocket = (context, chatRoomIds, dispatch) => {
       dispatch(receiveMessage(data));
     };
 
-
     App[roomName].disconnected = () => {
       console.log(`Disconnected from ${roomName}`);
     };
@@ -26,10 +26,14 @@ const configureSocket = (context, chatRoomIds, dispatch) => {
   });
   
   console.log("Subscribing to appearance channel");
-  App.appearances = App.cable.subscriptions.create({channel: 'AppearanceChannel', id: 1});
+
+  App.appearances = App.cable.subscriptions.create({channel: 'AppearanceChannel'});
+
   App.appearances.received = data => {
     console.log(data);
   };
+
+
 };
 
 export default configureSocket;

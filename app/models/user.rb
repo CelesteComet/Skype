@@ -50,4 +50,11 @@ class User < ApplicationRecord
     self.session_token = self.session_token || User.generate_session_token
   end
 
+  # Instance method to notify all friends of login and logout status
+  def notify_status(status)
+    self.status = status
+    self.save!
+    NotifyStatusJob.perform(self.id, status)
+  end
+
 end
