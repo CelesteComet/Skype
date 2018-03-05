@@ -21,8 +21,9 @@ export const fetchRoomMemberships = () => dispatch => {
 
 export const createRoom = (roomIds) => dispatch => {
   return APIUtil.createRoom(roomIds)
-    .then(() => {
+    .then((room) => {
       dispatch(fetchRoomMemberships()); 
+      return room;
     }, err => {
       console.log(err);
     })

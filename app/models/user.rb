@@ -54,7 +54,7 @@ class User < ApplicationRecord
   def notify_status(status)
     self.status = status
     self.save!
-    NotifyStatusJob.perform(self.id, status)
+    WebNotificationsJob.perform(self, status)
   end
 
 end

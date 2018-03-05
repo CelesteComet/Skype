@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ContactsListItem from './ContactsListItem';
+import { createRoom } from '../actions/roomMembershipActions';
+import { moveToRoom } from '../actions/uiActions';
 
 class ContactsListView extends Component {
   constructor(props) {
     super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(user) {
+    let { dispatch } = this.props;
+    dispatch(createRoom([user.id])).then((room) => {
+      dispatch(moveToRoom(room.id));
+    });
   }
 
   render() {
@@ -12,7 +22,7 @@ class ContactsListView extends Component {
 
     // sort the contacts alphabetically
     contacts = contacts.sort((a, b) => a.username.localeCompare(b.username))
-    
+
     let contactsJSX = [];
 
     // if we have contacts 
@@ -25,18 +35,39 @@ class ContactsListView extends Component {
           let firstLetter = contacts[0].username[0];
           contactsJSX.push(<li key={Math.random()} className='alphabet-row'>{firstLetter}</li>)
           //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
-          contactsJSX.push(<ContactsListItem key={Math.random()} contact={ contacts[i] }/>)
+          contactsJSX.push(
+            <div className='contacts-list-item' key={Math.random()} onClick={this.handleClick.bind(null, contacts[i])}>
+              <ContactsListItem 
+              contact={ contacts[i] }
+              onClick={this.handleClick.bind(null, contacts[i])} 
+              />
+            </div>
+          )
         } else {
           // if we are not on the first one, check if the last letter is 
           // the same as the current letter, if it is dump it in
           let lastLetter = contacts[i-1].username[0];
           let currentLetter = contacts[i].username[0];
           if (lastLetter === currentLetter) {
-            contactsJSX.push(<ContactsListItem key={Math.random()} contact={ contacts[i] }/>)
+            contactsJSX.push(
+              <div className='contacts-list-item' key={Math.random()} onClick={this.handleClick.bind(null, contacts[i])}>
+                <ContactsListItem 
+                contact={ contacts[i] }
+                onClick={this.handleClick.bind(null, contacts[i])} 
+                />
+              </div>
+            )
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
           } else {
             contactsJSX.push(<li key={Math.random()} className='alphabet-row'>{currentLetter}</li>)
-            contactsJSX.push(<ContactsListItem key={Math.random()} contact={ contacts[i] }/>)
+            contactsJSX.push(
+              <div className='contacts-list-item' key={Math.random()} onClick={this.handleClick.bind(null, contacts[i])}>
+                <ContactsListItem 
+                contact={ contacts[i] }
+                onClick={this.handleClick.bind(null, contacts[i])} 
+                />
+              </div>
+            )
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
           }
         }

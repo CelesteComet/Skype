@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import HeaderMessageInterface from './HeaderMessageInterface';
 import ContactsListItem from './ContactsListItem';
 import { createRoom } from '../actions/roomMembershipActions';
+import { moveToRoom } from '../actions/uiActions';
 
 class CreateRoomView extends Component {
   constructor(props) {
@@ -52,11 +53,13 @@ class CreateRoomView extends Component {
   }
 
   cancelAll() {
+    const { currentRoomId, dispatch } = this.props;
     this.setState({
       room: {},
       contactsInput: '',
       participants: 0
     })
+    dispatch(moveToRoom(currentRoomId));
   }
 
 
@@ -191,7 +194,8 @@ class CreateRoomView extends Component {
 
 const mapStateToProps = state => {
   return {
-    contacts: Object.values(state.friends)
+    contacts: Object.values(state.friends),
+    currentRoomId: state.ui.currentRoomId
   }
 };
 

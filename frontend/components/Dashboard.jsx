@@ -10,6 +10,7 @@ import { logoutUser } from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
 import { fetchAllFriends } from '../actions/friendActions';
 import { fetchAllMessages, fetchRoomMessages } from '../actions/messageActions';
+import { toggleContactsList } from '../actions/uiActions';
 
 import { connect } from 'react-redux';
 import titleService from '../services/titleService';
@@ -29,7 +30,12 @@ class Dashboard extends Component {
         const roomMemberships = Object.values(state.roomMemberships);
         const chatroomIds = [...new Set(roomMemberships.map(m => m.room_id))];
         configureSocket(this, chatroomIds, dispatch);
-        dispatch(fetchRoomMessages(1));
+
+        // if the user currently does not belong to any rooms, bring him to contacts
+        if (roomMemberships.length === 0) {
+          dispatch(toggleContactsList());
+        }
+        //dispatch(fetchRoomMessages(1));
       });
     });
   }

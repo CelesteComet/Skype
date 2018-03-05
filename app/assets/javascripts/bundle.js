@@ -19337,8 +19337,9 @@ var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemb
 
 var createRoom = exports.createRoom = function createRoom(roomIds) {
   return function (dispatch) {
-    return APIUtil.createRoom(roomIds).then(function () {
+    return APIUtil.createRoom(roomIds).then(function (room) {
       dispatch(fetchRoomMemberships());
+      return room;
     }, function (err) {
       console.log(err);
     });
@@ -49783,6 +49784,8 @@ var _friendActions = __webpack_require__(23);
 
 var _messageActions = __webpack_require__(15);
 
+var _uiActions = __webpack_require__(8);
+
 var _reactRedux = __webpack_require__(3);
 
 var _titleService = __webpack_require__(86);
@@ -49831,7 +49834,12 @@ var Dashboard = function (_Component) {
             return m.room_id;
           }))));
           (0, _configureSocket2.default)(_this2, chatroomIds, dispatch);
-          dispatch((0, _messageActions.fetchRoomMessages)(1));
+
+          // if the user currently does not belong to any rooms, bring him to contacts
+          if (roomMemberships.length === 0) {
+            dispatch((0, _uiActions.toggleContactsList)());
+          }
+          //dispatch(fetchRoomMessages(1));
         });
       });
     }
@@ -53329,6 +53337,10 @@ var _ContactsListItem = __webpack_require__(18);
 
 var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
 
+var _roomMembershipActions = __webpack_require__(34);
+
+var _uiActions = __webpack_require__(8);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53343,10 +53355,22 @@ var ContactsListView = function (_Component) {
   function ContactsListView(props) {
     _classCallCheck(this, ContactsListView);
 
-    return _possibleConstructorReturn(this, (ContactsListView.__proto__ || Object.getPrototypeOf(ContactsListView)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (ContactsListView.__proto__ || Object.getPrototypeOf(ContactsListView)).call(this, props));
+
+    _this.handleClick = _this.handleClick.bind(_this);
+    return _this;
   }
 
   _createClass(ContactsListView, [{
+    key: 'handleClick',
+    value: function handleClick(user) {
+      var dispatch = this.props.dispatch;
+
+      dispatch((0, _roomMembershipActions.createRoom)([user.id])).then(function (room) {
+        dispatch((0, _uiActions.moveToRoom)(room.id));
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var contacts = this.props.contacts;
@@ -53373,14 +53397,28 @@ var ContactsListView = function (_Component) {
               firstLetter
             ));
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
-            contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
+            contactsJSX.push(_react2.default.createElement(
+              'div',
+              { className: 'contacts-list-item', key: Math.random(), onClick: this.handleClick.bind(null, contacts[i]) },
+              _react2.default.createElement(_ContactsListItem2.default, {
+                contact: contacts[i],
+                onClick: this.handleClick.bind(null, contacts[i])
+              })
+            ));
           } else {
             // if we are not on the first one, check if the last letter is 
             // the same as the current letter, if it is dump it in
             var lastLetter = contacts[i - 1].username[0];
             var currentLetter = contacts[i].username[0];
             if (lastLetter === currentLetter) {
-              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
+              contactsJSX.push(_react2.default.createElement(
+                'div',
+                { className: 'contacts-list-item', key: Math.random(), onClick: this.handleClick.bind(null, contacts[i]) },
+                _react2.default.createElement(_ContactsListItem2.default, {
+                  contact: contacts[i],
+                  onClick: this.handleClick.bind(null, contacts[i])
+                })
+              ));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             } else {
               contactsJSX.push(_react2.default.createElement(
@@ -53388,7 +53426,14 @@ var ContactsListView = function (_Component) {
                 { key: Math.random(), className: 'alphabet-row' },
                 currentLetter
               ));
-              contactsJSX.push(_react2.default.createElement(_ContactsListItem2.default, { key: Math.random(), contact: contacts[i] }));
+              contactsJSX.push(_react2.default.createElement(
+                'div',
+                { className: 'contacts-list-item', key: Math.random(), onClick: this.handleClick.bind(null, contacts[i]) },
+                _react2.default.createElement(_ContactsListItem2.default, {
+                  contact: contacts[i],
+                  onClick: this.handleClick.bind(null, contacts[i])
+                })
+              ));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             }
           }
@@ -53497,6 +53542,8 @@ var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
 
 var _roomMembershipActions = __webpack_require__(34);
 
+var _uiActions = __webpack_require__(8);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53569,11 +53616,16 @@ var CreateRoomView = function (_Component) {
   }, {
     key: 'cancelAll',
     value: function cancelAll() {
+      var _props = this.props,
+          currentRoomId = _props.currentRoomId,
+          dispatch = _props.dispatch;
+
       this.setState({
         room: {},
         contactsInput: '',
         participants: 0
       });
+      dispatch((0, _uiActions.moveToRoom)(currentRoomId));
     }
   }, {
     key: 'render',
@@ -53754,7 +53806,8 @@ var CreateRoomView = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    contacts: Object.values(state.friends)
+    contacts: Object.values(state.friends),
+    currentRoomId: state.ui.currentRoomId
   };
 };
 
@@ -54067,9 +54120,9 @@ var configureSocket = function configureSocket(context, chatRoomIds, dispatch) {
     };
   });
 
-  console.log("Subscribing to appearance channel");
+  console.log("Subscribing to web notifications channel");
 
-  App.appearances = App.cable.subscriptions.create({ channel: 'AppearanceChannel' });
+  App.appearances = App.cable.subscriptions.create({ channel: 'WebNotificationsChannel' });
 
   App.appearances.received = function (data) {
     console.log(data);

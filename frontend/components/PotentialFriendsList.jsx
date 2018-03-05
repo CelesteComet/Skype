@@ -11,8 +11,6 @@ class PotentialFriendsList extends Component {
   render() {
     const { potentialFriends, directoryButton } = this.props;
 
-
-
     let potentialFriendsJSX = potentialFriends.map(contact => {
       return (
         <li>

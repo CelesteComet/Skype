@@ -25,9 +25,9 @@ const configureSocket = (context, chatRoomIds, dispatch) => {
 
   });
   
-  console.log("Subscribing to appearance channel");
+  console.log("Subscribing to web notifications channel");
 
-  App.appearances = App.cable.subscriptions.create({channel: 'AppearanceChannel'});
+  App.appearances = App.cable.subscriptions.create({channel: 'WebNotificationsChannel'});
 
   App.appearances.received = data => {
     console.log(data);
