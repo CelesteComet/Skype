@@ -24,9 +24,56 @@ class CircleImageIcon extends React.Component {
     const {status, src, handleHover, statusIcon} = this.props;
     const {circleHover} = this.state;
 
-    const circleState = circleHover ? {...styles.div, ...styles.hovered} : {...styles.div} 
+     
+
+    // Background color for the status icon
+    let backgroundColor;
+    let borderColor;
+    let boxShadow = '0 0 0 3px white';
+    if (status === 0) {
+      backgroundColor = 'white';
+      borderColor = '#94999C';
+    } else if (status === 1) {
+      backgroundColor = 'green';
+      borderColor = 'green';
+    } else {
+      backgroundColor = 'orange';
+      borderColor = 'orange';
+    }
+
+    let styles = {
+      img: {
+        borderRadius: '100%',
+        width: '40px',
+        backgroundColor: '#97D8F5'
+      },
+      hovered: {
+        backgroundColor: 'blue',
+        'cursor': 'pointer'
+      },
+      div: {
+        borderRadius: '100%',
+        width: '12px',
+        height: '12px',
+        position: 'relative',
+        backgroundColor: 'white',
+        top: '-16px',
+        left: '29px',
+        border: `2px solid ${borderColor}` ,
+        boxShadow: boxShadow
+      },
+      container: {
+        'display': 'inline-block',
+        'cursor': 'pointer',
+        'height': '40px'
+      }
+    };
+
+    styles.div.backgroundColor = backgroundColor;
+    const circleState = circleHover ? {...styles.div, ...styles.hovered} : {...styles.div}
 
     return (
+
       <div 
         style={styles.container} 
         className='CircleImageIcon'>
@@ -42,39 +89,6 @@ class CircleImageIcon extends React.Component {
     );
   }
 }
-
-const styles = {
-  img: {
-    borderRadius: '100%',
-    width: '40px',
-    backgroundColor: '#97D8F5'
-  },
-  hovered: {
-    backgroundColor: 'blue',
-    'cursor': 'pointer'
-  },
-  div: {
-    borderRadius: '100%',
-    width: '14px',
-    height: '14px',
-    position: 'relative',
-    backgroundColor: '#8CB738',
-    top: '-20px',
-    left: '29px',
-    border: '3px solid white',
-  },
-  container: {
-    'display': 'inline-block',
-    'cursor': 'pointer',
-    'height': '40px'
-  }
-};
-
-
-CircleImageIcon.propTypes = {
-  src: PropTypes.string,
-  status: PropTypes.string
-};
 
 export default CircleImageIcon;
 

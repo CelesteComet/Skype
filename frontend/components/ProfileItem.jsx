@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CircleImageIcon from './CircleImageIcon';
 import * as uuid from 'uuid/v1';
 
-function ProfileItem({name, src, status, statusIcon, handleClick}) {
+function ProfileItem({name, src, status, statusIcon, statusId, canHover, handleClick}) {
   return (
     <div 
       className="profile-item"
@@ -12,7 +12,9 @@ function ProfileItem({name, src, status, statusIcon, handleClick}) {
         <CircleImageIcon 
           src={ src }
           status={ status } 
-          statusIcon={ statusIcon } />
+          statusId={ statusId }
+          statusIcon={ statusIcon } 
+          canHover={ true }/>
         <div className="name-info">
           <h4>{ name }</h4>
           <p className="small gray italic">{ status }</p>
@@ -21,8 +23,6 @@ function ProfileItem({name, src, status, statusIcon, handleClick}) {
     </div> 
   );
 }
-
-
 
 ProfileItem.propTypes = {
   name: PropTypes.string,

@@ -18317,7 +18317,8 @@ var ContactsListItem = function (_Component) {
     value: function render() {
       var _props$contact = this.props.contact,
           username = _props$contact.username,
-          status = _props$contact.status;
+          status = _props$contact.status,
+          statusMsg = _props$contact.statusMsg;
 
       return _react2.default.createElement(
         'div',
@@ -18328,7 +18329,9 @@ var ContactsListItem = function (_Component) {
           _react2.default.createElement(_CircleImageIcon2.default, {
             src: '/images/default-avatar.svg',
             status: status,
-            statusIcon: true }),
+            statusMsg: statusMsg,
+            statusIcon: true,
+            canHover: false }),
           _react2.default.createElement(
             'div',
             { className: 'name-status-container' },
@@ -19830,7 +19833,51 @@ var CircleImageIcon = function (_React$Component) {
           statusIcon = _props.statusIcon;
       var circleHover = this.state.circleHover;
 
+      // Background color for the status icon
 
+      var backgroundColor = void 0;
+      var borderColor = void 0;
+      var boxShadow = '0 0 0 3px white';
+      if (status === 0) {
+        backgroundColor = 'white';
+        borderColor = '#94999C';
+      } else if (status === 1) {
+        backgroundColor = 'green';
+        borderColor = 'green';
+      } else {
+        backgroundColor = 'orange';
+        borderColor = 'orange';
+      }
+
+      var styles = {
+        img: {
+          borderRadius: '100%',
+          width: '40px',
+          backgroundColor: '#97D8F5'
+        },
+        hovered: {
+          backgroundColor: 'blue',
+          'cursor': 'pointer'
+        },
+        div: {
+          borderRadius: '100%',
+          width: '12px',
+          height: '12px',
+          position: 'relative',
+          backgroundColor: 'white',
+          top: '-16px',
+          left: '29px',
+          border: '2px solid ' + borderColor,
+          boxShadow: boxShadow
+        },
+        container: {
+          'display': 'inline-block',
+          'cursor': 'pointer',
+          'height': '40px'
+        }
+      };
+
+      styles.div.backgroundColor = backgroundColor;
       var circleState = circleHover ? _extends({}, styles.div, styles.hovered) : _extends({}, styles.div);
 
       return _react2.default.createElement(
@@ -19855,38 +19902,6 @@ var CircleImageIcon = function (_React$Component) {
 
   return CircleImageIcon;
 }(_react2.default.Component);
-
-var styles = {
-  img: {
-    borderRadius: '100%',
-    width: '40px',
-    backgroundColor: '#97D8F5'
-  },
-  hovered: {
-    backgroundColor: 'blue',
-    'cursor': 'pointer'
-  },
-  div: {
-    borderRadius: '100%',
-    width: '14px',
-    height: '14px',
-    position: 'relative',
-    backgroundColor: '#8CB738',
-    top: '-20px',
-    left: '29px',
-    border: '3px solid white'
-  },
-  container: {
-    'display': 'inline-block',
-    'cursor': 'pointer',
-    'height': '40px'
-  }
-};
-
-CircleImageIcon.propTypes = {
-  src: _propTypes2.default.string,
-  status: _propTypes2.default.string
-};
 
 exports.default = CircleImageIcon;
 
@@ -19926,6 +19941,8 @@ function ProfileItem(_ref) {
       src = _ref.src,
       status = _ref.status,
       statusIcon = _ref.statusIcon,
+      statusId = _ref.statusId,
+      canHover = _ref.canHover,
       handleClick = _ref.handleClick;
 
   return _react2.default.createElement(
@@ -19939,7 +19956,9 @@ function ProfileItem(_ref) {
       _react2.default.createElement(_CircleImageIcon2.default, {
         src: src,
         status: status,
-        statusIcon: statusIcon }),
+        statusId: statusId,
+        statusIcon: statusIcon,
+        canHover: true }),
       _react2.default.createElement(
         'div',
         { className: 'name-info' },
@@ -49947,6 +49966,9 @@ var SideBar = function (_Component) {
               _react2.default.createElement(_ProfileItem2.default, {
                 name: currentUsername,
                 status: 'Online',
+                statusId: 0,
+                statusIcon: true,
+                canHover: true,
                 src: 'images/default-avatar.svg',
                 handleClick: function handleClick() {
                   dispatch((0, _uiActions.toggleProfileModal)());
@@ -53329,6 +53351,11 @@ var ContactsListView = function (_Component) {
     value: function render() {
       var contacts = this.props.contacts;
 
+      // sort the contacts alphabetically
+
+      contacts = contacts.sort(function (a, b) {
+        return a.username.localeCompare(b.username);
+      });
 
       var contactsJSX = [];
 
@@ -53569,6 +53596,11 @@ var CreateRoomView = function (_Component) {
       });
 
       var contacts = this.state.filtered;
+      // sorted alphabetically
+      contacts = contacts.sort(function (a, b) {
+        return a.username.localeCompare(b.username);
+      });
+
       var contactsJSX = [];
 
       // if we have contacts 

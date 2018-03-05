@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ContactsListItem from './ContactsListItem';
 
-
-
 class ContactsListView extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { contacts } = this.props;
+    let { contacts } = this.props;
 
+    // sort the contacts alphabetically
+    contacts = contacts.sort((a, b) => a.username.localeCompare(b.username))
+    
     let contactsJSX = [];
 
     // if we have contacts 
@@ -41,10 +42,6 @@ class ContactsListView extends Component {
         }
       }
     }
-
-
-    
-
 
     return (
       <div className='contacts-list-view'>

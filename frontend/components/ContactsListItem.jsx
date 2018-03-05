@@ -7,14 +7,16 @@ class ContactsListItem extends Component {
   }
 
   render() {
-    const { contact: { username, status} } = this.props;
+    const { contact: { username, status, statusMsg } } = this.props;
     return (
       <div className="contacts-list-item">
         <div className="contacts-list-container">
           <CircleImageIcon 
             src='/images/default-avatar.svg'
             status={ status }
-            statusIcon={true} />
+            statusMsg={ statusMsg }
+            statusIcon={ true } 
+            canHover={ false }/>
           <div className='name-status-container'>
             <p className='name'>{username}</p>
             <p className='status'>{'Online'}</p>

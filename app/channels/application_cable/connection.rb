@@ -7,6 +7,7 @@ module ApplicationCable
 
     def connect 
       self.current_user = find_verified_user
+      self.current_user.notify_status(1)
     end
 
     def session

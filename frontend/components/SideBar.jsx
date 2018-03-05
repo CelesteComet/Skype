@@ -31,6 +31,9 @@ class SideBar extends Component {
               <ProfileItem 
                 name={currentUsername} 
                 status={'Online'}
+                statusId={0}
+                statusIcon={true}
+                canHover={true}
                 src={'images/default-avatar.svg'} 
                 handleClick={() => { dispatch(toggleProfileModal()) }} />
             </div>

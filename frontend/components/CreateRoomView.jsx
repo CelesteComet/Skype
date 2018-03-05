@@ -80,6 +80,9 @@ class CreateRoomView extends Component {
 
 
     let contacts  = this.state.filtered;
+    // sorted alphabetically
+    contacts = contacts.sort((a, b) => a.username.localeCompare(b.username));
+
     let contactsJSX = [];
 
     // if we have contacts 
