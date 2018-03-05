@@ -341,6 +341,22 @@ footer a:hover {
   z-index: 100;
 }
 
+.potentials-button {
+  width: 90%;
+  background-color: #4AAEEA;
+  color: #FFF;
+  border: 2px solid transparent;
+  height: 36px;
+  border-radius: 25px;
+  font-size: 15px;
+  margin: 17px 16px 18px 16px;
+}
+
+.potentials-button:hover {
+  background-color: #0b7db4;
+  cursor: pointer;
+}
+
 @media (max-width: 666px) {
   .form-holder {
     margin-bottom: 112px !important;

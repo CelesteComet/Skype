@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { findPotentialFriends } from '../actions/friendActions';
+import PotentialFriendsList from './PotentialFriendsList';
+import AsideButtons from './AsideButtons';
+import { 
+  findPotentialFriends
+} from '../actions/friendActions';
+
+import {
+  showSearchDirectoryButton,
+  hideSearchDirectoryButton  
+} from '../actions/uiActions';
 
 class Search extends Component {
 
@@ -28,7 +37,12 @@ class Search extends Component {
       searchTerm: e.target.value
     }, () => {
       let searchTerm = this.state.searchTerm;
-      dispatch(findPotentialFriends(searchTerm));
+      if (searchTerm.length > 0) {
+        dispatch(showSearchDirectoryButton());
+      } else {
+        dispatch(hideSearchDirectoryButton());
+      }
+      // dispatch(findPotentialFriends(searchTerm));
     });
   }
 
@@ -55,28 +69,40 @@ class Search extends Component {
 
   render() {
     const { searchTerm } = this.state;
+    const { directoryButton } = this.props;
     return (
-      <form className="search-skype">
-        <div>
-          <i className="fa fa-search icon-blue" aria-hidden="false"></i>
-          <input 
-            text="text" 
-            value={ searchTerm }
-            onChange={ this.handleChange } 
-            onFocus={() => (this.handleFocus())} 
-            onBlur={() => (this.handleFocusOut())} />
-          <i className="fa fa-times icon-blue" aria-hidden="true" onClick={() => {this.handleClear()}}></i>
-        </div>
-      </form>
+      <div>
+        <AsideButtons />
+        <form className="search-skype">
+          <div>
+            <i className="fa fa-search icon-blue" aria-hidden="false"></i>
+            <input 
+              text="text" 
+              value={ searchTerm }
+              onChange={ this.handleChange } 
+              onFocus={() => (this.handleFocus())} 
+              onBlur={() => (this.handleFocusOut())} />
+            <i className="fa fa-times icon-blue" aria-hidden="true" onClick={() => {this.handleClear()}}></i>
+          </div>
+        </form>
+        {directoryButton && 
+          <button className='potentials-button' onClick={() => {findPotentialFriends}}>Search Skype Directory</button> }
+        <PotentialFriendsList /> 
+      </div>
+
     );
   }
+}
+
+const mapStateToProps = state => {
+  return { directoryButton: state.ui.directoryButton }
 }
 
 const mapDispatchToProps = dispatch => {
   return { dispatch }
 };
 
-export default connect(null, mapDispatchToProps)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
 
 
 

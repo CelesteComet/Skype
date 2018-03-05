@@ -2,6 +2,8 @@ import {
   TOGGLE_PROFILE_MODAL, 
   TOGGLE_CONTACTS_LIST, 
   TOGGLE_CREATE_ROOM_VIEW,
+  SHOW_SEARCH_DIRECTORY_BUTTON,
+  HIDE_SEARCH_DIRECTORY_BUTTON,
   SHOW_MEDIA_UPLOAD,
   HIDE_MEDIA_UPLOAD,
   MOVE_TO_ROOM } from '../actions/uiActions';
@@ -20,6 +22,7 @@ const initialState = {
   contactsListView: false,
   createRoomView: false,
   mediaUploadView: true, // media upload icon for input
+  directoryButton: false,
   currentRoomId: 1 // change this later when implementing changing rooms
 };
 
@@ -37,6 +40,12 @@ const uiReducer = (state = initialState, action) => {
       closeAll(newState);
       newState.createRoomView = true;
       return newState;
+    case HIDE_SEARCH_DIRECTORY_BUTTON:
+      newState.directoryButton = false;
+      return newState;
+    case SHOW_SEARCH_DIRECTORY_BUTTON:
+      newState.directoryButton = true 
+      return newState;      
     case SHOW_MEDIA_UPLOAD: 
       newState.mediaUploadView = true;
       return newState;

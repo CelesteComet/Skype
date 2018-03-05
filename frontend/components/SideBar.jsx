@@ -11,7 +11,7 @@ import PotentialFriendsList from './PotentialFriendsList';
 class SideBar extends Component {
 
   render() {
-    let { dispatch, currentUsername} = this.props;
+    let { dispatch, directoryButton, currentUsername} = this.props;
 
     return (
       <div className="aside-container">
@@ -36,11 +36,10 @@ class SideBar extends Component {
             </div>
             {/* Search */}
             <Search />
-            <AsideButtons />
+            
           </div>
           <div className='big-sidebar-list'>
-            <RecentsList />
-            { this.props.potentialFriends.length > 0 && <PotentialFriendsList /> }
+            { !directoryButton && <RecentsList /> }
           </div>
         </aside>
       </div>
@@ -51,7 +50,8 @@ class SideBar extends Component {
 const mapStateToProps = state => {
   return {
     currentUsername: state.session.currentUser.username,
-    potentialFriends: Object.values(state.potentialFriends)
+    potentialFriends: Object.values(state.potentialFriends),
+    directoryButton: state.ui.directoryButton
   }
 };
 

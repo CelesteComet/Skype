@@ -17692,6 +17692,8 @@ Object.defineProperty(exports, "__esModule", {
 var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
 var TOGGLE_CONTACTS_LIST = exports.TOGGLE_CONTACTS_LIST = "TOGGLE_CONTACTS_LIST";
 var TOGGLE_CREATE_ROOM_VIEW = exports.TOGGLE_CREATE_ROOM_VIEW = "TOGGLE_CREATE_ROOM_VIEW";
+var SHOW_SEARCH_DIRECTORY_BUTTON = exports.SHOW_SEARCH_DIRECTORY_BUTTON = "SHOW_SEARCH_DIRECTORY_BUTTON";
+var HIDE_SEARCH_DIRECTORY_BUTTON = exports.HIDE_SEARCH_DIRECTORY_BUTTON = "HIDE_SEARCH_DIRECTORY_BUTTON";
 var SHOW_MEDIA_UPLOAD = exports.SHOW_MEDIA_UPLOAD = "SHOW_MEDIA_UPLOAD";
 var HIDE_MEDIA_UPLOAD = exports.HIDE_MEDIA_UPLOAD = "HIDE_MEDIA_UPLOAD";
 var MOVE_TO_ROOM = exports.MOVE_TO_ROOM = "MOVE_TO_ROOM";
@@ -17711,6 +17713,18 @@ var toggleContactsList = exports.toggleContactsList = function toggleContactsLis
 var toggleCreateRoomView = exports.toggleCreateRoomView = function toggleCreateRoomView() {
   return {
     type: TOGGLE_CREATE_ROOM_VIEW
+  };
+};
+
+var showSearchDirectoryButton = exports.showSearchDirectoryButton = function showSearchDirectoryButton() {
+  return {
+    type: SHOW_SEARCH_DIRECTORY_BUTTON
+  };
+};
+
+var hideSearchDirectoryButton = exports.hideSearchDirectoryButton = function hideSearchDirectoryButton() {
+  return {
+    type: HIDE_SEARCH_DIRECTORY_BUTTON
   };
 };
 
@@ -46807,6 +46821,7 @@ var initialState = {
   contactsListView: false,
   createRoomView: false,
   mediaUploadView: true, // media upload icon for input
+  directoryButton: false,
   currentRoomId: 1 // change this later when implementing changing rooms
 };
 
@@ -46826,6 +46841,12 @@ var uiReducer = function uiReducer() {
     case _uiActions.TOGGLE_CREATE_ROOM_VIEW:
       closeAll(newState);
       newState.createRoomView = true;
+      return newState;
+    case _uiActions.HIDE_SEARCH_DIRECTORY_BUTTON:
+      newState.directoryButton = false;
+      return newState;
+    case _uiActions.SHOW_SEARCH_DIRECTORY_BUTTON:
+      newState.directoryButton = true;
       return newState;
     case _uiActions.SHOW_MEDIA_UPLOAD:
       newState.mediaUploadView = true;
@@ -49714,6 +49735,7 @@ var SideBar = function (_Component) {
     value: function render() {
       var _props = this.props,
           dispatch = _props.dispatch,
+          directoryButton = _props.directoryButton,
           currentUsername = _props.currentUsername;
 
 
@@ -49748,14 +49770,12 @@ var SideBar = function (_Component) {
                   dispatch((0, _uiActions.toggleProfileModal)());
                 } })
             ),
-            _react2.default.createElement(_Search2.default, null),
-            _react2.default.createElement(_AsideButtons2.default, null)
+            _react2.default.createElement(_Search2.default, null)
           ),
           _react2.default.createElement(
             'div',
             { className: 'big-sidebar-list' },
-            _react2.default.createElement(_RecentsList2.default, null),
-            this.props.potentialFriends.length > 0 && _react2.default.createElement(_PotentialFriendsList2.default, null)
+            !directoryButton && _react2.default.createElement(_RecentsList2.default, null)
           )
         )
       );
@@ -49768,7 +49788,8 @@ var SideBar = function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     currentUsername: state.session.currentUser.username,
-    potentialFriends: Object.values(state.potentialFriends)
+    potentialFriends: Object.values(state.potentialFriends),
+    directoryButton: state.ui.directoryButton
   };
 };
 
@@ -49797,7 +49818,17 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(3);
 
+var _PotentialFriendsList = __webpack_require__(173);
+
+var _PotentialFriendsList2 = _interopRequireDefault(_PotentialFriendsList);
+
+var _AsideButtons = __webpack_require__(172);
+
+var _AsideButtons2 = _interopRequireDefault(_AsideButtons);
+
 var _friendActions = __webpack_require__(23);
+
+var _uiActions = __webpack_require__(10);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49847,7 +49878,12 @@ var Search = function (_Component) {
         searchTerm: e.target.value
       }, function () {
         var searchTerm = _this3.state.searchTerm;
-        dispatch((0, _friendActions.findPotentialFriends)(searchTerm));
+        if (searchTerm.length > 0) {
+          dispatch((0, _uiActions.showSearchDirectoryButton)());
+        } else {
+          dispatch((0, _uiActions.hideSearchDirectoryButton)());
+        }
+        // dispatch(findPotentialFriends(searchTerm));
       });
     }
   }, {
@@ -49884,28 +49920,42 @@ var Search = function (_Component) {
       var _this5 = this;
 
       var searchTerm = this.state.searchTerm;
+      var directoryButton = this.props.directoryButton;
 
       return _react2.default.createElement(
-        'form',
-        { className: 'search-skype' },
+        'div',
+        null,
+        _react2.default.createElement(_AsideButtons2.default, null),
         _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement('i', { className: 'fa fa-search icon-blue', 'aria-hidden': 'false' }),
-          _react2.default.createElement('input', {
-            text: 'text',
-            value: searchTerm,
-            onChange: this.handleChange,
-            onFocus: function onFocus() {
-              return _this5.handleFocus();
-            },
-            onBlur: function onBlur() {
-              return _this5.handleFocusOut();
-            } }),
-          _react2.default.createElement('i', { className: 'fa fa-times icon-blue', 'aria-hidden': 'true', onClick: function onClick() {
-              _this5.handleClear();
-            } })
-        )
+          'form',
+          { className: 'search-skype' },
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement('i', { className: 'fa fa-search icon-blue', 'aria-hidden': 'false' }),
+            _react2.default.createElement('input', {
+              text: 'text',
+              value: searchTerm,
+              onChange: this.handleChange,
+              onFocus: function onFocus() {
+                return _this5.handleFocus();
+              },
+              onBlur: function onBlur() {
+                return _this5.handleFocusOut();
+              } }),
+            _react2.default.createElement('i', { className: 'fa fa-times icon-blue', 'aria-hidden': 'true', onClick: function onClick() {
+                _this5.handleClear();
+              } })
+          )
+        ),
+        directoryButton && _react2.default.createElement(
+          'button',
+          { className: 'potentials-button', onClick: function onClick() {
+              _friendActions.findPotentialFriends;
+            } },
+          'Search Skype Directory'
+        ),
+        _react2.default.createElement(_PotentialFriendsList2.default, null)
       );
     }
   }]);
@@ -49913,11 +49963,15 @@ var Search = function (_Component) {
   return Search;
 }(_react.Component);
 
+var mapStateToProps = function mapStateToProps(state) {
+  return { directoryButton: state.ui.directoryButton };
+};
+
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return { dispatch: dispatch };
 };
 
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Search);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Search);
 
 /***/ }),
 /* 167 */
@@ -50396,16 +50450,10 @@ var PotentialFriendsList = function (_Component) {
   _createClass(PotentialFriendsList, [{
     key: 'render',
     value: function render() {
-      var potentialFriends = this.props.potentialFriends;
+      var _props = this.props,
+          potentialFriends = _props.potentialFriends,
+          directoryButton = _props.directoryButton;
 
-
-      if (potentialFriends.length == 0) {
-        return _react2.default.createElement(
-          'p',
-          null,
-          'No friends found'
-        );
-      }
 
       var potentialFriendsJSX = potentialFriends.map(function (contact) {
         return _react2.default.createElement(
@@ -50416,20 +50464,14 @@ var PotentialFriendsList = function (_Component) {
         );
       });
 
-      if (potentialFriendsJSX.length === 0) {
-        return _react2.default.createElement('div', { className: 'loader' });
-      };
+      // if (potentialFriendsJSX.length === 0) {
+      //   return <div className='loader'></div>
+      // };
+
 
       return _react2.default.createElement(
         'div',
         { className: 'potentials-view' },
-        _react2.default.createElement(
-          'button',
-          { onClick: function onClick() {
-              next();
-            } },
-          'Search Skype Directory'
-        ),
         _react2.default.createElement(
           'ul',
           { className: 'potential-friends-list' },
@@ -50444,7 +50486,8 @@ var PotentialFriendsList = function (_Component) {
 
 var mSTP = function mSTP(state) {
   return {
-    potentialFriends: Object.values(state.potentialFriends)
+    potentialFriends: Object.values(state.potentialFriends),
+    directoryButton: state.ui.directoryButton
   };
 };
 

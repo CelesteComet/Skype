@@ -9,11 +9,8 @@ class PotentialFriendsList extends Component {
   }  
 
   render() {
-    const { potentialFriends } = this.props;
+    const { potentialFriends, directoryButton } = this.props;
 
-    if (potentialFriends.length == 0) {
-      return <p>No friends found</p>
-    }
 
 
     let potentialFriendsJSX = potentialFriends.map(contact => {
@@ -25,14 +22,13 @@ class PotentialFriendsList extends Component {
       );
     });
 
-    if (potentialFriendsJSX.length === 0) {
-      return <div className='loader'></div>
-    };
+    // if (potentialFriendsJSX.length === 0) {
+    //   return <div className='loader'></div>
+    // };
 
 
     return (
       <div className='potentials-view'>
-        <button onClick={() => {next()}}>Search Skype Directory</button>
         <ul className='potential-friends-list'>
           { potentialFriendsJSX }
         </ul>
@@ -43,7 +39,8 @@ class PotentialFriendsList extends Component {
 
 const mSTP = state => {
   return {
-    potentialFriends: Object.values(state.potentialFriends)
+    potentialFriends: Object.values(state.potentialFriends),
+    directoryButton: state.ui.directoryButton
   }
 }
 
