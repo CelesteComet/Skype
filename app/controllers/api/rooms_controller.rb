@@ -9,6 +9,7 @@ class Api::RoomsController < ApplicationController
     @room.room_memberships.create(room_id: @room.id, user_id: current_user.id)
     params[:room][:room_Ids].each do |id|
       @room.room_memberships.create(room_id: @room.id, user_id: id)
+      
     end
 
     if @room.save 
