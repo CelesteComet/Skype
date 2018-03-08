@@ -21,7 +21,7 @@ class CircleImageIcon extends React.Component {
 
   render() {
     
-    const {status, src, handleHover, statusIcon} = this.props;
+    const {statusId, src, handleHover, statusIcon} = this.props;
     const {circleHover} = this.state;
 
      
@@ -30,15 +30,15 @@ class CircleImageIcon extends React.Component {
     let backgroundColor;
     let borderColor;
     let boxShadow = '0 0 0 3px white';
-    if (status === 0) {
+    if (statusId === 0) {
       backgroundColor = 'white';
       borderColor = '#94999C';
-    } else if (status === 1) {
-      backgroundColor = 'green';
-      borderColor = 'green';
+    } else if (statusId === 1) {
+      backgroundColor = '#8CB738';
+      borderColor = '#8CB738';
     } else {
-      backgroundColor = 'orange';
-      borderColor = 'orange';
+      backgroundColor = '#F6D24B';
+      borderColor = '#F6D24B';
     }
 
     let styles = {
@@ -48,13 +48,15 @@ class CircleImageIcon extends React.Component {
         backgroundColor: '#97D8F5'
       },
       hovered: {
-        backgroundColor: 'blue',
+        backgroundColor: '#CEECFA',
+        borderColor: '#CEECFA',
         'cursor': 'pointer'
       },
       div: {
         borderRadius: '100%',
-        width: '12px',
-        height: '12px',
+        borderColor: `${borderColor}`,
+        width: '10px',
+        height: '10px',
         position: 'relative',
         backgroundColor: 'white',
         top: '-16px',

@@ -11,7 +11,7 @@ import PotentialFriendsList from './PotentialFriendsList';
 class SideBar extends Component {
 
   render() {
-    let { dispatch, directoryButton, currentUsername} = this.props;
+    let { dispatch, directoryButton, currentUser } = this.props;
 
     return (
       <div className="aside-container">
@@ -29,9 +29,9 @@ class SideBar extends Component {
             </div>
             <div className='name-heading'>
               <ProfileItem 
-                name={currentUsername} 
+                name={currentUser.username} 
                 status={'Online'}
-                statusId={0}
+                statusId={currentUser.status}
                 statusIcon={true}
                 canHover={true}
                 src={'images/default-avatar.svg'} 
@@ -52,7 +52,7 @@ class SideBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUsername: state.session.currentUser.username,
+    currentUser: state.session.currentUser,
     potentialFriends: Object.values(state.potentialFriends),
     directoryButton: state.ui.directoryButton
   }

@@ -6,6 +6,8 @@ import {
   HIDE_SEARCH_DIRECTORY_BUTTON,
   SHOW_MEDIA_UPLOAD,
   HIDE_MEDIA_UPLOAD,
+  SHOW_IN_SEARCH,
+  HIDE_IN_SEARCH, 
   MOVE_TO_ROOM } from '../actions/uiActions';
 import _ from 'lodash';
 
@@ -23,6 +25,7 @@ const initialState = {
   createRoomView: false,
   mediaUploadView: true, // media upload icon for input
   directoryButton: false,
+  inSearch: false, // for user friend searching
   currentRoomId: 1 // change this later when implementing changing rooms
 };
 
@@ -54,8 +57,13 @@ const uiReducer = (state = initialState, action) => {
       return newState;
     case MOVE_TO_ROOM:
       closeAll(newState);
-
       newState.currentRoomId = action.payload;
+      return newState;
+    case SHOW_IN_SEARCH:
+      newState.inSearch = true;
+      return newState;
+    case HIDE_IN_SEARCH:
+      newState.inSearch = false;
       return newState;
     default: 
       return state;

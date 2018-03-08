@@ -14,7 +14,7 @@ class Api::UsersController < ApplicationController
   end
 
   def search 
-    @users = User.where("username LIKE ? and id NOT IN (?)", "%#{params[:search]}%", current_user.id)
+    @users = User.where("username LIKE ? and id NOT IN (?) AND id NOT IN (?)", "%#{params[:search]}%", current_user.id, current_user.friends.ids)
   end
 
   def destroy

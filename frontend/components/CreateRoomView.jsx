@@ -4,6 +4,9 @@ import HeaderMessageInterface from './HeaderMessageInterface';
 import ContactsListItem from './ContactsListItem';
 import { createRoom } from '../actions/roomMembershipActions';
 import { moveToRoom } from '../actions/uiActions';
+import { createSubscription } from '../configureSocket';
+import { fetchRoomMessages } from '../actions/messageActions';
+import RoomMemberItem from './RoomMemberItem';
 
 class CreateRoomView extends Component {
   constructor(props) {
@@ -35,9 +38,25 @@ class CreateRoomView extends Component {
     });
   }
 
+  handleClick(user) {
+    let { dispatch } = this.props;
+    dispatch(createRoom([user.id])).then((room) => {
+      dispatch(fetchRoomMessages(room.id)).then(() => {
+        dispatch(moveToRoom(room.id))
+        createSubscription(room.id, dispatch);
+      });
+    });
+  }
+
   handleCreateRoom() {
     let { dispatch } = this.props;
-    dispatch(createRoom(Object.keys(this.state.room)));
+
+    dispatch(createRoom(Object.keys(this.state.room))).then((room) => {
+      dispatch(fetchRoomMessages(room.id)).then(() => {
+        dispatch(moveToRoom(room.id))
+        createSubscription(room.id, dispatch);
+      });
+    });
   }
 
   addToRoom(contact) {
@@ -70,14 +89,7 @@ class CreateRoomView extends Component {
     // Do room stuff for adding people and removing people
 
     let roomJSX = Object.values(this.state.room).map(contact => {
-      return (
-        <span 
-          key={Math.random()} 
-          onClick={() => {this.addToRoom(contact)}}>
-        <ContactsListItem 
-          contact={ contact }/>
-        </span>
-      );
+      return <RoomMemberItem contact={contact} />
     })
 
 

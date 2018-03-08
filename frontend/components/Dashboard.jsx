@@ -3,7 +3,7 @@ import SideBar from './SideBar';
 import Main from './Main';
 import Footer from './Footer';
 import ModalProfile from './ModalProfile/ModalProfile';
-import configureSocket from '../configureSocket';
+import {configureSocket} from '../configureSocket';
 
 // Actions
 import { logoutUser } from '../actions/sessionActions';
@@ -29,7 +29,7 @@ class Dashboard extends Component {
         const { dispatch, state} = this.props;
         const roomMemberships = Object.values(state.roomMemberships);
         const chatroomIds = [...new Set(roomMemberships.map(m => m.room_id))];
-        configureSocket(this, chatroomIds, dispatch);
+        configureSocket(chatroomIds, dispatch);
 
         // if the user currently does not belong to any rooms, bring him to contacts
         if (roomMemberships.length === 0) {

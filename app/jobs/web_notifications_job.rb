@@ -1,14 +1,11 @@
 class WebNotificationsJob < ApplicationJob
   queue_as :default
 
-  def self.perform(user, payload)
-    puts "WALKDWLAKDAWLKDLWKDLWAKDLWAKDLWAKDLWAKDLAWKDLAKWDLKWADLKWLDK"
-    print payload
-
-    user.friends.each do |f|
-      ActionCable.server.broadcast("web_notifications_#{f.id}", {
-        :userId => user.id,
-        payload.keys[0] => payload.values[0]
+  def self.perform(receivers, payload)
+    receivers.each do |id|
+      ActionCable.server.broadcast("web_notifications_#{id}", {
+        action: 'notify_presence',
+        payload: payload
       })
     end
   end

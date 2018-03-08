@@ -21,17 +21,29 @@ class MainMessageInterface extends Component {
     let received = false;
     return (
       <div className="main-message-interface">
-        {this.props.messages.map(msg => {
+        {this.props.messages.map((msg, i) => {
 
-          if (currentUserId !== msg.user_id) {
+          if (currentUserId != msg.user_id) {
             received = true;
+          } else {
+            received = false;
+          }
+
+
+          // Only show the message status on the last message
+          let msgStatus;
+          if (i == this.props.messages.length - 1) {
+            msgStatus = true;
+          } else {
+            msgStatus = false;
           }
 
           return (
             <MessageItem 
               key={msg.id}
               message={msg}
-              received={received}/>
+              received={received}
+              msgStatus={msgStatus} />
             )
           })}
       </div>

@@ -8,7 +8,9 @@ import {
 
 import {
   showSearchDirectoryButton,
-  hideSearchDirectoryButton  
+  hideSearchDirectoryButton,
+  showInSearch,
+  hideInSearch  
 } from '../actions/uiActions';
 
 class Search extends Component {
@@ -16,10 +18,12 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: 'Search Skype'
+      searchTerm: 'Search Skype',
+      inSearch: false
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.findPotentialFriends = this.findPotentialFriends.bind(this);
   }
 
   handleClear() {
@@ -41,6 +45,10 @@ class Search extends Component {
         dispatch(showSearchDirectoryButton());
       } else {
         dispatch(hideSearchDirectoryButton());
+        dispatch(hideInSearch());
+        // this.setState({
+        //   isSearch: false
+        // })
       }
       // dispatch(findPotentialFriends(searchTerm));
     });
@@ -57,23 +65,30 @@ class Search extends Component {
 
   handleFocusOut(e) {
     const { searchTerm } = this.state;
+
     if (searchTerm.length === 0) {
       this.setState({
-        searchTerm: 'Search Skype'  
+        searchTerm: 'Search Skype'
       }, () => {
         const { dispatch } = this.props;
-        dispatch(findPotentialFriends(this.state.searchTerm));        
+        dispatch(hideInSearch());
       });
     }
   }
 
+  findPotentialFriends() {
+    let { dispatch } = this.props;
+    dispatch(showInSearch());
+    dispatch(findPotentialFriends(this.state.searchTerm));
+  }
+
   render() {
     const { searchTerm } = this.state;
-    const { directoryButton } = this.props;
+    const { directoryButton, potentialFriends, inSearch } = this.props;
     return (
       <div>
         <AsideButtons />
-        <form className="search-skype">
+        <form className="search-skype hide-at-small">
           <div>
             <i className="fa fa-search icon-blue" aria-hidden="false"></i>
             <input 
@@ -86,8 +101,10 @@ class Search extends Component {
           </div>
         </form>
         {directoryButton && 
-          <button className='potentials-button' onClick={() => {findPotentialFriends}}>Search Skype Directory</button> }
-        <PotentialFriendsList /> 
+          <button className='potentials-button' onClick={this.findPotentialFriends}>Search Skype Directory</button> }
+          {inSearch && <p className='potential-title'>Directory</p>}
+          {inSearch && <PotentialFriendsList />}
+        {inSearch && potentialFriends.length == 0 && <p className='potential-friends-status'>No results found</p>}
       </div>
 
     );
@@ -95,7 +112,11 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => {
-  return { directoryButton: state.ui.directoryButton }
+  return { 
+    directoryButton: state.ui.directoryButton,
+    inSearch: state.ui.inSearch,
+    potentialFriends: Object.values(state.potentialFriends)
+  }
 }
 
 const mapDispatchToProps = dispatch => {

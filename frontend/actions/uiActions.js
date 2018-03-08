@@ -6,6 +6,8 @@ export const HIDE_SEARCH_DIRECTORY_BUTTON = "HIDE_SEARCH_DIRECTORY_BUTTON";
 export const SHOW_MEDIA_UPLOAD = "SHOW_MEDIA_UPLOAD";
 export const HIDE_MEDIA_UPLOAD = "HIDE_MEDIA_UPLOAD";
 export const MOVE_TO_ROOM = "MOVE_TO_ROOM";
+export const SHOW_IN_SEARCH = "SHOW_IN_SEARCH";
+export const HIDE_IN_SEARCH = "HIDE_IN_SEARCH";
 
 export const toggleProfileModal = () => {
   return {
@@ -48,6 +50,18 @@ export const hideMediaUpload = () => {
     type: HIDE_MEDIA_UPLOAD
   }
 };
+
+export const showInSearch = () => {
+  return {
+    type: SHOW_IN_SEARCH
+  }
+}
+
+export const hideInSearch = () => {
+  return {
+    type: HIDE_IN_SEARCH
+  } 
+}
 
 export const moveToRoom = (roomId) => {
   return {

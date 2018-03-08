@@ -232,6 +232,9 @@ aside {
 .search-skype > div i:nth-of-type(2) {
   margin-left: auto; 
   margin-right: 0;
+  float: right;
+  position: relative;
+  top: 15px;
 }
 
 .search-skype input:focus {
@@ -357,6 +360,58 @@ footer a:hover {
   cursor: pointer;
 }
 
+.potential-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #91A7B3;
+  margin-left: 16px;
+}
+
+.potential-friends-status {
+  margin-left: 16px;
+  font-size: 13px;
+  padding-top: 30px;
+}
+
+.room-member-item {
+  border: 1px solid #94999C;
+  padding: 5px 15px;
+  display: inline-block;
+  border-radius: 60px;
+  margin-top: 13px;
+  margin-bottom: 6px;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.room-member-item .circle {
+  border: 1px solid #94999C;
+  display: inline-block;
+  padding: 5px;
+  margin-right: 9px;
+  border-radius: 100%;
+}
+
+.room-member-item div:nth-of-type(2) {
+  display: inline-block;
+  font-size: 13px
+}
+
+
+
+@media (max-width: 600px) {
+  .big-sidebar-list {
+    position: relative;
+    left: 18px;
+    padding-bottom: 60px;
+    padding-top: 325px;
+  }
+
+  .hide-at-small {
+    display: none;
+  }
+}
+
 @media (max-width: 666px) {
   .form-holder {
     margin-bottom: 112px !important;
@@ -365,6 +420,5 @@ footer a:hover {
   .contacts-list-scroll {
     margin-bottom: 26px;
   }
-
 }
 

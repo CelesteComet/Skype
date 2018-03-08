@@ -38,6 +38,7 @@ class RecentsListItem extends Component {
           name={nameString} 
           status={status}
           src={imageSource}
+          canHover={ false }
           statusIcon={statusIcon}
           />
       </li>

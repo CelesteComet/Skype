@@ -54,7 +54,8 @@ class User < ApplicationRecord
   def notify_status(status)
     self.status = status
     self.save!
-    WebNotificationsJob.perform(self, {status: status})
+    friend_ids = self.friends.map {|f| f.id}
+    WebNotificationsJob.perform(friend_ids, {user_id: self.id, status: status})
   end
 
 end

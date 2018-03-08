@@ -10,8 +10,7 @@ class MessageItem extends Component {
   render() {
     // at first assume that the message is a sent message 
     let receivedMessage = false;
-
-    const { message, received} = this.props;
+    const { message, received, msgStatus } = this.props;
     const { body, created_at, status } = message;
 
     return(
@@ -25,7 +24,9 @@ class MessageItem extends Component {
           </div> 
         </div>
         <div className='delivery-status'>
-          <span>{status === 0 ? 'Sent' : 'Sending'}</span>
+          { msgStatus && 
+            <span>{status === 0 ? 'Sent' : 'Sending'}</span>
+          }
         </div>
       </div>
     );

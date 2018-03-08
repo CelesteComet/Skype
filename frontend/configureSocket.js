@@ -1,7 +1,28 @@
 import { receiveMessage } from './actions/messageActions';
 import { logoutUser } from './actions/sessionActions';
+import { fetchRoomMemberships } from './actions/roomMembershipActions';
+import { moveToRoom } from './actions/uiActions';
 
-const configureSocket = (context, chatRoomIds, dispatch) => {
+export const createSubscription = (roomId, dispatch) => {
+  const roomName = `room #${roomId}`;
+
+  App[roomName] = App.cable.subscriptions.create({
+    channel: 'ChatChannel', room: roomId 
+  });
+
+  console.log(`Created a subscription to ${roomName}`);
+
+  // When a message is received
+  App[roomName].received = data => {
+    dispatch(receiveMessage(data));
+  };
+
+  App[roomName].disconnected = () => {
+    console.log(`Disconnected from ${roomName}`);
+  };
+};
+
+export const configureSocket = (chatRoomIds, dispatch) => {
 
 
   chatRoomIds.forEach(chatroomId => {
@@ -29,12 +50,17 @@ const configureSocket = (context, chatRoomIds, dispatch) => {
 
   App.appearances = App.cable.subscriptions.create({channel: 'WebNotificationsChannel'});
 
-  App.appearances.received = data => {
+  App.appearances.received = (data) => {
     console.log(data);
+    if (data.action === 'fetch_rooms') {
+      dispatch(fetchRoomMemberships()).then(() => {
+        createSubscription(data.roomId, dispatch);
+      });
+    }
   };
+
 
 
 };
 
-export default configureSocket;
 

@@ -9,7 +9,11 @@ class Api::RoomsController < ApplicationController
     @room.room_memberships.create(room_id: @room.id, user_id: current_user.id)
     params[:room][:room_Ids].each do |id|
       @room.room_memberships.create(room_id: @room.id, user_id: id)
-      
+      payload = {
+        action: 'fetch_rooms',
+        roomId: @room.id
+      }
+      WebNotificationsJob.perform([id], {data: payload})
     end
 
     if @room.save 

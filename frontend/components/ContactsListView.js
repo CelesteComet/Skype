@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import ContactsListItem from './ContactsListItem';
 import { createRoom } from '../actions/roomMembershipActions';
 import { moveToRoom } from '../actions/uiActions';
+import { createSubscription } from '../configureSocket';
+import { fetchRoomMessages } from '../actions/messageActions';
 
 class ContactsListView extends Component {
   constructor(props) {
@@ -13,7 +15,10 @@ class ContactsListView extends Component {
   handleClick(user) {
     let { dispatch } = this.props;
     dispatch(createRoom([user.id])).then((room) => {
-      dispatch(moveToRoom(room.id));
+      dispatch(fetchRoomMessages(room.id)).then(() => {
+        dispatch(moveToRoom(room.id))
+        createSubscription(room.id, dispatch);
+      });
     });
   }
 

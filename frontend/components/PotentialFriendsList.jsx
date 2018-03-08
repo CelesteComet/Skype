@@ -20,11 +20,6 @@ class PotentialFriendsList extends Component {
       );
     });
 
-    // if (potentialFriendsJSX.length === 0) {
-    //   return <div className='loader'></div>
-    // };
-
-
     return (
       <div className='potentials-view'>
         <ul className='potential-friends-list'>

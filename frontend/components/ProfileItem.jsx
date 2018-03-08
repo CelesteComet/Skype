@@ -14,7 +14,7 @@ function ProfileItem({name, src, status, statusIcon, statusId, canHover, handleC
           status={ status } 
           statusId={ statusId }
           statusIcon={ statusIcon } 
-          canHover={ true }/>
+          canHover={ canHover }/>
         <div className="name-info">
           <h4>{ name }</h4>
           <p className="small gray italic">{ status }</p>

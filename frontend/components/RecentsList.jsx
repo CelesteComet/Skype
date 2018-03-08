@@ -11,6 +11,7 @@ class RecentsList extends Component {
   constructor(props) {
     super(props);
     this.handleSwitchRoom = this.handleSwitchRoom.bind(this);
+    this.scrollDown = this.scrollDown.bind(this);
   }
 
   handleSwitchRoom(roomId, e) {
@@ -20,7 +21,13 @@ class RecentsList extends Component {
     // Go to the room 
 
     dispatch(moveToRoom(Number(roomId)));
-    dispatch(fetchRoomMessages(roomId));
+    dispatch(fetchRoomMessages(roomId)).then(() => {
+      this.scrollDown();
+    });
+  }
+
+  scrollDown() {
+     $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
   }
 
   render() {
