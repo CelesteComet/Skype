@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class CallButtonSet extends Component {
   constructor(props) {
@@ -6,14 +7,35 @@ class CallButtonSet extends Component {
   }
 
   render() {
-    return (
-      <ul className='call-button-set'>
-        <li className="video"></li>
-        <li className="phone"></li>
-        <li className="friend"></li>
-      </ul>
-    );
+    let {createRoomView} = this.props;
+    if (!createRoomView) {
+      return (
+        <ul className='call-button-set'>
+          <li className="video"></li>
+          <li className="phone"></li>
+          <li className="friend"></li>
+        </ul>
+      );
+    } else {
+      return <div></div>
+    }
   }
 }
 
-export default CallButtonSet;
+  // profileModalView: false,
+  // contactsListView: false,
+  // createRoomView: false,
+  // mediaUploadView: true, // media upload icon for input
+  // directoryButton: false,
+  // inSearch: false, // for user friend searching
+  // currentRoomId: 1 
+
+const mSTP = state => {
+  return {
+    contactsListView: state.ui.contactsListView,
+    createRoomView: state.ui.createRoomView
+  }
+}
+
+
+export default connect(mSTP, null)(CallButtonSet);

@@ -84,7 +84,7 @@ class InputMessageInterface extends Component {
       <div className='input-message-interface'>
         <div className='form-holder'>
           <div className='input-header'>
-            <p>Via <a>Skype</a></p>
+            <p>via <a style={{'color': '#00AFF0'}}>Skype</a></p>
           </div>
           <div className='input-message-input'>
             <form onSubmit={this.handleSubmit}>
@@ -97,12 +97,12 @@ class InputMessageInterface extends Component {
                 data-min-rows='2'
                 placeholder="Type a message here"
                 ref={(textarea) => { this.textArea = textarea; }} />
-              <div className='icon-set'>
+              {/*<div className='icon-set'>
                 {mediaUploadView && <i className="fa fa-paperclip icon-paperclip" aria-hidden="true"></i> }
                 {!mediaUploadView && <i className="fa fa-picture-o icon-picture" aria-hidden="true"></i>}
-                {/*<i className="fa fa-id-card" aria-hidden="true"></i>*/}
+                {/*<i className="fa fa-id-card" aria-hidden="true"></i>
                 <i className="fa fa-smile-o icon-smile" aria-hidden="true"></i>
-              </div>
+              </div>*/}
               <button className='airplane'>
                 <i className="fa fa-paper-plane-o icon-airplane" aria-hidden="true"></i>
               </button>

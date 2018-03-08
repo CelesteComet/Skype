@@ -418,7 +418,11 @@ footer a:hover {
   }
 
   .contacts-list-scroll {
-    margin-bottom: 26px;
+    margin-bottom: 60px;
+  }
+
+  .hide-at-medium {
+    display: none;
   }
 }
 

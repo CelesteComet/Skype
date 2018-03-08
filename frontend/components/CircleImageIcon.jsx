@@ -21,7 +21,7 @@ class CircleImageIcon extends React.Component {
 
   render() {
     
-    const {statusId, src, handleHover, statusIcon} = this.props;
+    const {status, src, handleHover, statusIcon} = this.props;
     const {circleHover} = this.state;
 
      
@@ -30,10 +30,10 @@ class CircleImageIcon extends React.Component {
     let backgroundColor;
     let borderColor;
     let boxShadow = '0 0 0 3px white';
-    if (statusId === 0) {
+    if (status === 0) {
       backgroundColor = 'white';
       borderColor = '#94999C';
-    } else if (statusId === 1) {
+    } else if (status === 1) {
       backgroundColor = '#8CB738';
       borderColor = '#8CB738';
     } else {

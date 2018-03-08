@@ -19842,7 +19842,7 @@ var CircleImageIcon = function (_React$Component) {
       var _this2 = this;
 
       var _props = this.props,
-          statusId = _props.statusId,
+          status = _props.status,
           src = _props.src,
           handleHover = _props.handleHover,
           statusIcon = _props.statusIcon;
@@ -19853,10 +19853,10 @@ var CircleImageIcon = function (_React$Component) {
       var backgroundColor = void 0;
       var borderColor = void 0;
       var boxShadow = '0 0 0 3px white';
-      if (statusId === 0) {
+      if (status === 0) {
         backgroundColor = 'white';
         borderColor = '#94999C';
-      } else if (statusId === 1) {
+      } else if (status === 1) {
         backgroundColor = '#8CB738';
         borderColor = '#8CB738';
       } else {
@@ -50822,6 +50822,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -50842,20 +50844,41 @@ var CallButtonSet = function (_Component) {
   _createClass(CallButtonSet, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(
-        'ul',
-        { className: 'call-button-set' },
-        _react2.default.createElement('li', { className: 'video' }),
-        _react2.default.createElement('li', { className: 'phone' }),
-        _react2.default.createElement('li', { className: 'friend' })
-      );
+      var createRoomView = this.props.createRoomView;
+
+      if (!createRoomView) {
+        return _react2.default.createElement(
+          'ul',
+          { className: 'call-button-set' },
+          _react2.default.createElement('li', { className: 'video' }),
+          _react2.default.createElement('li', { className: 'phone' }),
+          _react2.default.createElement('li', { className: 'friend' })
+        );
+      } else {
+        return _react2.default.createElement('div', null);
+      }
     }
   }]);
 
   return CallButtonSet;
 }(_react.Component);
 
-exports.default = CallButtonSet;
+// profileModalView: false,
+// contactsListView: false,
+// createRoomView: false,
+// mediaUploadView: true, // media upload icon for input
+// directoryButton: false,
+// inSearch: false, // for user friend searching
+// currentRoomId: 1 
+
+var mSTP = function mSTP(state) {
+  return {
+    contactsListView: state.ui.contactsListView,
+    createRoomView: state.ui.createRoomView
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mSTP, null)(CallButtonSet);
 
 /***/ }),
 /* 178 */
@@ -53383,10 +53406,10 @@ var InputMessageInterface = function (_Component) {
             _react2.default.createElement(
               'p',
               null,
-              'Via ',
+              'via ',
               _react2.default.createElement(
                 'a',
-                null,
+                { style: { 'color': '#00AFF0' } },
                 'Skype'
               )
             )
@@ -53408,13 +53431,6 @@ var InputMessageInterface = function (_Component) {
                 ref: function ref(textarea) {
                   _this4.textArea = textarea;
                 } }),
-              _react2.default.createElement(
-                'div',
-                { className: 'icon-set' },
-                mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-paperclip icon-paperclip', 'aria-hidden': 'true' }),
-                !mediaUploadView && _react2.default.createElement('i', { className: 'fa fa-picture-o icon-picture', 'aria-hidden': 'true' }),
-                _react2.default.createElement('i', { className: 'fa fa-smile-o icon-smile', 'aria-hidden': 'true' })
-              ),
               _react2.default.createElement(
                 'button',
                 { className: 'airplane' },
