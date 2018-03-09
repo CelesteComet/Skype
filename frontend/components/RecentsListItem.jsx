@@ -20,13 +20,14 @@ class RecentsListItem extends Component {
     // if there are more than one member, use a different default icon
     let imageSource = false;
     let statusIcon = true;
+    let status;
     if (nameArray.length > 1) {
       imageSource = `images/default-avatar-group.svg`
       status = `${nameArray.length} participants`
       statusIcon = false
     } else {
       imageSource = `images/default-avatar.svg`;
-      status = `Online`;
+      status = this.props.roommates[0].status;
     }
 
 

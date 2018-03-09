@@ -19972,6 +19972,18 @@ function ProfileItem(_ref) {
       canHover = _ref.canHover,
       handleClick = _ref.handleClick;
 
+
+  var statusMsg = void 0;
+  if (!statusMsg) {
+    if (status === 0) {
+      statusMsg = "Offline";
+    } else if (status === 1) {
+      statusMsg = "Online";
+    } else if (status === 2) {
+      statusMsg = "Away";
+    }
+  }
+
   return _react2.default.createElement(
     'div',
     {
@@ -19996,7 +20008,7 @@ function ProfileItem(_ref) {
         _react2.default.createElement(
           'p',
           { className: 'small gray italic' },
-          status
+          statusMsg
         )
       )
     )
@@ -50072,6 +50084,7 @@ var SideBar = function (_Component) {
           directoryButton = _props.directoryButton,
           currentUser = _props.currentUser;
 
+      console.log(currentUser);
 
       return _react2.default.createElement(
         'div',
@@ -50099,7 +50112,6 @@ var SideBar = function (_Component) {
               _react2.default.createElement(_ProfileItem2.default, {
                 name: currentUser.username,
                 status: currentUser.status,
-
                 statusIcon: true,
                 canHover: true,
                 src: 'images/default-avatar.svg',
@@ -50657,13 +50669,14 @@ var RecentsListItem = function (_Component) {
       // if there are more than one member, use a different default icon
       var imageSource = false;
       var statusIcon = true;
+      var status = void 0;
       if (nameArray.length > 1) {
         imageSource = 'images/default-avatar-group.svg';
         status = nameArray.length + ' participants';
         statusIcon = false;
       } else {
         imageSource = 'images/default-avatar.svg';
-        status = 'Online';
+        status = this.props.roommates[0].status;
       }
 
       var nameString = nameArray.join(' ');

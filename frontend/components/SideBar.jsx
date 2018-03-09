@@ -12,6 +12,7 @@ class SideBar extends Component {
 
   render() {
     let { dispatch, directoryButton, currentUser } = this.props;
+    console.log(currentUser)
 
     return (
       <div className="aside-container">
@@ -31,7 +32,6 @@ class SideBar extends Component {
               <ProfileItem 
                 name={currentUser.username} 
                 status={currentUser.status}
-                
                 statusIcon={true}
                 canHover={true}
                 src={'images/default-avatar.svg'} 
