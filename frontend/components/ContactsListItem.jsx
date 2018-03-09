@@ -7,7 +7,17 @@ class ContactsListItem extends Component {
   }
 
   render() {
-    const { contact: { username, status, statusMsg } } = this.props;
+    let { contact: { username, status, statusMsg } } = this.props;
+    
+    if (!statusMsg) {
+      if (status === 0) {
+        statusMsg = "Offline";
+      } else if (status === 1) {
+        statusMsg = "Online";
+      } else if (status === 2) {
+        statusMsg = "Away";
+      }
+    }
     return (
       <div className="contacts-list-item">
         <div className="contacts-list-container">
@@ -19,7 +29,7 @@ class ContactsListItem extends Component {
             canHover={ false }/>
           <div className='name-status-container'>
             <p className='name'>{username}</p>
-            <p className='status'>{'Online'}</p>
+            <p className='status'>{statusMsg}</p>
           </div>
         </div>
 

@@ -6,7 +6,9 @@ const emojiPaths = {
   'cool': {path: '/emojis/cool.png', height: 6080}, 
   'kiss': {path: '/emojis/kiss.png', height: 8000},
   'crying': {path: '/emojis/crying.png', height: 8000},
-  'smirk': {path: '/emojis/smirk.png', height: 5760}
+  'smirk': {path: '/emojis/smirk.png', height: 5760},
+  'curse': {path: '/emojis/curse.png', height: 12320},
+  'puke': {path: '/emojis/puke.png', height: 12640}
 };
 
 const emojiImages = {};
@@ -72,8 +74,10 @@ class Emoji extends Component {
   }
 
   render() {
+    let {size} = this.props;
     return (
       <canvas 
+        style={{width: size}}
         className='emoji'
         data-id={Math.random()}
         ref={(canvas) => { this.canvas = canvas; }} >

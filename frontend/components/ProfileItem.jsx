@@ -12,7 +12,6 @@ function ProfileItem({name, src, status, statusIcon, statusId, canHover, handleC
         <CircleImageIcon 
           src={ src }
           status={ status } 
-          statusId={ statusId }
           statusIcon={ statusIcon } 
           canHover={ canHover }/>
         <div className="name-info">
@@ -24,11 +23,5 @@ function ProfileItem({name, src, status, statusIcon, statusId, canHover, handleC
   );
 }
 
-ProfileItem.propTypes = {
-  name: PropTypes.string,
-  src: PropTypes.string,
-  status: PropTypes.string,
-  handleClick: PropTypes.func
-};
 
 export default ProfileItem;

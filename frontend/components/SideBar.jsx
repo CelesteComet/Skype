@@ -30,8 +30,8 @@ class SideBar extends Component {
             <div className='name-heading'>
               <ProfileItem 
                 name={currentUser.username} 
-                status={'Online'}
-                statusId={currentUser.status}
+                status={currentUser.status}
+                
                 statusIcon={true}
                 canHover={true}
                 src={'images/default-avatar.svg'} 

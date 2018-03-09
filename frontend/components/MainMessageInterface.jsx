@@ -4,12 +4,9 @@ import MessageItem from './MessageItem';
 
 class MainMessageInterface extends Component {
 
-  componentDidMount() {
-    console.log("NEW MOUNT")
-  }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps);
+    this.scrollDown();
   }
 
   scrollDown() {
