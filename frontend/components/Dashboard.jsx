@@ -6,7 +6,7 @@ import ModalProfile from './ModalProfile/ModalProfile';
 import {configureSocket} from '../configureSocket';
 
 // Actions
-import { logoutUser } from '../actions/sessionActions';
+import { logoutUser, getUser } from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
 import { fetchAllFriends } from '../actions/friendActions';
 import { fetchAllMessages, fetchRoomMessages } from '../actions/messageActions';
@@ -29,6 +29,7 @@ class Dashboard extends Component {
         const { dispatch, state} = this.props;
         const roomMemberships = Object.values(state.roomMemberships);
         const chatroomIds = [...new Set(roomMemberships.map(m => m.room_id))];
+        dispatch(getUser());
         configureSocket(chatroomIds, dispatch);
 
         // if the user currently does not belong to any rooms, bring him to contacts

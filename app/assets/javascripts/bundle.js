@@ -610,7 +610,7 @@ module.exports = emptyFunction;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logoutUser = exports.loginUser = exports.receiveLogout = exports.clearError = exports.receiveError = exports.receiveCurrentUser = exports.CLEAR_ERROR = exports.RECEIVE_LOGOUT = exports.RECEIVE_ERROR = exports.RECEIVE_CURRENT_USER = undefined;
+exports.logoutUser = exports.getUser = exports.loginUser = exports.receiveLogout = exports.clearError = exports.receiveError = exports.receiveCurrentUser = exports.CLEAR_ERROR = exports.RECEIVE_LOGOUT = exports.RECEIVE_ERROR = exports.RECEIVE_CURRENT_USER = undefined;
 
 var _sessionAPIService = __webpack_require__(135);
 
@@ -652,6 +652,16 @@ var receiveLogout = exports.receiveLogout = function receiveLogout() {
 var loginUser = exports.loginUser = function loginUser(user) {
   return function (dispatch) {
     return APIUtil.login(user).then(function (user) {
+      dispatch(receiveCurrentUser(user));
+    }, function (err) {
+      dispatch(receiveError(err));
+    });
+  };
+};
+
+var getUser = exports.getUser = function getUser() {
+  return function (dispatch) {
+    APIUtil.getUser().then(function (user) {
       dispatch(receiveCurrentUser(user));
     }, function (err) {
       dispatch(receiveError(err));
@@ -18714,7 +18724,7 @@ module.exports = warning;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createFriendship = exports.findPotentialFriends = exports.fetchAllFriends = exports.receiveAllPotentialFriends = exports.receiveAllFriends = exports.RECEIVE_ALL_POTENTIAL_FRIENDS = exports.RECEIVE_ALL_FRIENDS = undefined;
+exports.createFriendship = exports.findPotentialFriends = exports.fetchAllFriends = exports.updateUserStatus = exports.receiveAllPotentialFriends = exports.receiveAllFriends = exports.UPDATE_USER_STATUS = exports.RECEIVE_ALL_POTENTIAL_FRIENDS = exports.RECEIVE_ALL_FRIENDS = undefined;
 
 var _friendAPIService = __webpack_require__(141);
 
@@ -18724,6 +18734,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var RECEIVE_ALL_FRIENDS = exports.RECEIVE_ALL_FRIENDS = 'RECEIVE_ALL_FRIENDS';
 var RECEIVE_ALL_POTENTIAL_FRIENDS = exports.RECEIVE_ALL_POTENTIAL_FRIENDS = 'RECEIVE_ALL_POTENTIAL_FRIENDS';
+var UPDATE_USER_STATUS = exports.UPDATE_USER_STATUS = 'UPDATE_USER_STATUS';
 
 var receiveAllFriends = exports.receiveAllFriends = function receiveAllFriends(friends) {
   return {
@@ -18736,6 +18747,13 @@ var receiveAllPotentialFriends = exports.receiveAllPotentialFriends = function r
   return {
     type: RECEIVE_ALL_POTENTIAL_FRIENDS,
     payload: friends
+  };
+};
+
+var updateUserStatus = exports.updateUserStatus = function updateUserStatus(userId, status) {
+  return {
+    type: UPDATE_USER_STATUS,
+    payload: { userId: userId, status: status }
   };
 };
 
@@ -21834,6 +21852,8 @@ var _roomMembershipActions = __webpack_require__(16);
 
 var _uiActions = __webpack_require__(7);
 
+var _friendActions = __webpack_require__(24);
+
 var createSubscription = exports.createSubscription = function createSubscription(roomId, dispatch) {
   var roomName = 'room #' + roomId;
 
@@ -21885,6 +21905,12 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
       dispatch((0, _roomMembershipActions.fetchRoomMemberships)()).then(function () {
         createSubscription(data.roomId, dispatch);
       });
+    } else if (data.action === 'notify_presence') {
+      var _data$payload = data.payload,
+          user_id = _data$payload.user_id,
+          status = _data$payload.status;
+
+      dispatch((0, _friendActions.updateUserStatus)(user_id, status));
     }
   };
 };
@@ -24144,7 +24170,8 @@ var emojiPaths = {
   'crying': { path: '/emojis/crying.png', height: 8000 },
   'smirk': { path: '/emojis/smirk.png', height: 5760 },
   'curse': { path: '/emojis/curse.png', height: 12320 },
-  'puke': { path: '/emojis/puke.png', height: 12640 }
+  'puke': { path: '/emojis/puke.png', height: 12640 },
+  'rainbowsmile': { path: '/emojis/rainbowsmile.png', height: 8480 }
 };
 
 var emojiImages = {};
@@ -24544,6 +24571,8 @@ var _CallButtonSet2 = _interopRequireDefault(_CallButtonSet);
 
 var _reactRedux = __webpack_require__(2);
 
+var _callActions = __webpack_require__(218);
+
 var _simplePeer = __webpack_require__(178);
 
 var _simplePeer2 = _interopRequireDefault(_simplePeer);
@@ -24571,9 +24600,9 @@ var HeaderMessageInterface = function (_Component) {
   _createClass(HeaderMessageInterface, [{
     key: 'handleCall',
     value: function handleCall() {
-      console.log("Initiating a call");
+      // console.log("Initiating a call")
       navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream, error) {
-        console.log("Video audio ok!");
+
         var peer = new _simplePeer2.default({
           initiator: true,
           trickle: false,
@@ -24581,7 +24610,8 @@ var HeaderMessageInterface = function (_Component) {
         });
 
         peer.on('signal', function (data) {
-          console.log('SIGNAL', JSON.stringify(data));
+          console.log("DATA GOT");
+          (0, _callActions.makeCall)(data);
         });
 
         window.peer = peer;
@@ -24609,7 +24639,8 @@ var HeaderMessageInterface = function (_Component) {
             ' participants'
           )
         ),
-        _react2.default.createElement(_CallButtonSet2.default, null)
+        _react2.default.createElement(_CallButtonSet2.default, {
+          handleCall: this.handleCall.bind(null, this) })
       );
     }
   }]);
@@ -46811,12 +46842,17 @@ var _potentialFriendsReducer = __webpack_require__(143);
 
 var _potentialFriendsReducer2 = _interopRequireDefault(_potentialFriendsReducer);
 
+var _recentRoomsReducer = __webpack_require__(217);
+
+var _recentRoomsReducer2 = _interopRequireDefault(_recentRoomsReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
   session: _sessionReducer2.default,
   messages: _messagesReducer2.default,
   friends: _friendReducer2.default,
+  recents: _recentRoomsReducer2.default,
   roomMemberships: _roomMembershipsReducer2.default,
   potentialFriends: _potentialFriendsReducer2.default,
   ui: _uiReducer2.default
@@ -46894,6 +46930,13 @@ var logoutUser = exports.logoutUser = function logoutUser() {
   return $.ajax({
     url: 'api/session',
     method: 'DELETE'
+  });
+};
+
+var getUser = exports.getUser = function getUser() {
+  return $.ajax({
+    url: '/api/session',
+    method: 'GET'
   });
 };
 
@@ -47066,6 +47109,9 @@ var friendsReducer = function friendsReducer() {
   switch (action.type) {
     case _friendActions.RECEIVE_ALL_FRIENDS:
       return action.payload;
+    case _friendActions.UPDATE_USER_STATUS:
+      newState[action.payload.userId].status = action.payload.status;
+      return newState;
     default:
       return state;
   }
@@ -49645,7 +49691,8 @@ var emojiTable = {
   "(smirk)": "smirk",
   "(cool)": "cool",
   "(curse)": "curse",
-  "(puke)": "puke"
+  "(puke)": "puke",
+  "(rainbowsmile)": "rainbowsmile"
 };
 
 var smileyParser = function smileyParser(store) {
@@ -49970,6 +50017,7 @@ var Dashboard = function (_Component) {
           var chatroomIds = [].concat(_toConsumableArray(new Set(roomMemberships.map(function (m) {
             return m.room_id;
           }))));
+          dispatch((0, _sessionActions.getUser)());
           (0, _configureSocket.configureSocket)(chatroomIds, dispatch);
 
           // if the user currently does not belong to any rooms, bring him to contacts
@@ -50084,7 +50132,6 @@ var SideBar = function (_Component) {
           directoryButton = _props.directoryButton,
           currentUser = _props.currentUser;
 
-      console.log(currentUser);
 
       return _react2.default.createElement(
         'div',
@@ -50567,7 +50614,6 @@ var getRecentsInfo = exports.getRecentsInfo = function getRecentsInfo(state) {
   var currentUserId = state.session.currentUser.id;
 
   var roomMemberships = Object.values(state.roomMemberships);
-
   roomMemberships.forEach(function (membership) {
 
     // prevent putting yourself into the list
@@ -50892,13 +50938,17 @@ var CallButtonSet = function (_Component) {
   _createClass(CallButtonSet, [{
     key: 'render',
     value: function render() {
-      var createRoomView = this.props.createRoomView;
+      var _props = this.props,
+          createRoomView = _props.createRoomView,
+          handleCall = _props.handleCall;
 
       if (!createRoomView) {
         return _react2.default.createElement(
           'ul',
           { className: 'call-button-set' },
-          _react2.default.createElement('li', { className: 'video' }),
+          _react2.default.createElement('li', { className: 'video', onClick: function onClick() {
+              handleCall();
+            } }),
           _react2.default.createElement('li', { className: 'phone' }),
           _react2.default.createElement('li', { className: 'friend' })
         );
@@ -54086,10 +54136,24 @@ var RoomMemberItem = function (_Component) {
           status = _props$contact.status,
           id = _props$contact.id;
 
+      var color = void 0;
+      if (status == 0) {
+        color = 'none';
+      } else if (status == 1) {
+        color = '#8CB738';
+      } else if (status == 2) {
+        color = '#F6D24B';
+      }
+
+      var circleStyle = {
+        'background': color,
+        'borderColor': color
+      };
+
       return _react2.default.createElement(
         'div',
         { className: 'room-member-item' },
-        _react2.default.createElement('div', { className: 'circle' }),
+        _react2.default.createElement('div', { className: 'circle', style: circleStyle }),
         _react2.default.createElement(
           'div',
           null,
@@ -56857,11 +56921,61 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var createUser = exports.createUser = function createUser(user) {
-  console.log(user);
   return $.ajax({
     url: 'api/users',
     method: 'POST',
     data: { user: user }
+  });
+};
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lodash = __webpack_require__(11);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = [];
+
+var recentRoomsReducer = function recentRoomsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments[1];
+
+  var newState = initialState.slice();
+  switch (action.type) {
+    default:
+      return state;
+  }
+};
+
+exports.default = recentRoomsReducer;
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var MAKE_CALL = exports.MAKE_CALL = 'MAKE_CALL';
+
+var makeCall = exports.makeCall = function makeCall(token) {
+  return $.ajax({
+    url: 'api/makeCall',
+    data: token
   });
 };
 

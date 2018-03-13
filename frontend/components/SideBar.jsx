@@ -12,7 +12,6 @@ class SideBar extends Component {
 
   render() {
     let { dispatch, directoryButton, currentUser } = this.props;
-    console.log(currentUser)
 
     return (
       <div className="aside-container">

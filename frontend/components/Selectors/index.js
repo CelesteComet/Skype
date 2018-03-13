@@ -4,7 +4,6 @@ export const getRecentsInfo = state => {
   const currentUserId = state.session.currentUser.id;
 
   const roomMemberships = Object.values(state.roomMemberships);
-
   roomMemberships.forEach(membership => {
 
     // prevent putting yourself into the list

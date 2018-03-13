@@ -8,7 +8,8 @@ const emojiPaths = {
   'crying': {path: '/emojis/crying.png', height: 8000},
   'smirk': {path: '/emojis/smirk.png', height: 5760},
   'curse': {path: '/emojis/curse.png', height: 12320},
-  'puke': {path: '/emojis/puke.png', height: 12640}
+  'puke': {path: '/emojis/puke.png', height: 12640},
+  'rainbowsmile': {path: '/emojis/rainbowsmile.png', height: 8480}
 };
 
 const emojiImages = {};

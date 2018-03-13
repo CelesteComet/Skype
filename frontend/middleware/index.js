@@ -39,7 +39,8 @@ const emojiTable = {
   "(smirk)": "smirk",
   "(cool)": "cool",
   "(curse)": "curse",
-  "(puke)": "puke"
+  "(puke)": "puke",
+  "(rainbowsmile)": "rainbowsmile"
 }
 
 

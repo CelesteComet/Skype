@@ -27,7 +27,7 @@ class RecentsList extends Component {
   }
 
   scrollDown() {
-     $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
+    $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
   }
 
   render() {

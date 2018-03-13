@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ContactsListItem from './ContactsListItem';
 import CallButtonSet from './CallButtonSet';
 import { connect } from 'react-redux';
+import { makeCall } from '../actions/callActions';
 import Peer from 'simple-peer';
 
 class HeaderMessageInterface extends Component {
@@ -12,19 +13,19 @@ class HeaderMessageInterface extends Component {
   }
 
   handleCall() {
-    console.log("Initiating a call")
+    // console.log("Initiating a call")
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream, error) => {
-      console.log("Video audio ok!");
+
       var peer = new Peer({
         initiator: true,
         trickle: false,
         stream: stream
-      })
-
+      });
 
       peer.on('signal', function (data) {
-        console.log('SIGNAL', JSON.stringify(data))
-      })
+        console.log("DATA GOT")
+        makeCall(data);
+      });
 
       window.peer = peer;
 
@@ -41,7 +42,8 @@ class HeaderMessageInterface extends Component {
             <p>{this.props.participants} participants</p>
           </div>
         }
-        <CallButtonSet />
+        <CallButtonSet 
+          handleCall={this.handleCall.bind(null, this)}/>
       </div>
     );
   }

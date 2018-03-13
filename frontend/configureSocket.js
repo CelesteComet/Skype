@@ -2,6 +2,7 @@ import { receiveMessage } from './actions/messageActions';
 import { logoutUser } from './actions/sessionActions';
 import { fetchRoomMemberships } from './actions/roomMembershipActions';
 import { moveToRoom } from './actions/uiActions';
+import { updateUserStatus } from './actions/friendActions';
 
 export const createSubscription = (roomId, dispatch) => {
   const roomName = `room #${roomId}`;
@@ -56,8 +57,13 @@ export const configureSocket = (chatRoomIds, dispatch) => {
       dispatch(fetchRoomMemberships()).then(() => {
         createSubscription(data.roomId, dispatch);
       });
+    } else if (data.action === 'notify_presence') {
+      let {user_id, status} = data.payload;
+      dispatch(updateUserStatus(user_id, status));
     }
   };
+
+  
 
 
 

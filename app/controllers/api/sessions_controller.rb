@@ -1,4 +1,10 @@
 class Api::SessionsController < ApplicationController
+
+  def index
+    current_user.notify_status(1)
+    render :template => "/api/sessions/create.json", locals: {user: current_user}
+  end
+
   def create
     @user = User.find_by_credentials(user_params[:username], user_params[:password]);
     if @user

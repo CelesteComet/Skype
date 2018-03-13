@@ -7,11 +7,11 @@ class CallButtonSet extends Component {
   }
 
   render() {
-    let {createRoomView} = this.props;
+    let {createRoomView, handleCall} = this.props;
     if (!createRoomView) {
       return (
         <ul className='call-button-set'>
-          <li className="video"></li>
+          <li className="video" onClick={() => {handleCall()}}></li>
           <li className="phone"></li>
           <li className="friend"></li>
         </ul>

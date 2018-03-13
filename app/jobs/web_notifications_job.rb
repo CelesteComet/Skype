@@ -9,4 +9,7 @@ class WebNotificationsJob < ApplicationJob
       })
     end
   end
+
+
+
 end
