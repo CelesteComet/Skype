@@ -33,6 +33,7 @@ gem 'redis', '~> 3.0'
 gem 'bcrypt', '~> 3.1.7'
 # Use sidekiq
 gem 'sidekiq'
+gem 'byebug'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
