@@ -11,61 +11,62 @@ class HeaderMessageInterface extends Component {
   constructor(props) {
     super(props);
     this.handleCall = this.handleCall.bind(this);
+
+    peer.on('call', function(call) {
+      console.log("CALL RECEIVED!!!")
+      console.log(call);
+
+      call.on('stream', function(remoteStream) {
+        console.log("RECEIVED");
+        console.log(remoteStream);
+      });
+
+      // navigator.mediaDevices.getUserMedia({video: true, audio: true}, function(stream) {
+
+      //   call.answer(stream); // Answer the call with an A/V stream.
+      //   call.on('stream', function(remoteStream) {
+      //     console.log(remoteStream)
+      //     var video = document.createElement('video')
+      //     document.body.appendChild(video)
+
+      //     video.src = window.URL.createObjectURL(remoteStream)
+      //     video.play()
+      //   });
+      // }, function(err) {
+      //   console.log('Failed to get local stream' ,err);
+      // });
+    });
   }
 
   handleCall() {
+
+
     // console.log("Initiating a call")
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream, error) => {
+      var call = window.peer.call("2", stream);
 
-      window.peer = new Peer({
-        initiator: true,
-        trickle: false,
-        stream: stream
-      });
+      makeCall(null, 2);
 
-
-      window.peer.on('signal', function (data) {
-        // give the key to the receiver
-        makeCall(data, 2);
-      });
-
-      window.peer.on('stream', function (stream) {
-        // got remote video stream, now let's show it in a video tag
-        console.log("WE ARE NOW STREAMING")
-        console.log(stream);
+      call.on('stream', function(remoteStream) {
+        console.log("RECEIVING REMOTE STREAM");
+        console.log(remoteStream)
         var video = document.createElement('video')
         document.body.appendChild(video)
 
-        video.src = window.URL.createObjectURL(stream)
+        video.src = window.URL.createObjectURL(remoteStream)
         video.play()
-      })
+      });
+
+
+
+
+    
 
     });
   }
 
   handleReceiveCall(data) {
-    console.log(data);
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream, error) => {
 
-      window.peer.stream = stream;
-      window.peer.signal(data.data[0]);
-
-      window.peer.on('signal', function (rdata) {
-        console.log("WOWOWOW")
-        makeCall(rdata, 1);
-      })
-
-      window.peer.on('stream', function (stream) {
-        // got remote video stream, now let's show it in a video tag
-        console.log("WE ARE NOW STREAMING")
-        console.log(stream);
-        var video = document.createElement('video')
-        document.body.appendChild(video)
-
-        video.src = window.URL.createObjectURL(stream)
-        video.play()
-      })
-    });
   }
 
   render() {

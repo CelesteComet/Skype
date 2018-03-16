@@ -47,10 +47,6 @@ class Dashboard extends Component {
 
   configurePeer() {
 
-      window.peer = new Peer({
-        initiator: false
-      });
-
   }
 
 

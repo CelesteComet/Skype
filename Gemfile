@@ -34,6 +34,7 @@ gem 'bcrypt', '~> 3.1.7'
 # Use sidekiq
 gem 'sidekiq'
 gem 'byebug'
+gem 'figaro'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

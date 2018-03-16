@@ -8,21 +8,9 @@ import Dashboard from './Dashboard';
 import SessionForm from './SessionForm';
 import RegistrationForm from './SessionForm/RegistrationForm';
 
-
-
-
 class App extends Component {
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-    
-  }
-
-  createSocket() {
-    // const { dispatch } = this.props;
-    // configureSocket(this, dispatch);
   }
   
   render() {

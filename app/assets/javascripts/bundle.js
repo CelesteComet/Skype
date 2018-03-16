@@ -24615,64 +24615,58 @@ var HeaderMessageInterface = function (_Component) {
     var _this = _possibleConstructorReturn(this, (HeaderMessageInterface.__proto__ || Object.getPrototypeOf(HeaderMessageInterface)).call(this, props));
 
     _this.handleCall = _this.handleCall.bind(_this);
+
+    peer.on('call', function (call) {
+      console.log("CALL RECEIVED!!!");
+      console.log(call);
+
+      call.on('stream', function (remoteStream) {
+        console.log("RECEIVED");
+        console.log(remoteStream);
+      });
+
+      // navigator.mediaDevices.getUserMedia({video: true, audio: true}, function(stream) {
+
+      //   call.answer(stream); // Answer the call with an A/V stream.
+      //   call.on('stream', function(remoteStream) {
+      //     console.log(remoteStream)
+      //     var video = document.createElement('video')
+      //     document.body.appendChild(video)
+
+      //     video.src = window.URL.createObjectURL(remoteStream)
+      //     video.play()
+      //   });
+      // }, function(err) {
+      //   console.log('Failed to get local stream' ,err);
+      // });
+    });
     return _this;
   }
 
   _createClass(HeaderMessageInterface, [{
     key: 'handleCall',
     value: function handleCall() {
+
       // console.log("Initiating a call")
       navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream, error) {
+        var call = window.peer.call("2", stream);
 
-        window.peer = new _simplePeer2.default({
-          initiator: true,
-          trickle: false,
-          stream: stream
-        });
+        (0, _callActions.makeCall)(null, 2);
 
-        window.peer.on('signal', function (data) {
-          // give the key to the receiver
-          (0, _callActions.makeCall)(data, 2);
-        });
-
-        window.peer.on('stream', function (stream) {
-          // got remote video stream, now let's show it in a video tag
-          console.log("WE ARE NOW STREAMING");
-          console.log(stream);
+        call.on('stream', function (remoteStream) {
+          console.log("RECEIVING REMOTE STREAM");
+          console.log(remoteStream);
           var video = document.createElement('video');
           document.body.appendChild(video);
 
-          video.src = window.URL.createObjectURL(stream);
+          video.src = window.URL.createObjectURL(remoteStream);
           video.play();
         });
       });
     }
   }, {
     key: 'handleReceiveCall',
-    value: function handleReceiveCall(data) {
-      console.log(data);
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream, error) {
-
-        window.peer.stream = stream;
-        window.peer.signal(data.data[0]);
-
-        window.peer.on('signal', function (rdata) {
-          console.log("WOWOWOW");
-          (0, _callActions.makeCall)(rdata, 1);
-        });
-
-        window.peer.on('stream', function (stream) {
-          // got remote video stream, now let's show it in a video tag
-          console.log("WE ARE NOW STREAMING");
-          console.log(stream);
-          var video = document.createElement('video');
-          document.body.appendChild(video);
-
-          video.src = window.URL.createObjectURL(stream);
-          video.play();
-        });
-      });
-    }
+    value: function handleReceiveCall(data) {}
   }, {
     key: 'render',
     value: function render() {
@@ -49903,15 +49897,6 @@ var App = function (_Component) {
   }
 
   _createClass(App, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {}
-  }, {
-    key: 'createSocket',
-    value: function createSocket() {
-      // const { dispatch } = this.props;
-      // configureSocket(this, dispatch);
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -50150,12 +50135,7 @@ var Dashboard = function (_Component) {
     }
   }, {
     key: 'configurePeer',
-    value: function configurePeer() {
-
-      window.peer = new _simplePeer2.default({
-        initiator: false
-      });
-    }
+    value: function configurePeer() {}
   }, {
     key: 'render',
     value: function render() {
