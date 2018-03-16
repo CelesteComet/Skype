@@ -16,48 +16,52 @@ class HeaderMessageInterface extends Component {
   handleCall() {
     // console.log("Initiating a call")
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream, error) => {
-      if (window.peer === undefined) {
-        window.peer = new Peer({
-          initiator: true,
-          trickle: false,
-          stream: stream
-        });
-      }
+
+      window.peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream: stream
+      });
 
 
       window.peer.on('signal', function (data) {
         // give the key to the receiver
-        makeCall(data);
+        makeCall(data, 2);
       });
 
-      window.peer.on('connect', function () {
-        // when connected send data to receiver
-        peer.send('hey peer2, how is it going?');
-      });
+      window.peer.on('stream', function (stream) {
+        // got remote video stream, now let's show it in a video tag
+        console.log("WE ARE NOW STREAMING")
+        console.log(stream);
+        var video = document.createElement('video')
+        document.body.appendChild(video)
+
+        video.src = window.URL.createObjectURL(stream)
+        video.play()
+      })
+
     });
   }
 
   handleReceiveCall(data) {
     console.log(data);
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream, error) => {
-      window.peer = new Peer({
-        initiator: false,
-        trickle: false,
-        stream: stream 
-      });
 
-      window.peer.signal(data.data);
+      window.peer.stream = stream;
+      window.peer.signal(data.data[0]);
 
       window.peer.on('signal', function (rdata) {
         console.log("WOWOWOW")
-        makeCall(rdata);
+        makeCall(rdata, 1);
       })
 
       window.peer.on('stream', function (stream) {
         // got remote video stream, now let's show it in a video tag
         console.log("WE ARE NOW STREAMING")
         console.log(stream);
-        var video = document.querySelector('video')
+        var video = document.createElement('video')
+        document.body.appendChild(video)
+
         video.src = window.URL.createObjectURL(stream)
         video.play()
       })

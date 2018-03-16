@@ -24623,22 +24623,27 @@ var HeaderMessageInterface = function (_Component) {
     value: function handleCall() {
       // console.log("Initiating a call")
       navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream, error) {
-        if (window.peer === undefined) {
-          window.peer = new _simplePeer2.default({
-            initiator: true,
-            trickle: false,
-            stream: stream
-          });
-        }
+
+        window.peer = new _simplePeer2.default({
+          initiator: true,
+          trickle: false,
+          stream: stream
+        });
 
         window.peer.on('signal', function (data) {
           // give the key to the receiver
-          (0, _callActions.makeCall)(data);
+          (0, _callActions.makeCall)(data, 2);
         });
 
-        window.peer.on('connect', function () {
-          // when connected send data to receiver
-          peer.send('hey peer2, how is it going?');
+        window.peer.on('stream', function (stream) {
+          // got remote video stream, now let's show it in a video tag
+          console.log("WE ARE NOW STREAMING");
+          console.log(stream);
+          var video = document.createElement('video');
+          document.body.appendChild(video);
+
+          video.src = window.URL.createObjectURL(stream);
+          video.play();
         });
       });
     }
@@ -24647,24 +24652,22 @@ var HeaderMessageInterface = function (_Component) {
     value: function handleReceiveCall(data) {
       console.log(data);
       navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream, error) {
-        window.peer = new _simplePeer2.default({
-          initiator: false,
-          trickle: false,
-          stream: stream
-        });
 
-        window.peer.signal(data.data);
+        window.peer.stream = stream;
+        window.peer.signal(data.data[0]);
 
         window.peer.on('signal', function (rdata) {
           console.log("WOWOWOW");
-          (0, _callActions.makeCall)(rdata);
+          (0, _callActions.makeCall)(rdata, 1);
         });
 
         window.peer.on('stream', function (stream) {
           // got remote video stream, now let's show it in a video tag
           console.log("WE ARE NOW STREAMING");
           console.log(stream);
-          var video = document.querySelector('video');
+          var video = document.createElement('video');
+          document.body.appendChild(video);
+
           video.src = window.URL.createObjectURL(stream);
           video.play();
         });
@@ -50147,7 +50150,12 @@ var Dashboard = function (_Component) {
     }
   }, {
     key: 'configurePeer',
-    value: function configurePeer() {}
+    value: function configurePeer() {
+
+      window.peer = new _simplePeer2.default({
+        initiator: false
+      });
+    }
   }, {
     key: 'render',
     value: function render() {
@@ -51111,11 +51119,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 var MAKE_CALL = exports.MAKE_CALL = 'MAKE_CALL';
 
-var makeCall = exports.makeCall = function makeCall(token) {
+var makeCall = exports.makeCall = function makeCall(token, userId) {
   return $.ajax({
     url: 'api/makeCall',
     method: 'POST',
-    data: { token: token }
+    data: { token: token, userId: userId }
   });
 };
 
