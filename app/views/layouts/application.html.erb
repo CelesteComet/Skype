@@ -7,7 +7,7 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <script src="https://use.fontawesome.com/9ee3838b50.js"></script>
-    <script src="https://cdn.peerjs.com/0.3/peer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.js"></script>
     <script type="text/javascript">
       <% if current_user %>
       window.currentUser = <%= (render :template => "/api/sessions/create.json", locals: {user: current_user}).html_safe %>
