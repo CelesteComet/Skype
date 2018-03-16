@@ -5,6 +5,8 @@ import Footer from './Footer';
 import ModalProfile from './ModalProfile/ModalProfile';
 import {configureSocket} from '../configureSocket';
 
+import Peer from 'simple-peer';
+
 // Actions
 import { logoutUser, getUser } from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
@@ -22,6 +24,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+
+    this.configurePeer(); 
 
     // get all friends, then get all the memberships
     dispatch(fetchAllFriends()).then(() => {
@@ -41,6 +45,10 @@ class Dashboard extends Component {
     });
   }
 
+  configurePeer() {
+
+  }
+
 
 
   render() {
@@ -52,6 +60,7 @@ class Dashboard extends Component {
           <SideBar />
           <Main />
           <Footer />
+          <video id="video"></video>
         </div>
         
       </Fragment>

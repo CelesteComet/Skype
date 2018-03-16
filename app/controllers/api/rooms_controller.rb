@@ -13,7 +13,7 @@ class Api::RoomsController < ApplicationController
         action: 'fetch_rooms',
         roomId: @room.id
       }
-      WebNotificationsJob.perform([id], {data: payload})
+      WebNotificationsJob.perform([id], 'notify_status', {data: payload})
     end
 
     if @room.save 

@@ -496,6 +496,7 @@ var HIDE_MEDIA_UPLOAD = exports.HIDE_MEDIA_UPLOAD = "HIDE_MEDIA_UPLOAD";
 var MOVE_TO_ROOM = exports.MOVE_TO_ROOM = "MOVE_TO_ROOM";
 var SHOW_IN_SEARCH = exports.SHOW_IN_SEARCH = "SHOW_IN_SEARCH";
 var HIDE_IN_SEARCH = exports.HIDE_IN_SEARCH = "HIDE_IN_SEARCH";
+var TOGGLE_CALL_UI = exports.TOGGLE_CALL_UI = "TOGGLE_CALL_UI";
 
 var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModal() {
   return {
@@ -548,6 +549,13 @@ var showInSearch = exports.showInSearch = function showInSearch() {
 var hideInSearch = exports.hideInSearch = function hideInSearch() {
   return {
     type: HIDE_IN_SEARCH
+  };
+};
+
+var toggleCallUI = exports.toggleCallUI = function toggleCallUI(callKey) {
+  return {
+    type: TOGGLE_CALL_UI,
+    payload: callKey
   };
 };
 
@@ -21854,6 +21862,12 @@ var _uiActions = __webpack_require__(7);
 
 var _friendActions = __webpack_require__(17);
 
+var _simplePeer = __webpack_require__(180);
+
+var _simplePeer2 = _interopRequireDefault(_simplePeer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var createSubscription = exports.createSubscription = function createSubscription(roomId, dispatch) {
   var roomName = 'room #' + roomId;
 
@@ -21911,6 +21925,11 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
           status = _data$payload.status;
 
       dispatch((0, _friendActions.updateUserStatus)(user_id, status));
+    } else if (data.action === 'receiveCall') {
+      console.log("receive call action received");
+      var payload = data.payload;
+
+      dispatch((0, _uiActions.toggleCallUI)(payload));
     }
   };
 };
@@ -24573,6 +24592,8 @@ var _reactRedux = __webpack_require__(2);
 
 var _callActions = __webpack_require__(179);
 
+var _uiActions = __webpack_require__(7);
+
 var _simplePeer = __webpack_require__(180);
 
 var _simplePeer2 = _interopRequireDefault(_simplePeer);
@@ -24602,24 +24623,70 @@ var HeaderMessageInterface = function (_Component) {
     value: function handleCall() {
       // console.log("Initiating a call")
       navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream, error) {
+        if (window.peer === undefined) {
+          window.peer = new _simplePeer2.default({
+            initiator: true,
+            trickle: false,
+            stream: stream
+          });
+        }
 
-        var peer = new _simplePeer2.default({
-          initiator: true,
+        window.peer.on('signal', function (data) {
+          // give the key to the receiver
+          (0, _callActions.makeCall)(data);
+        });
+
+        window.peer.on('connect', function () {
+          // when connected send data to receiver
+          peer.send('hey peer2, how is it going?');
+        });
+      });
+    }
+  }, {
+    key: 'handleReceiveCall',
+    value: function handleReceiveCall(data) {
+      console.log(data);
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (stream, error) {
+        window.peer = new _simplePeer2.default({
+          initiator: false,
           trickle: false,
           stream: stream
         });
 
-        peer.on('signal', function (data) {
-          console.log("DATA GOT");
-          (0, _callActions.makeCall)(data);
+        window.peer.signal(data.data);
+
+        window.peer.on('signal', function (rdata) {
+          console.log("WOWOWOW");
+          (0, _callActions.makeCall)(rdata);
         });
 
-        window.peer = peer;
+        window.peer.on('stream', function (stream) {
+          // got remote video stream, now let's show it in a video tag
+          console.log("WE ARE NOW STREAMING");
+          console.log(stream);
+          var video = document.querySelector('video');
+          video.src = window.URL.createObjectURL(stream);
+          video.play();
+        });
       });
     }
   }, {
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          callUI = _props.callUI,
+          callKey = _props.callKey;
+
+
+      var callButtons = _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'button',
+          { onClick: this.handleReceiveCall.bind(null, callKey) },
+          'accept call'
+        )
+      );
       return _react2.default.createElement(
         'div',
         { className: 'header-message-interface' },
@@ -24640,7 +24707,8 @@ var HeaderMessageInterface = function (_Component) {
           )
         ),
         _react2.default.createElement(_CallButtonSet2.default, {
-          handleCall: this.handleCall.bind(null, this) })
+          handleCall: this.handleCall.bind(null, this) }),
+        callUI && callButtons
       );
     }
   }]);
@@ -24648,7 +24716,14 @@ var HeaderMessageInterface = function (_Component) {
   return HeaderMessageInterface;
 }(_react.Component);
 
-exports.default = HeaderMessageInterface;
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    callUI: state.ui.callUI,
+    callKey: state.ui.callKey
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(HeaderMessageInterface);
 
 // when you click a button
 
@@ -47175,6 +47250,8 @@ var initialState = {
   createRoomView: false,
   mediaUploadView: true, // media upload icon for input
   directoryButton: false,
+  callUI: false,
+  callKey: null,
   inSearch: false, // for user friend searching
   currentRoomId: 1 // change this later when implementing changing rooms
 };
@@ -47187,6 +47264,10 @@ var uiReducer = function uiReducer() {
   switch (action.type) {
     case _uiActions.TOGGLE_PROFILE_MODAL:
       newState.profileModalView = !newState.profileModalView;
+      return newState;
+    case _uiActions.TOGGLE_CALL_UI:
+      newState.callUI = !newState.callUI;
+      newState.callKey = action.payload;
       return newState;
     case _uiActions.TOGGLE_CONTACTS_LIST:
       closeAll(newState);
@@ -49820,9 +49901,7 @@ var App = function (_Component) {
 
   _createClass(App, [{
     key: 'componentDidMount',
-    value: function componentDidMount() {
-      // this.createSocket();
-    }
+    value: function componentDidMount() {}
   }, {
     key: 'createSocket',
     value: function createSocket() {
@@ -49992,6 +50071,10 @@ var _ModalProfile2 = _interopRequireDefault(_ModalProfile);
 
 var _configureSocket = __webpack_require__(43);
 
+var _simplePeer = __webpack_require__(180);
+
+var _simplePeer2 = _interopRequireDefault(_simplePeer);
+
 var _sessionActions = __webpack_require__(10);
 
 var _roomMembershipActions = __webpack_require__(16);
@@ -50037,8 +50120,10 @@ var Dashboard = function (_Component) {
 
       var dispatch = this.props.dispatch;
 
-      // get all friends, then get all the memberships
 
+      this.configurePeer();
+
+      // get all friends, then get all the memberships
       dispatch((0, _friendActions.fetchAllFriends)()).then(function () {
         dispatch((0, _roomMembershipActions.fetchRoomMemberships)()).then(function (e) {
           var _props = _this2.props,
@@ -50061,6 +50146,9 @@ var Dashboard = function (_Component) {
       });
     }
   }, {
+    key: 'configurePeer',
+    value: function configurePeer() {}
+  }, {
     key: 'render',
     value: function render() {
       var _props2 = this.props,
@@ -50076,7 +50164,8 @@ var Dashboard = function (_Component) {
           modalView && _react2.default.createElement(_ModalProfile2.default, null),
           _react2.default.createElement(_SideBar2.default, null),
           _react2.default.createElement(_Main2.default, null),
-          _react2.default.createElement(_Footer2.default, null)
+          _react2.default.createElement(_Footer2.default, null),
+          _react2.default.createElement('video', { id: 'video' })
         )
       );
     }
@@ -51025,7 +51114,8 @@ var MAKE_CALL = exports.MAKE_CALL = 'MAKE_CALL';
 var makeCall = exports.makeCall = function makeCall(token) {
   return $.ajax({
     url: 'api/makeCall',
-    data: token
+    method: 'POST',
+    data: { token: token }
   });
 };
 

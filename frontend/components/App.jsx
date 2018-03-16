@@ -13,11 +13,11 @@ import RegistrationForm from './SessionForm/RegistrationForm';
 
 class App extends Component {
   constructor(props) {
-    super(props);    
+    super(props);
   }
 
   componentDidMount() {
-    // this.createSocket();
+    
   }
 
   createSocket() {

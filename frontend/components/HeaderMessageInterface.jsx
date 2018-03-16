@@ -3,6 +3,7 @@ import ContactsListItem from './ContactsListItem';
 import CallButtonSet from './CallButtonSet';
 import { connect } from 'react-redux';
 import { makeCall } from '../actions/callActions';
+import { displayCallUI } from '../actions/uiActions';
 import Peer from 'simple-peer';
 
 class HeaderMessageInterface extends Component {
@@ -15,24 +16,62 @@ class HeaderMessageInterface extends Component {
   handleCall() {
     // console.log("Initiating a call")
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream, error) => {
+      if (window.peer === undefined) {
+        window.peer = new Peer({
+          initiator: true,
+          trickle: false,
+          stream: stream
+        });
+      }
 
-      var peer = new Peer({
-        initiator: true,
-        trickle: false,
-        stream: stream
-      });
 
-      peer.on('signal', function (data) {
-        console.log("DATA GOT")
+      window.peer.on('signal', function (data) {
+        // give the key to the receiver
         makeCall(data);
       });
 
-      window.peer = peer;
+      window.peer.on('connect', function () {
+        // when connected send data to receiver
+        peer.send('hey peer2, how is it going?');
+      });
+    });
+  }
 
+  handleReceiveCall(data) {
+    console.log(data);
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream, error) => {
+      window.peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream: stream 
+      });
+
+      window.peer.signal(data.data);
+
+      window.peer.on('signal', function (rdata) {
+        console.log("WOWOWOW")
+        makeCall(rdata);
+      })
+
+      window.peer.on('stream', function (stream) {
+        // got remote video stream, now let's show it in a video tag
+        console.log("WE ARE NOW STREAMING")
+        console.log(stream);
+        var video = document.querySelector('video')
+        video.src = window.URL.createObjectURL(stream)
+        video.play()
+      })
     });
   }
 
   render() {
+    const { callUI, callKey } = this.props;
+
+    const callButtons = (
+      <div>
+        <button onClick={this.handleReceiveCall.bind(null, callKey)}>accept call</button>
+      </div>
+    );
     return (
       <div className='header-message-interface'>
         {this.props.type === 'message' && <ContactsListItem contact={ {username: "Bruce"} }/> }
@@ -44,12 +83,20 @@ class HeaderMessageInterface extends Component {
         }
         <CallButtonSet 
           handleCall={this.handleCall.bind(null, this)}/>
+        {callUI && callButtons }
       </div>
     );
   }
 }
 
-export default HeaderMessageInterface;
+const mapStateToProps = state => {
+  return {
+    callUI: state.ui.callUI,
+    callKey: state.ui.callKey
+  }
+};
+
+export default connect(mapStateToProps, null)(HeaderMessageInterface);
 
 // when you click a button
 

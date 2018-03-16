@@ -8,6 +8,7 @@ export const HIDE_MEDIA_UPLOAD = "HIDE_MEDIA_UPLOAD";
 export const MOVE_TO_ROOM = "MOVE_TO_ROOM";
 export const SHOW_IN_SEARCH = "SHOW_IN_SEARCH";
 export const HIDE_IN_SEARCH = "HIDE_IN_SEARCH";
+export const TOGGLE_CALL_UI = "TOGGLE_CALL_UI";
 
 export const toggleProfileModal = () => {
   return {
@@ -61,6 +62,13 @@ export const hideInSearch = () => {
   return {
     type: HIDE_IN_SEARCH
   } 
+}
+
+export const toggleCallUI= (callKey) => {
+  return {
+    type: TOGGLE_CALL_UI,
+    payload: callKey
+  }
 }
 
 export const moveToRoom = (roomId) => {

@@ -8,7 +8,8 @@ import {
   HIDE_MEDIA_UPLOAD,
   SHOW_IN_SEARCH,
   HIDE_IN_SEARCH, 
-  MOVE_TO_ROOM } from '../actions/uiActions';
+  MOVE_TO_ROOM,
+  TOGGLE_CALL_UI } from '../actions/uiActions';
 import _ from 'lodash';
 
 const closeAll = state => {
@@ -25,6 +26,8 @@ const initialState = {
   createRoomView: false,
   mediaUploadView: true, // media upload icon for input
   directoryButton: false,
+  callUI: false,
+  callKey: null,
   inSearch: false, // for user friend searching
   currentRoomId: 1 // change this later when implementing changing rooms
 };
@@ -34,6 +37,10 @@ const uiReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_PROFILE_MODAL: 
       newState.profileModalView = !newState.profileModalView;
+      return newState;
+    case TOGGLE_CALL_UI:
+      newState.callUI = !newState.callUI;
+      newState.callKey = action.payload;
       return newState;
     case TOGGLE_CONTACTS_LIST:
       closeAll(newState);

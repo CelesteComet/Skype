@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resources :rooms, only: [:create, :index]
 
     get '/session', to: 'sessions#index'
-    get '/makeCall', to: 'calls#send_ring'
+    post '/makeCall', to: 'calls#send_ring'
 
   end
 
