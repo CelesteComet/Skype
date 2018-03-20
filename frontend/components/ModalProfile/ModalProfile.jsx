@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import ProfileItem from '../ProfileItem';
-import CircleImageIcon from '../CircleImageIcon';
-import { toggleProfileModal } from '../../actions/uiActions';
-import { connect } from 'react-redux';
-import { logoutUser } from '../../actions/sessionActions';
 
+// Components
+import _ProfileItem from '../_ProfileItem';
+import CircleImageIcon from '../CircleImageIcon';
+
+// Redux 
+import { connect } from 'react-redux';
+
+// Actions
+import { toggleProfileModal } from '../../actions/uiActions';
+import { logoutUser } from '../../actions/sessionActions';
 
 class ModalProfile extends Component {
 
@@ -20,17 +25,19 @@ class ModalProfile extends Component {
   }
 
   render() {
-    const { dispatch, currentUsername } = this.props;
+    const { dispatch, currentUser } = this.props;
+    const { username, status } = currentUser;
     return (
       <div className="modal-profile">
         <div className="shroud"></div>
         <div className="modal">
           <header>
-          <ProfileItem 
-            name={ currentUsername }
-            src='/images/default-avatar.svg'
-            status='Online'
-            handleClick={() => { dispatch(toggleProfileModal()) }} />
+            <_ProfileItem 
+              name={ username }
+              subtitle={"Online"}
+              status={ status } 
+              src={ 'images/default-avatar.svg' }
+              onClick={() => { dispatch(toggleProfileModal()) }} />
 
           </header>
           <div className="modal-main">
@@ -38,8 +45,8 @@ class ModalProfile extends Component {
               src='/images/default-avatar.svg'
               status='Online' />
             <div className="modal-content">
-              <h3>{currentUsername}</h3>
-              <p>{currentUsername}</p>
+              <h3>{ username }</h3>
+              <p>{ username }</p>
               <h2>Online<i className="fa fa-chevron-down icon-blue" aria-hidden="true"></i></h2>
               <p className="notifications">Notifications on</p>
               <div>
@@ -63,7 +70,7 @@ class ModalProfile extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentUsername: state.session.currentUser.username
+    currentUser: state.session.currentUser
   }
 }
 

@@ -40,7 +40,8 @@ class SideBar extends Component {
                 name={currentUser.username}
                 subtitle={"Online"}
                 status={currentUser.status} 
-                src={ 'images/default-avatar.svg' }/>
+                src={ 'images/default-avatar.svg' }
+                onClick={() => { dispatch(toggleProfileModal()) }} />
             </div>
             {/* Search */}
             <Search />

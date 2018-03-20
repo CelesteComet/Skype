@@ -14,6 +14,8 @@ img {
 }
 
 ._profile-item {
+  white-space: nowrap;
+
   .icon-container {
     display: inline-block;
     position: relative;
@@ -25,8 +27,8 @@ img {
 
     .status-circle {
       position: absolute;
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       top: 25px;
       left: 30px;
 

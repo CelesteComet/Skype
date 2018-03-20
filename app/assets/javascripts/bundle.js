@@ -51130,7 +51130,10 @@ var SideBar = function (_Component) {
                 name: currentUser.username,
                 subtitle: "Online",
                 status: currentUser.status,
-                src: 'images/default-avatar.svg' })
+                src: 'images/default-avatar.svg',
+                onClick: function onClick() {
+                  dispatch((0, _uiActions.toggleProfileModal)());
+                } })
             ),
             _react2.default.createElement(_Search2.default, null)
           ),
@@ -54451,17 +54454,17 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _ProfileItem = __webpack_require__(41);
+var _ProfileItem2 = __webpack_require__(219);
 
-var _ProfileItem2 = _interopRequireDefault(_ProfileItem);
+var _ProfileItem3 = _interopRequireDefault(_ProfileItem2);
 
 var _CircleImageIcon = __webpack_require__(40);
 
 var _CircleImageIcon2 = _interopRequireDefault(_CircleImageIcon);
 
-var _uiActions = __webpack_require__(6);
-
 var _reactRedux = __webpack_require__(2);
+
+var _uiActions = __webpack_require__(6);
 
 var _sessionActions = __webpack_require__(10);
 
@@ -54472,6 +54475,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Components
+
+
+// Redux 
+
+
+// Actions
+
 
 var ModalProfile = function (_Component) {
   _inherits(ModalProfile, _Component);
@@ -54498,7 +54510,9 @@ var ModalProfile = function (_Component) {
     value: function render() {
       var _props = this.props,
           dispatch = _props.dispatch,
-          currentUsername = _props.currentUsername;
+          currentUser = _props.currentUser;
+      var username = currentUser.username,
+          status = currentUser.status;
 
       return _react2.default.createElement(
         'div',
@@ -54510,11 +54524,12 @@ var ModalProfile = function (_Component) {
           _react2.default.createElement(
             'header',
             null,
-            _react2.default.createElement(_ProfileItem2.default, {
-              name: currentUsername,
-              src: '/images/default-avatar.svg',
-              status: 'Online',
-              handleClick: function handleClick() {
+            _react2.default.createElement(_ProfileItem3.default, {
+              name: username,
+              subtitle: "Online",
+              status: status,
+              src: 'images/default-avatar.svg',
+              onClick: function onClick() {
                 dispatch((0, _uiActions.toggleProfileModal)());
               } })
           ),
@@ -54530,12 +54545,12 @@ var ModalProfile = function (_Component) {
               _react2.default.createElement(
                 'h3',
                 null,
-                currentUsername
+                username
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                currentUsername
+                username
               ),
               _react2.default.createElement(
                 'h2',
@@ -54589,7 +54604,7 @@ var ModalProfile = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    currentUsername: state.session.currentUser.username
+    currentUser: state.session.currentUser
   };
 };
 
@@ -57118,11 +57133,12 @@ function _ProfileItem(_ref) {
   var name = _ref.name,
       subtitle = _ref.subtitle,
       status = _ref.status,
-      src = _ref.src;
+      src = _ref.src,
+      onClick = _ref.onClick;
 
   return _react2.default.createElement(
     'div',
-    { className: '_profile-item' },
+    { onClick: onClick, className: '_profile-item' },
     _react2.default.createElement(
       'div',
       { className: 'icon-container' },
@@ -57149,7 +57165,8 @@ function _ProfileItem(_ref) {
 _ProfileItem.propTypes = {
   name: _propTypes2.default.string,
   subtitle: _propTypes2.default.string,
-  status: _propTypes2.default.number
+  status: _propTypes2.default.number,
+  onClick: _propTypes2.default.func
 };
 
 exports.default = _ProfileItem;
