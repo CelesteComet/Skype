@@ -16,6 +16,9 @@ Rails.application.routes.draw do
     get '/session', to: 'sessions#index'
     post '/makeCall', to: 'calls#send_ring'
 
+    # Refactor into its own class 
+    post '/sendMessage', to: 'calls#send_message'
+
   end
 
 end

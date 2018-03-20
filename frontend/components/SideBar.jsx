@@ -6,6 +6,7 @@ import AsideButtons from './AsideButtons';
 import { toggleProfileModal } from '../actions/uiActions';
 import { connect } from 'react-redux';
 import PotentialFriendsList from './PotentialFriendsList';
+import _ProfileItem from './_ProfileItem';
 
 
 class SideBar extends Component {
@@ -28,13 +29,18 @@ class SideBar extends Component {
               <div className="white-circle cloud-2 light-blue-cloud"></div>
             </div>
             <div className='name-heading'>
-              <ProfileItem 
+              {/*<ProfileItem 
                 name={currentUser.username} 
                 status={currentUser.status}
                 statusIcon={true}
                 canHover={true}
                 src={'images/default-avatar.svg'} 
-                handleClick={() => { dispatch(toggleProfileModal()) }} />
+                handleClick={() => { dispatch(toggleProfileModal()) }} />*/}
+              <_ProfileItem 
+                name={currentUser.username}
+                subtitle={"Online"}
+                status={currentUser.status} 
+                src={ 'images/default-avatar.svg' }/>
             </div>
             {/* Search */}
             <Search />

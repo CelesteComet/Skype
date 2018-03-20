@@ -14,12 +14,59 @@
       var opts = {
         host: 'peerjs-server-celeste-comet.herokuapp.com',
         secure: true,
-        port: 443
+        port: 443,
+        debug: 3
       };
+
+      // Create a configuration object for RTC STUN servers
+      // Peer to peer connections work 80%+ times just with STUN.
+      var configuration = {
+        'iceServers': [
+          { 'urls': 'stun:stun.services.mozilla.com'}, 
+          { 'urls': 'stun:stun.l.google.com:19302'}
+        ]
+      };
+
+      window.pc = new RTCPeerConnection(configuration);
+
+
+      // ******************************************************** //
+
+
+
+
+
+
 
       
 
-      window.peer = new Peer(<%= current_user.id %>, opts); 
+      // window.peer = new Peer(<%= current_user.id %>, opts); 
+
+      // window.peer.on('call', function(call) {
+      //   console.log("CALL RECEIVED!!!")
+      //   console.log(call);
+
+
+      //   call.on('stream', function(remoteStream) {
+      //     console.log("RECEIVED OMGOMGOMGOMG");
+      //     console.log(remoteStream);
+      //   });
+
+        // navigator.mediaDevices.getUserMedia({video: true, audio: true}, function(stream) {
+
+        //   call.answer(stream); // Answer the call with an A/V stream.
+        //   call.on('stream', function(remoteStream) {
+        //     console.log(remoteStream)
+        //     var video = document.createElement('video')
+        //     document.body.appendChild(video)
+
+        //     video.src = window.URL.createObjectURL(remoteStream)
+        //     video.play()
+        //   });
+        // }, function(err) {
+        //   console.log('Failed to get local stream' ,err);
+        // });
+      // });
       <% end %>
     </script>
   </head>

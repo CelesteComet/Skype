@@ -1,11 +1,17 @@
-export const MAKE_CALL = 'MAKE_CALL';
-
 export const makeCall = (token, userId) => {
   return $.ajax({
     url: 'api/makeCall',
     method: 'POST',
     data: { token, userId }
-  })
-}
+  });
+};
+
+export const sendMessage = (userIds, payload) => {
+  return $.ajax({
+    url: 'api/sendMessage',
+    method: 'POST',
+    data: { userIds , payload }
+  });
+};
 
 
