@@ -3,6 +3,7 @@ $color-green: #00FF00;
 $color-blue: #0000FF;*/
 $light-blue: rgb(151, 216, 245);
 $light-gray: #8CA8B4;
+$dark-gray: rgb(148, 153, 156);
 
 /* TYPOGRAPHY */
 $font-size-sub: 14px;
@@ -24,8 +25,15 @@ img {
 
     .status-circle {
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 12px;
+      height: 12px;
+      top: 25px;
+      left: 30px;
+
+      background: white;
+      border-radius: 100%;
+      border: 2px solid $dark-gray;
+      box-shadow: white 0px 0px 0px 3px;
     }
   }
 
