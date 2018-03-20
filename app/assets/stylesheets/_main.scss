@@ -53,3 +53,154 @@ img {
     }
   }
 }
+
+/**************************************/
+/*               MODAL                */
+/**************************************/
+
+.modal-profile {
+
+  h4 {
+    font-size: 18px;
+  }
+
+  .profile-item {
+    p {
+      font-size: 0.85em;
+      font-weight: 300;
+    }
+  }
+
+  .modal-main {
+    width: 300px;
+    margin: 30px auto 0px auto;
+
+    .img-container {
+      display: block;
+      height: 260px;
+      width: 260px;
+      margin: auto auto 32px auto;
+
+      img {
+        background: $light-blue;
+        border-radius: 100%;
+      }
+    }
+  }
+
+  .shroud {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    cursor: pointer;
+    background-color: white;
+    background: rgba(255,255,255,0.8);
+  };
+
+  .modal {
+    height: 83.4%;
+    background: #F6F9FC;
+    z-index: 100;
+    position: fixed;
+    width: 100%;
+    overflow: scroll;
+
+    .profile-item {
+      left: -10px;
+      top: 6px;
+    }
+  }
+
+  header {
+    padding-top: 26px;
+    padding-left: 19px;
+  }
+}
+
+.modal-content {
+
+  letter-spacing: 0.04em;
+
+  ._profile-item {
+    .icon-container {
+      display: none;
+    }
+
+    ._profile-texts {
+      padding: 0px 0px 35px 0px;
+    }
+  }
+
+  p, span {
+    color: #667486;
+  }
+
+  h3 {
+    padding-bottom: 4px;
+    font-size: 1.1em;
+    font-weight: 400;
+  }
+
+  h2 {
+    display: flex;
+    padding-bottom: 8px;
+    font-size: 1.25em;
+    font-weight: 500;
+
+    i {
+      padding-left: 18px;
+      font-size: 13px;
+    }
+  }
+
+  p:nth-of-type(1) {
+    font-size: 0.87em;
+    font-weight: 300;
+    padding-bottom: 33px;
+  }
+
+  .notifications {
+    padding-bottom: 28px;
+    font-size: 0.9em;
+    font-weight: 300;
+  }
+
+  span {
+    display: block;
+    padding-bottom: 39px;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 0.8em;
+  }
+
+  .big-buttons {
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 300;
+    padding-bottom: 23px;
+
+    i {
+      padding-right: 13px;
+      font-size: 22px;
+    }
+
+    p {
+      display: inline-block;
+      padding-bottom: 0;
+    }
+
+    .first {
+      padding-bottom: 13px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+}
+

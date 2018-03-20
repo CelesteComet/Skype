@@ -54485,6 +54485,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // Actions
 
 
+var statusText = {
+  1: "Online",
+  2: "Away",
+  3: "Offline"
+};
+
 var ModalProfile = function (_Component) {
   _inherits(ModalProfile, _Component);
 
@@ -54493,6 +54499,8 @@ var ModalProfile = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (ModalProfile.__proto__ || Object.getPrototypeOf(ModalProfile)).call(this, props));
 
+    _this.dispatch = _this.props.dispatch;
+    _this.toggleProfileModal = _this.toggleProfileModal.bind(_this);
     _this.handleLogout = _this.handleLogout.bind(_this);
     return _this;
   }
@@ -54500,10 +54508,13 @@ var ModalProfile = function (_Component) {
   _createClass(ModalProfile, [{
     key: 'handleLogout',
     value: function handleLogout() {
-      var dispatch = this.props.dispatch;
-
-      dispatch((0, _uiActions.toggleProfileModal)());
-      dispatch((0, _sessionActions.logoutUser)());
+      (0, _uiActions.toggleProfileModal)();
+      this.dispatch((0, _sessionActions.logoutUser)());
+    }
+  }, {
+    key: 'toggleProfileModal',
+    value: function toggleProfileModal() {
+      this.dispatch((0, _uiActions.toggleProfileModal)());
     }
   }, {
     key: 'render',
@@ -54513,6 +54524,7 @@ var ModalProfile = function (_Component) {
           currentUser = _props.currentUser;
       var username = currentUser.username,
           status = currentUser.status;
+
 
       return _react2.default.createElement(
         'div',
@@ -54536,26 +54548,23 @@ var ModalProfile = function (_Component) {
           _react2.default.createElement(
             'div',
             { className: 'modal-main' },
-            _react2.default.createElement(_CircleImageIcon2.default, {
-              src: '/images/default-avatar.svg',
-              status: 'Online' }),
+            _react2.default.createElement(
+              'div',
+              { className: 'img-container' },
+              _react2.default.createElement('img', { src: '/images/default-avatar.svg' })
+            ),
             _react2.default.createElement(
               'div',
               { className: 'modal-content' },
-              _react2.default.createElement(
-                'h3',
-                null,
-                username
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                username
-              ),
+              _react2.default.createElement(_ProfileItem3.default, {
+                name: username,
+                subtitle: "Online",
+                status: status,
+                src: 'images/default-avatar.svg' }),
               _react2.default.createElement(
                 'h2',
                 null,
-                'Online',
+                statusText[status],
                 _react2.default.createElement('i', { className: 'fa fa-chevron-down icon-blue', 'aria-hidden': 'true' })
               ),
               _react2.default.createElement(
@@ -54584,11 +54593,11 @@ var ModalProfile = function (_Component) {
               ),
               _react2.default.createElement(
                 'div',
-                { className: 'big-buttons' },
+                { className: 'big-buttons', onClick: this.handleLogout },
                 _react2.default.createElement('i', { className: 'fa fa-sign-out icon-blue', 'aria-hidden': 'true' }),
                 _react2.default.createElement(
                   'p',
-                  { className: 'logout', onClick: this.handleLogout },
+                  { className: 'logout' },
                   'Sign Out'
                 )
               )
