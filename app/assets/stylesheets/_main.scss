@@ -2,6 +2,7 @@
 $color-green: #00FF00;
 $color-blue: #0000FF;*/
 $light-blue: rgb(151, 216, 245);
+$lighter-blue: #EFF6F9;
 $light-gray: #8CA8B4;
 $dark-gray: rgb(148, 153, 156);
 
@@ -11,6 +12,7 @@ $font-size-sub: 14px;
 img {
   height: 100%;
   width: 100%;
+  border: none;
 }
 
 ._profile-item {
@@ -201,6 +203,108 @@ img {
       cursor: pointer;
     }
   }
-
 }
+
+/**************************************/
+/*              Aside                 */
+/**************************************/
+
+.name-heading {
+  left: 18px;
+  top: -26px;
+  position: relative;
+  z-index: 100;
+}
+
+/**************************************/
+/*           Recents List             */
+/**************************************/
+
+.recents-list {
+  li {
+    padding: 7px 18px 7px 18px;
+  }
+
+  li:hover {
+    background: $lighter-blue;
+  }
+}
+
+/**************************************/
+/*              Clouds                */
+/**************************************/
+
+.cloud-background {
+  position: relative;
+  height: 55px;
+  width: 100%;
+  top: 0;
+  background: #B2E7FA;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.white-circle {
+  position: absolute;
+  height: 75px;
+  width: 100px;
+  border-radius: 100%;
+  background-color: white;
+  overflow: hidden;
+}
+
+.cloud-5 {
+  height: 94px;
+  width: 124px;
+  left: 255px;
+  top: -16px;
+}
+
+.cloud-4 {
+  height: 88px;
+  width: 177px;
+  left: 125px;
+  top: -10px;
+}
+
+.cloud-3 {
+  height: 102px;
+  width: 118px;
+  left: 50px;
+  top: 7px;
+}
+
+.cloud-2 {
+  height: 60px;
+  width: 60px;
+  left: 9px;
+  top: 21px;
+}
+
+.cloud-1 {
+  height: 41px;
+  width: 59px;
+  left: -34px;
+  top: 37px;
+}
+
+.deep-blue-cloud {
+  height: 74px;
+  width: 74px;
+  top: 14px;
+  left: 2px;
+  background-color: #73C8F1;
+  z-index: -28;
+}
+
+.light-blue-cloud {
+  height: 88px;
+  width: 88px;
+  top: 7px;
+  left: -5px;
+  background-color: #9EDBF5;
+  z-index: -29;
+}
+
+
 

@@ -1,33 +1,26 @@
 import React, { Component } from 'react';
+
+import { toggleProfileModal } from '../actions/uiActions';
+import { connect } from 'react-redux';
+
 import Search from './Search';
 import ProfileItem from './ProfileItem';
 import RecentsList from './RecentsList';
 import AsideButtons from './AsideButtons';
-import { toggleProfileModal } from '../actions/uiActions';
-import { connect } from 'react-redux';
 import PotentialFriendsList from './PotentialFriendsList';
 import _ProfileItem from './_ProfileItem';
-
+import Clouds from './Clouds';
 
 class SideBar extends Component {
-
   render() {
     let { dispatch, directoryButton, currentUser } = this.props;
 
     return (
       <div className="aside-container">
         <aside> 
+          <Clouds />
           <div className="sticky-sidebar">
-            {/* Cloud Background*/}
-            <div className="cloud-background">
-              <div className="white-circle cloud-5"></div>
-              <div className="white-circle cloud-4"></div>
-              <div className="white-circle cloud-3"></div>
-              <div className="white-circle cloud-2"></div>
-              <div className="white-circle cloud-1"></div>
-              <div className="white-circle cloud-2 deep-blue-cloud"></div>
-              <div className="white-circle cloud-2 light-blue-cloud"></div>
-            </div>
+            
             <div className='name-heading'>
               {/*<ProfileItem 
                 name={currentUser.username} 

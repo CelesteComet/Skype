@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getRecentsInfo } from './Selectors';
+import { getRecentsInfo, getUserStatusMsg } from './Selectors';
 import { moveToRoom } from '../actions/uiActions';
 import { fetchRoomMessages } from '../actions/messageActions';
+import { fetchRooms } from '../actions/roomActions';
 
+import _ProfileItem from './_ProfileItem';
 import RecentsListItem from './RecentsListItem';
 
 class RecentsList extends Component {
@@ -14,45 +16,64 @@ class RecentsList extends Component {
     this.scrollDown = this.scrollDown.bind(this);
   }
 
+  componentDidMount() {
+    fetchRooms();
+  }
+
   handleSwitchRoom(roomId, e) {
-    const { dispatch } = this.props;
     e.preventDefault();
-
+    const { dispatch, switchRoom } = this.props;
     // Go to the room 
-
-    dispatch(moveToRoom(Number(roomId)));
+    switchRoom(roomId);
     dispatch(fetchRoomMessages(roomId)).then(() => {
       this.scrollDown();
     });
-  }
+  }     
 
   scrollDown() {
-    $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
+    // $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
   }
 
   render() {
-    const {recentRoomsArray, recentRoomsObject} = this.props;
+    const { rooms } = this.props;
 
     let recentsJSX = [];
-    for (let id in recentRoomsObject) {
-      recentsJSX.push(
-        <RecentsListItem 
-          key={id} 
-          roomId={id} 
-          roommates={Object.values(recentRoomsObject[id])}
-          switchRoomHandler={this.handleSwitchRoom.bind(null, id)}
-          />
-      );
+
+    for (let id in rooms) {
+
+      // get the room
+      let roomItem = rooms[id];
+
+      // get the status message for name
+      let usersString = getUserStatusMsg(roomItem.users);
+      
+      // get the number of users of the room 
+      let numberOfUsers = Object.keys(roomItem.users).length;
+
+      // render different roomItem components based on number of users in room
+      if (numberOfUsers < 1) {
+        recentsJSX.push(
+          <li>
+            <_ProfileItem 
+            name={ usersString } 
+            subtitle={ 'hello world' } 
+            status={1} 
+            src={'images/default-avatar.svg'} 
+            onClick={ this.switchRoom } />
+          </li>
+        );
+      } else {
+        recentsJSX.push(
+          <li>
+            <_ProfileItem 
+            name={ usersString } 
+            subtitle={ 'hello world' } 
+            src={'images/default-avatar-group.svg'}
+            onClick={ this.switchRoom } />
+          </li>
+        );
+      };
     }
-    // const recentsJSX = recentRoomsArray.map((recentRoom, index) => {
-    //   return (
-    //     <RecentsListItem 
-    //       key={index}
-    //       roommates={recentRoom}
-    //       switchRoomHandler={this.handleSwitchRoom.bind(null, recentRoom)}
-    //     />
-    //   );
-    // });
 
     return (
       <ul className="recents-list">
@@ -62,22 +83,18 @@ class RecentsList extends Component {
   }
 }
   
-const mSTP = state => {
+const mapStateToProps = state => {
   return {
-    recentRoomsArray: Object.values(getRecentsInfo(state)),
-    recentRoomsObject: getRecentsInfo(state)
+    rooms: state.rooms 
   };
 };
 
-const mDTP = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
-    dispatch
+    fetchRooms: dispatch(fetchRooms()),
+    switchRoom: roomId => { dispatch(moveToRoom(Number(roomId))) }
   };
 };
 
-RecentsList.propTypes = {
-  recents: PropTypes.array
-}
-
-export default connect(mSTP, mDTP)(RecentsList);
+export default connect(mapStateToProps, mapDispatchToProps)(RecentsList);
 

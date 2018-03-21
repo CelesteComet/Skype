@@ -1,12 +1,15 @@
-@rooms.sort_by {|r| r["updated_at"] }.each do |room|
+@rooms.each do |room|
   json.set! room.id do 
     json.set! "users" do 
-      json.array!(room.users) do |user|
-        json.user user.username
-        json.status user.status
-        json.statusMsg user.statusMsg
+      room.users.each do |user|
+        json.set! user.id do 
+          json.set! "username", user.username
+          json.set! "status", user.status
+          json.set! "statusMsg", user.statusMsg
+        end
       end
     end
     json.set! "lastMsgSent", room.messages[-1]
   end
 end
+

@@ -51054,6 +51054,10 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _uiActions = __webpack_require__(6);
+
+var _reactRedux = __webpack_require__(2);
+
 var _Search = __webpack_require__(171);
 
 var _Search2 = _interopRequireDefault(_Search);
@@ -51070,10 +51074,6 @@ var _AsideButtons = __webpack_require__(77);
 
 var _AsideButtons2 = _interopRequireDefault(_AsideButtons);
 
-var _uiActions = __webpack_require__(6);
-
-var _reactRedux = __webpack_require__(2);
-
 var _PotentialFriendsList = __webpack_require__(76);
 
 var _PotentialFriendsList2 = _interopRequireDefault(_PotentialFriendsList);
@@ -51081,6 +51081,10 @@ var _PotentialFriendsList2 = _interopRequireDefault(_PotentialFriendsList);
 var _ProfileItem4 = __webpack_require__(219);
 
 var _ProfileItem5 = _interopRequireDefault(_ProfileItem4);
+
+var _Clouds = __webpack_require__(222);
+
+var _Clouds2 = _interopRequireDefault(_Clouds);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51114,20 +51118,10 @@ var SideBar = function (_Component) {
         _react2.default.createElement(
           'aside',
           null,
+          _react2.default.createElement(_Clouds2.default, null),
           _react2.default.createElement(
             'div',
             { className: 'sticky-sidebar' },
-            _react2.default.createElement(
-              'div',
-              { className: 'cloud-background' },
-              _react2.default.createElement('div', { className: 'white-circle cloud-5' }),
-              _react2.default.createElement('div', { className: 'white-circle cloud-4' }),
-              _react2.default.createElement('div', { className: 'white-circle cloud-3' }),
-              _react2.default.createElement('div', { className: 'white-circle cloud-2' }),
-              _react2.default.createElement('div', { className: 'white-circle cloud-1' }),
-              _react2.default.createElement('div', { className: 'white-circle cloud-2 deep-blue-cloud' }),
-              _react2.default.createElement('div', { className: 'white-circle cloud-2 light-blue-cloud' })
-            ),
             _react2.default.createElement(
               'div',
               { className: 'name-heading' },
@@ -51469,6 +51463,12 @@ var _uiActions = __webpack_require__(6);
 
 var _messageActions = __webpack_require__(11);
 
+var _roomActions = __webpack_require__(221);
+
+var _ProfileItem2 = __webpack_require__(219);
+
+var _ProfileItem3 = _interopRequireDefault(_ProfileItem2);
+
 var _RecentsListItem = __webpack_require__(176);
 
 var _RecentsListItem2 = _interopRequireDefault(_RecentsListItem);
@@ -51495,17 +51495,22 @@ var RecentsList = function (_Component) {
   }
 
   _createClass(RecentsList, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      (0, _roomActions.fetchRooms)();
+    }
+  }, {
     key: 'handleSwitchRoom',
     value: function handleSwitchRoom(roomId, e) {
       var _this2 = this;
 
-      var dispatch = this.props.dispatch;
-
       e.preventDefault();
-
+      var _props = this.props,
+          dispatch = _props.dispatch,
+          switchRoom = _props.switchRoom;
       // Go to the room 
 
-      dispatch((0, _uiActions.moveToRoom)(Number(roomId)));
+      switchRoom(roomId);
       dispatch((0, _messageActions.fetchRoomMessages)(roomId)).then(function () {
         _this2.scrollDown();
       });
@@ -51513,34 +51518,51 @@ var RecentsList = function (_Component) {
   }, {
     key: 'scrollDown',
     value: function scrollDown() {
-      $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
+      // $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          recentRoomsArray = _props.recentRoomsArray,
-          recentRoomsObject = _props.recentRoomsObject;
+      var rooms = this.props.rooms;
 
 
       var recentsJSX = [];
-      for (var id in recentRoomsObject) {
-        recentsJSX.push(_react2.default.createElement(_RecentsListItem2.default, {
-          key: id,
-          roomId: id,
-          roommates: Object.values(recentRoomsObject[id]),
-          switchRoomHandler: this.handleSwitchRoom.bind(null, id)
-        }));
+
+      for (var id in rooms) {
+
+        // get the room
+        var roomItem = rooms[id];
+
+        // get the status message for name
+        var usersString = (0, _Selectors.getUserStatusMsg)(roomItem.users);
+
+        // get the number of users of the room 
+        var numberOfUsers = Object.keys(roomItem.users).length;
+
+        // render different roomItem components based on number of users in room
+        if (numberOfUsers < 1) {
+          recentsJSX.push(_react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(_ProfileItem3.default, {
+              name: usersString,
+              subtitle: 'hello world',
+              status: 1,
+              src: 'images/default-avatar.svg',
+              onClick: this.switchRoom })
+          ));
+        } else {
+          recentsJSX.push(_react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(_ProfileItem3.default, {
+              name: usersString,
+              subtitle: 'hello world',
+              src: 'images/default-avatar-group.svg',
+              onClick: this.switchRoom })
+          ));
+        };
       }
-      // const recentsJSX = recentRoomsArray.map((recentRoom, index) => {
-      //   return (
-      //     <RecentsListItem 
-      //       key={index}
-      //       roommates={recentRoom}
-      //       switchRoomHandler={this.handleSwitchRoom.bind(null, recentRoom)}
-      //     />
-      //   );
-      // });
 
       return _react2.default.createElement(
         'ul',
@@ -51553,24 +51575,22 @@ var RecentsList = function (_Component) {
   return RecentsList;
 }(_react.Component);
 
-var mSTP = function mSTP(state) {
+var mapStateToProps = function mapStateToProps(state) {
   return {
-    recentRoomsArray: Object.values((0, _Selectors.getRecentsInfo)(state)),
-    recentRoomsObject: (0, _Selectors.getRecentsInfo)(state)
+    rooms: state.rooms
   };
 };
 
-var mDTP = function mDTP(dispatch) {
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    dispatch: dispatch
+    fetchRooms: dispatch((0, _roomActions.fetchRooms)()),
+    switchRoom: function switchRoom(roomId) {
+      dispatch((0, _uiActions.moveToRoom)(Number(roomId)));
+    }
   };
 };
 
-RecentsList.propTypes = {
-  recents: _propTypes2.default.array
-};
-
-exports.default = (0, _reactRedux.connect)(mSTP, mDTP)(RecentsList);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RecentsList);
 
 /***/ }),
 /* 175 */
@@ -51612,6 +51632,15 @@ var getRecentsInfo = exports.getRecentsInfo = function getRecentsInfo(state) {
   }
 
   return rooms;
+};
+
+var getUserStatusMsg = exports.getUserStatusMsg = function getUserStatusMsg(usersObject) {
+  var usersString = "";
+  for (var id in usersObject) {
+    var user = usersObject[id];
+    usersString += user.username + " ";
+  }
+  return usersString;
 };
 
 /***/ }),
@@ -57157,7 +57186,7 @@ function _ProfileItem(_ref) {
       'div',
       { className: 'icon-container' },
       _react2.default.createElement('img', { src: src }),
-      _react2.default.createElement('div', { className: 'status-circle' })
+      status && _react2.default.createElement('div', { className: 'status-circle' })
     ),
     _react2.default.createElement(
       'div',
@@ -57234,14 +57263,14 @@ var RECEIVE_ROOM = exports.RECEIVE_ROOM = 'RECEIVE_ROOM';
 
 var receiveRoom = exports.receiveRoom = function receiveRoom(room) {
   return {
-    action: RECEIVE_ROOM,
+    type: RECEIVE_ROOM,
     payload: room
   };
 };
 
 var receiveRooms = exports.receiveRooms = function receiveRooms(rooms) {
   return {
-    action: RECEIVE_ROOMS,
+    type: RECEIVE_ROOMS,
     payload: rooms
   };
 };
@@ -57269,6 +57298,39 @@ var fetchRoom = exports.fetchRoom = function fetchRoom(roomId) {
     });
   };
 };
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Clouds() {
+  return _react2.default.createElement(
+    "div",
+    { className: "cloud-background" },
+    _react2.default.createElement("div", { className: "white-circle cloud-5" }),
+    _react2.default.createElement("div", { className: "white-circle cloud-4" }),
+    _react2.default.createElement("div", { className: "white-circle cloud-3" }),
+    _react2.default.createElement("div", { className: "white-circle cloud-2" }),
+    _react2.default.createElement("div", { className: "white-circle cloud-1" }),
+    _react2.default.createElement("div", { className: "white-circle cloud-2 deep-blue-cloud" }),
+    _react2.default.createElement("div", { className: "white-circle cloud-2 light-blue-cloud" })
+  );
+};
+
+exports.default = Clouds;
 
 /***/ })
 /******/ ]);

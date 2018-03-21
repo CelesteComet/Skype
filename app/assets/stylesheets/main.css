@@ -107,77 +107,7 @@ aside {
   box-sizing: border-box;
 }
 
-.cloud-background {
-  height: 55px;
-  width: 100%;
-  position: relative;
-  background: #B2E7FA;
-  z-index: 1;
-  top: 0;
-  overflow: hidden;
-}
 
-.white-circle {
-  position: absolute;
-  border-radius: 100%;
-  background-color: white;
-  height: 75px;
-  width: 100px;
-  overflow: hidden;
-}
-
-.cloud-5 {
-  height: 94px;
-  width: 124px;
-  left: 255px;
-  top: -16px;
-}
-
-.cloud-4 {
-  height: 88px;
-  width: 177px;
-  left: 125px;
-  top: -10px;
-}
-
-.cloud-3 {
-  height: 102px;
-  width: 118px;
-  left: 50px;
-  top: 7px;
-}
-
-.cloud-2 {
-  height: 60px;
-  width: 60px;
-  left: 9px;
-  top: 21px;
-}
-
-.cloud-1 {
-  height: 41px;
-  width: 59px;
-  left: -34px;
-  top: 37px;
-}
-
-.deep-blue-cloud {
-  background-color: #73C8F1;
-  z-index: -28;
-  width: 74px;
-  height: 74px;
-  top: 14px;
-  left: 2px;
-}
-
-.light-blue-cloud {
-  background-color: #9EDBF5;
-  z-index: -29;
-  width: 88px;
-  height: 88px;
-  top: 7px;
-  left: -5px;
-}
 
 /*.me-container {
   background-color: white;
@@ -333,16 +263,11 @@ footer a:hover {
 .sticky-sidebar {
   position: absolute;
   background-color: white;
-  z-index: 99;
+  z-index: 3;
   width: 100%;
 }
 
-.name-heading {
-  left: 18px;
-  top: -26px;
-  position: relative;
-  z-index: 100;
-}
+
 
 .potentials-button {
   width: 90%;

@@ -28,3 +28,12 @@ export const getRecentsInfo = state => {
   return rooms;
 }
 
+export const getUserStatusMsg = usersObject => {
+  let usersString = "";
+  for (let id in usersObject) {
+    let user = usersObject[id];
+    usersString += `${user.username} `
+  }
+  return usersString;
+};
+

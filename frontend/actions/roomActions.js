@@ -3,14 +3,14 @@ export const RECEIVE_ROOM = 'RECEIVE_ROOM';
 
 export const receiveRoom = room => {
   return {
-    action: RECEIVE_ROOM,
+    type: RECEIVE_ROOM,
     payload: room 
   };
 };
 
 export const receiveRooms = rooms => {
   return {
-    action: RECEIVE_ROOMS,
+    type: RECEIVE_ROOMS,
     payload: rooms 
   };
 };
