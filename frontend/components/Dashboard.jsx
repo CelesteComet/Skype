@@ -12,7 +12,7 @@ import { logoutUser, getUser } from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
 import { fetchAllFriends } from '../actions/friendActions';
 import { fetchAllMessages, fetchRoomMessages } from '../actions/messageActions';
-import { toggleContactsList } from '../actions/uiActions';
+import { showContactsList } from '../actions/uiActions';
 
 import { connect } from 'react-redux';
 import titleService from '../services/titleService';
@@ -38,7 +38,7 @@ class Dashboard extends Component {
 
         // if the user currently does not belong to any rooms, bring him to contacts
         if (roomMemberships.length === 0) {
-          dispatch(toggleContactsList());
+          dispatch(showContactsList());
         }
         //dispatch(fetchRoomMessages(1));
       });

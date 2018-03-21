@@ -18178,7 +18178,7 @@ module.exports = invariant;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createRoom = exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.CREATE_ROOM = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
+exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.CREATE_ROOM = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
 
 var _roomMembershipAPIService = __webpack_require__(140);
 
@@ -18200,17 +18200,6 @@ var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemb
   return function (dispatch) {
     return APIUtil.fetchRoomMemberships().then(function (roomMemberships) {
       dispatch(receiveRoomMemberships(roomMemberships));
-    }, function (err) {
-      console.log(err);
-    });
-  };
-};
-
-var createRoom = exports.createRoom = function createRoom(roomIds) {
-  return function (dispatch) {
-    return APIUtil.createRoom(roomIds).then(function (room) {
-      dispatch(fetchRoomMemberships());
-      return room;
     }, function (err) {
       console.log(err);
     });
@@ -50997,7 +50986,7 @@ var Dashboard = function (_Component) {
 
           // if the user currently does not belong to any rooms, bring him to contacts
           if (roomMemberships.length === 0) {
-            dispatch((0, _uiActions.toggleContactsList)());
+            dispatch((0, _uiActions.showContactsList)());
           }
           //dispatch(fetchRoomMessages(1));
         });
@@ -51530,8 +51519,11 @@ var RecentsList = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var rooms = this.props.rooms;
+      var _props2 = this.props,
+          rooms = _props2.rooms,
+          currentUser = _props2.currentUser;
 
+      console.log(rooms);
 
       var recentsJSX = [];
 
@@ -51540,20 +51532,30 @@ var RecentsList = function (_Component) {
         // get the room
         var roomItem = rooms[id];
 
+        // remove currentUser's name out of the room names
+        delete roomItem.users[currentUser.id];
+
         // get the status message for name
         var usersString = (0, _Selectors.getUserStatusMsg)(roomItem.users);
+
+        // get the last message sent if there is one
+        var lastMsgSent = void 0;
+        if (roomItem.lastMsgSent) {
+          lastMsgSent = roomItem.lastMsgSent.body;
+        }
 
         // get the number of users of the room 
         var numberOfUsers = Object.keys(roomItem.users).length;
 
         // render different roomItem components based on number of users in room
-        if (numberOfUsers < 1) {
+        console.log(numberOfUsers);
+        if (numberOfUsers == 1) {
           recentsJSX.push(_react2.default.createElement(
             'li',
             null,
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
-              subtitle: 'hello world',
+              subtitle: lastMsgSent,
               status: 1,
               src: 'images/default-avatar.svg',
               onClick: this.switchRoom })
@@ -51564,7 +51566,7 @@ var RecentsList = function (_Component) {
             null,
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
-              subtitle: 'hello world',
+              subtitle: parseInt(numberOfUsers) + ' participants',
               src: 'images/default-avatar-group.svg',
               onClick: this.switchRoom })
           ));
@@ -51584,7 +51586,8 @@ var RecentsList = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    rooms: state.rooms
+    rooms: state.rooms,
+    currentUser: state.session.currentUser
   };
 };
 
@@ -53556,6 +53559,8 @@ var _messageActions = __webpack_require__(11);
 
 var _uiActions = __webpack_require__(6);
 
+var _roomActions = __webpack_require__(221);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53648,6 +53653,7 @@ var InputMessageInterface = function (_Component) {
       data.room_id = roomId;
       dispatch((0, _messageActions.createMessage)(this.state)).then(function () {
         _this3.dispatch((0, _uiActions.hideMediaUpload)());
+        _this3.dispatch((0, _roomActions.fetchRooms)());
         _this3.scrollDown();
       });
     }
@@ -53767,7 +53773,7 @@ var _ContactsListItem = __webpack_require__(20);
 
 var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
 
-var _roomMembershipActions = __webpack_require__(16);
+var _roomActions = __webpack_require__(221);
 
 var _uiActions = __webpack_require__(6);
 
@@ -53798,13 +53804,14 @@ var ContactsListView = function (_Component) {
   _createClass(ContactsListView, [{
     key: 'handleClick',
     value: function handleClick(user) {
-      var dispatch = this.props.dispatch;
+      var _props = this.props,
+          dispatch = _props.dispatch,
+          currentUser = _props.currentUser;
 
-      dispatch((0, _roomMembershipActions.createRoom)([user.id])).then(function (room) {
-        dispatch((0, _messageActions.fetchRoomMessages)(room.id)).then(function () {
-          dispatch((0, _uiActions.moveToRoom)(room.id));
-          (0, _configureSocket.createSubscription)(room.id, dispatch);
-        });
+      dispatch((0, _roomActions.createRoom)([currentUser.id, user.id])).then(function (room) {
+        dispatch((0, _roomActions.fetchRooms)());
+        dispatch((0, _uiActions.moveToRoom)(room.id));
+        (0, _configureSocket.createSubscription)(room.id, dispatch);
       });
     }
   }, {
@@ -53940,7 +53947,8 @@ var ContactsListView = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    contacts: Object.values(state.friends)
+    contacts: Object.values(state.friends),
+    currentUser: state.session.currentUser
   };
 };
 
@@ -57235,6 +57243,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 var RECEIVE_ROOMS = exports.RECEIVE_ROOMS = 'RECEIVE_ROOMS';
 var RECEIVE_ROOM = exports.RECEIVE_ROOM = 'RECEIVE_ROOM';
+
+var createRoom = exports.createRoom = function createRoom(roomIds) {
+  return function (dispatch) {
+    return $.ajax({
+      url: 'api/rooms',
+      method: 'POST',
+      data: { room: { room_Ids: roomIds } }
+    });
+  };
+};
 
 var receiveRoom = exports.receiveRoom = function receiveRoom(room) {
   return {

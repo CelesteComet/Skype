@@ -238,15 +238,11 @@ footer a:hover {
 }
 
 .big-sidebar-list {
-  padding-top: 190px;
-  height: 100vh;
   box-sizing: border-box;
   overflow-y: scroll;
-  padding-bottom: 30px;
 }
 
 .sticky-sidebar {
-  position: absolute;
   background-color: white;
   z-index: 3;
   width: 100%;

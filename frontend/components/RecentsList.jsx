@@ -35,7 +35,8 @@ class RecentsList extends Component {
   }
 
   render() {
-    const { rooms } = this.props;
+    const { rooms, currentUser } = this.props;
+    console.log(rooms);
 
     let recentsJSX = [];
 
@@ -44,19 +45,33 @@ class RecentsList extends Component {
       // get the room
       let roomItem = rooms[id];
 
+      // remove currentUser's name out of the room names
+      delete roomItem.users[currentUser.id];
+
+
+
       // get the status message for name
       let usersString = getUserStatusMsg(roomItem.users);
       
+      // get the last message sent if there is one
+      let lastMsgSent;
+      if (roomItem.lastMsgSent) {
+        lastMsgSent = roomItem.lastMsgSent.body;
+      }
+
+
+
       // get the number of users of the room 
       let numberOfUsers = Object.keys(roomItem.users).length;
 
       // render different roomItem components based on number of users in room
-      if (numberOfUsers < 1) {
+      console.log(numberOfUsers);
+      if (numberOfUsers == 1) {
         recentsJSX.push(
           <li>
             <_ProfileItem 
             name={ usersString } 
-            subtitle={ 'hello world' } 
+            subtitle={ lastMsgSent } 
             status={1} 
             src={'images/default-avatar.svg'} 
             onClick={ this.switchRoom } />
@@ -67,7 +82,7 @@ class RecentsList extends Component {
           <li>
             <_ProfileItem 
             name={ usersString } 
-            subtitle={ 'hello world' } 
+            subtitle={ `${parseInt(numberOfUsers)} participants` } 
             src={'images/default-avatar-group.svg'}
             onClick={ this.switchRoom } />
           </li>
@@ -85,7 +100,8 @@ class RecentsList extends Component {
   
 const mapStateToProps = state => {
   return {
-    rooms: state.rooms 
+    rooms: state.rooms,
+    currentUser: state.session.currentUser
   };
 };
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ContactsListItem from './ContactsListItem';
-import { createRoom } from '../actions/roomMembershipActions';
+import { createRoom, fetchRooms } from '../actions/roomActions';
 import { moveToRoom } from '../actions/uiActions';
 import { createSubscription } from '../configureSocket';
 import { fetchRoomMessages } from '../actions/messageActions';
@@ -13,12 +13,11 @@ class ContactsListView extends Component {
   }
 
   handleClick(user) {
-    let { dispatch } = this.props;
-    dispatch(createRoom([user.id])).then((room) => {
-      dispatch(fetchRoomMessages(room.id)).then(() => {
-        dispatch(moveToRoom(room.id))
-        createSubscription(room.id, dispatch);
-      });
+    let { dispatch, currentUser } = this.props;
+    dispatch(createRoom([currentUser.id, user.id])).then((room) => {
+      dispatch(fetchRooms());
+      dispatch(moveToRoom(room.id));
+      createSubscription(room.id, dispatch);
     });
   }
 
@@ -110,7 +109,8 @@ class ContactsListView extends Component {
 
 const mapStateToProps = state => {
   return {
-    contacts: Object.values(state.friends)
+    contacts: Object.values(state.friends),
+    currentUser: state.session.currentUser
   }
 };
 

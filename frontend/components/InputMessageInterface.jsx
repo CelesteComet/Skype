@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createMessage } from '../actions/messageActions';
 import { showMediaUpload, hideMediaUpload } from '../actions/uiActions';
+import { fetchRooms } from '../actions/roomActions';
 
 const minRows = 3;
 
@@ -69,6 +70,7 @@ class InputMessageInterface extends Component {
     data.room_id = roomId;
     dispatch(createMessage(this.state)).then(() => {
       this.dispatch(hideMediaUpload());
+      this.dispatch(fetchRooms());
       this.scrollDown();
     });
   } 
@@ -122,7 +124,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { dispatch}
+  return { dispatch }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InputMessageInterface);
