@@ -103,7 +103,7 @@ class HeaderMessageInterface extends Component {
   }
 
   render() {
-    const { callUI, callKey } = this.props;
+    const { callUI, callKey, createRoomView } = this.props;
 
     const callButtons = (
       <div>
@@ -120,6 +120,7 @@ class HeaderMessageInterface extends Component {
           </div>
         }
         <CallButtonSet 
+          createRoomView={ createRoomView }
           handleCall={this.handleCall.bind(null, this)}/>
         {callUI && callButtons }
       </div>
@@ -130,7 +131,8 @@ class HeaderMessageInterface extends Component {
 const mapStateToProps = state => {
   return {
     callUI: state.ui.callUI,
-    callKey: state.ui.callKey
+    callKey: state.ui.callKey,
+    createRoomView: state.ui.createRoomView
   }
 };
 

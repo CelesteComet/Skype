@@ -87,7 +87,6 @@ class Search extends Component {
     const { directoryButton, potentialFriends, inSearch } = this.props;
     return (
       <div>
-        <AsideButtons />
         <form className="search-skype hide-at-small">
           <div>
             <i className="fa fa-search icon-blue" aria-hidden="false"></i>
@@ -100,13 +99,13 @@ class Search extends Component {
             <i className="fa fa-times icon-blue" aria-hidden="true" onClick={() => {this.handleClear()}}></i>
           </div>
         </form>
+        <AsideButtons />
+        {inSearch && potentialFriends.length == 0 && <p className='potential-friends-status'>No results found</p>}
         {directoryButton && 
           <button className='potentials-button' onClick={this.findPotentialFriends}>Search Skype Directory</button> }
           {inSearch && <p className='potential-title'>Directory</p>}
           {inSearch && <PotentialFriendsList />}
-        {inSearch && potentialFriends.length == 0 && <p className='potential-friends-status'>No results found</p>}
       </div>
-
     );
   }
 }

@@ -210,10 +210,10 @@ img {
 /**************************************/
 
 .name-heading {
-  left: 18px;
-  top: -26px;
   position: relative;
-  z-index: 100;
+  padding-left: 18px;
+  top: -26px;
+  z-index: 3;
 }
 
 /**************************************/

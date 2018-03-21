@@ -25529,7 +25529,8 @@ var HeaderMessageInterface = function (_Component) {
     value: function render() {
       var _props = this.props,
           callUI = _props.callUI,
-          callKey = _props.callKey;
+          callKey = _props.callKey,
+          createRoomView = _props.createRoomView;
 
 
       var callButtons = _react2.default.createElement(
@@ -25561,6 +25562,7 @@ var HeaderMessageInterface = function (_Component) {
           )
         ),
         _react2.default.createElement(_CallButtonSet2.default, {
+          createRoomView: createRoomView,
           handleCall: this.handleCall.bind(null, this) }),
         callUI && callButtons
       );
@@ -25573,7 +25575,8 @@ var HeaderMessageInterface = function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     callUI: state.ui.callUI,
-    callKey: state.ui.callKey
+    callKey: state.ui.callKey,
+    createRoomView: state.ui.createRoomView
   };
 };
 
@@ -51307,7 +51310,6 @@ var Search = function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_AsideButtons2.default, null),
         _react2.default.createElement(
           'form',
           { className: 'search-skype hide-at-small' },
@@ -51330,6 +51332,12 @@ var Search = function (_Component) {
               } })
           )
         ),
+        _react2.default.createElement(_AsideButtons2.default, null),
+        inSearch && potentialFriends.length == 0 && _react2.default.createElement(
+          'p',
+          { className: 'potential-friends-status' },
+          'No results found'
+        ),
         directoryButton && _react2.default.createElement(
           'button',
           { className: 'potentials-button', onClick: this.findPotentialFriends },
@@ -51340,12 +51348,7 @@ var Search = function (_Component) {
           { className: 'potential-title' },
           'Directory'
         ),
-        inSearch && _react2.default.createElement(_PotentialFriendsList2.default, null),
-        inSearch && potentialFriends.length == 0 && _react2.default.createElement(
-          'p',
-          { className: 'potential-friends-status' },
-          'No results found'
-        )
+        inSearch && _react2.default.createElement(_PotentialFriendsList2.default, null)
       );
     }
   }]);
@@ -51913,73 +51916,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(2);
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function CallButtonSet(_ref) {
+  var createRoomView = _ref.createRoomView;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CallButtonSet = function (_Component) {
-  _inherits(CallButtonSet, _Component);
-
-  function CallButtonSet(props) {
-    _classCallCheck(this, CallButtonSet);
-
-    return _possibleConstructorReturn(this, (CallButtonSet.__proto__ || Object.getPrototypeOf(CallButtonSet)).call(this, props));
+  if (!createRoomView) {
+    return _react2.default.createElement(
+      'ul',
+      { className: 'call-button-set' },
+      _react2.default.createElement('li', { className: 'video', onClick: function onClick() {
+          handleCall();
+        } }),
+      _react2.default.createElement('li', { className: 'phone' }),
+      _react2.default.createElement('li', { className: 'friend' })
+    );
+  } else {
+    return null;
   }
-
-  _createClass(CallButtonSet, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          createRoomView = _props.createRoomView,
-          handleCall = _props.handleCall;
-
-      if (!createRoomView) {
-        return _react2.default.createElement(
-          'ul',
-          { className: 'call-button-set' },
-          _react2.default.createElement('li', { className: 'video', onClick: function onClick() {
-              handleCall();
-            } }),
-          _react2.default.createElement('li', { className: 'phone' }),
-          _react2.default.createElement('li', { className: 'friend' })
-        );
-      } else {
-        return _react2.default.createElement('div', null);
-      }
-    }
-  }]);
-
-  return CallButtonSet;
-}(_react.Component);
-
-// profileModalView: false,
-// contactsListView: false,
-// createRoomView: false,
-// mediaUploadView: true, // media upload icon for input
-// directoryButton: false,
-// inSearch: false, // for user friend searching
-// currentRoomId: 1 
-
-var mSTP = function mSTP(state) {
-  return {
-    contactsListView: state.ui.contactsListView,
-    createRoomView: state.ui.createRoomView
-  };
 };
 
-exports.default = (0, _reactRedux.connect)(mSTP, null)(CallButtonSet);
+CallButtonSet.propTypes = {
+  handleCall: _propTypes2.default.func,
+  createRoomView: _propTypes2.default.bool
+};
+
+exports.default = CallButtonSet;
 
 /***/ }),
 /* 180 */

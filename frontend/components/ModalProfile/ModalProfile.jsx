@@ -89,6 +89,7 @@ class ModalProfile extends Component {
                 <p className="logout">Sign Out</p>
               </div>
             </div>
+
           </div>
         </div>
       </div>

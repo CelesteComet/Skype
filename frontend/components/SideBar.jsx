@@ -36,6 +36,8 @@ class SideBar extends Component {
                 src={ 'images/default-avatar.svg' }
                 onClick={() => { dispatch(toggleProfileModal()) }} />
             </div>
+
+
             {/* Search */}
             <Search />
             
