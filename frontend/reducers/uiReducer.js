@@ -1,6 +1,6 @@
 import { 
   TOGGLE_PROFILE_MODAL, 
-  TOGGLE_CONTACTS_LIST, 
+  SHOW_CONTACTS_LIST, 
   TOGGLE_CREATE_ROOM_VIEW,
   SHOW_SEARCH_DIRECTORY_BUTTON,
   HIDE_SEARCH_DIRECTORY_BUTTON,
@@ -42,7 +42,7 @@ const uiReducer = (state = initialState, action) => {
       newState.callUI = !newState.callUI;
       newState.callKey = action.payload;
       return newState;
-    case TOGGLE_CONTACTS_LIST:
+    case SHOW_CONTACTS_LIST:
       closeAll(newState);
       newState.contactsListView = true;
       return newState;

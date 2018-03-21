@@ -60,9 +60,7 @@ class Dashboard extends Component {
           <SideBar />
           <Main />
           <Footer />
-          <video id="video"></video>
         </div>
-        
       </Fragment>
     );
   }

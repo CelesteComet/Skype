@@ -68,15 +68,6 @@ textarea {
   color: #00AFF0;
 }
 
-.small-gray {
-  font-size: .65em;
-  color: gray;
-}
-
-.italic {
-  font-style: italic;
-}
-
 #root {
   overflow: auto;
 }
@@ -88,13 +79,7 @@ textarea {
 }
 
 
-aside {
-  position: relative;
-  left: 0px;
-  transition: left 0.5s ease-in-out;
-  backface-visibility: hidden;
-  height: 100%;
-}
+
 
 .aside-container {
   float: left;

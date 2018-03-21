@@ -460,7 +460,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
-var TOGGLE_CONTACTS_LIST = exports.TOGGLE_CONTACTS_LIST = "TOGGLE_CONTACTS_LIST";
+var SHOW_CONTACTS_LIST = exports.SHOW_CONTACTS_LIST = "SHOW_CONTACTS_LIST";
 var TOGGLE_CREATE_ROOM_VIEW = exports.TOGGLE_CREATE_ROOM_VIEW = "TOGGLE_CREATE_ROOM_VIEW";
 var SHOW_SEARCH_DIRECTORY_BUTTON = exports.SHOW_SEARCH_DIRECTORY_BUTTON = "SHOW_SEARCH_DIRECTORY_BUTTON";
 var HIDE_SEARCH_DIRECTORY_BUTTON = exports.HIDE_SEARCH_DIRECTORY_BUTTON = "HIDE_SEARCH_DIRECTORY_BUTTON";
@@ -477,9 +477,9 @@ var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModa
   };
 };
 
-var toggleContactsList = exports.toggleContactsList = function toggleContactsList() {
+var showContactsList = exports.showContactsList = function showContactsList() {
   return {
-    type: TOGGLE_CONTACTS_LIST
+    type: SHOW_CONTACTS_LIST
   };
 };
 
@@ -25208,9 +25208,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _uiActions = __webpack_require__(6);
-
 var _reactRedux = __webpack_require__(2);
+
+var _uiActions = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25232,7 +25232,9 @@ var AsideButtons = function (_Component) {
   _createClass(AsideButtons, [{
     key: 'render',
     value: function render() {
-      var dispatch = this.props.dispatch;
+      var _props = this.props,
+          showContactsList = _props.showContactsList,
+          toggleCreateRoomView = _props.toggleCreateRoomView;
 
       return _react2.default.createElement(
         'ul',
@@ -25240,9 +25242,7 @@ var AsideButtons = function (_Component) {
         _react2.default.createElement(
           'span',
           null,
-          _react2.default.createElement('li', { className: 'aside-contacts', onClick: function onClick() {
-              dispatch((0, _uiActions.toggleContactsList)());
-            } }),
+          _react2.default.createElement('li', { className: 'aside-contacts', onClick: showContactsList }),
           _react2.default.createElement(
             'li',
             { className: 'aside-robot' },
@@ -25259,9 +25259,7 @@ var AsideButtons = function (_Component) {
             _react2.default.createElement('span', null)
           )
         ),
-        _react2.default.createElement('li', { className: 'aside-plus', onClick: function onClick() {
-            dispatch((0, _uiActions.toggleCreateRoomView)());
-          } })
+        _react2.default.createElement('li', { className: 'aside-plus', onClick: toggleCreateRoomView })
       );
     }
   }]);
@@ -25270,7 +25268,14 @@ var AsideButtons = function (_Component) {
 }(_react.Component);
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return { dispatch: dispatch };
+  return {
+    showContactsList: function showContactsList() {
+      dispatch((0, _uiActions.showContactsList)());
+    },
+    toggleCreateRoomView: function toggleCreateRoomView() {
+      dispatch((0, _uiActions.toggleCreateRoomView)());
+    }
+  };
 };
 
 exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(AsideButtons);
@@ -48131,7 +48136,7 @@ var uiReducer = function uiReducer() {
       newState.callUI = !newState.callUI;
       newState.callKey = action.payload;
       return newState;
-    case _uiActions.TOGGLE_CONTACTS_LIST:
+    case _uiActions.SHOW_CONTACTS_LIST:
       closeAll(newState);
       newState.contactsListView = true;
       return newState;
@@ -51017,8 +51022,7 @@ var Dashboard = function (_Component) {
           modalView && _react2.default.createElement(_ModalProfile2.default, null),
           _react2.default.createElement(_SideBar2.default, null),
           _react2.default.createElement(_Main2.default, null),
-          _react2.default.createElement(_Footer2.default, null),
-          _react2.default.createElement('video', { id: 'video' })
+          _react2.default.createElement(_Footer2.default, null)
         )
       );
     }
@@ -51927,7 +51931,8 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function CallButtonSet(_ref) {
-  var createRoomView = _ref.createRoomView;
+  var handleCall = _ref.handleCall,
+      createRoomView = _ref.createRoomView;
 
   if (!createRoomView) {
     return _react2.default.createElement(

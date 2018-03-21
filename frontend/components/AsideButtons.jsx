@@ -1,30 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { 
-  toggleContactsList, 
+  showContactsList, 
   toggleCreateRoomView
 } from '../actions/uiActions';
-import { connect } from 'react-redux';
 
 class AsideButtons extends Component {
-
   render() {
-    const { dispatch } = this.props;
+    const { showContactsList, toggleCreateRoomView } = this.props;
     return (
       <ul className="aside-buttons">
         <span>
-          <li className='aside-contacts' onClick={() => { dispatch(toggleContactsList())}}></li>
+          <li className='aside-contacts' onClick={ showContactsList }></li>
           <li className='aside-robot'><span></span></li>
           <li className='aside-phonepad'><span></span></li>
           <li className='aside-gear'><span></span></li>
         </span>
-        <li className='aside-plus' onClick={() => { dispatch(toggleCreateRoomView())}}></li>
+        <li className='aside-plus' onClick={ toggleCreateRoomView }></li>
       </ul>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => {
-  return { dispatch }
+  return { 
+    showContactsList: () => { dispatch(showContactsList()); },
+    toggleCreateRoomView: () => { dispatch(toggleCreateRoomView()); }
+  }
 };
 
 export default connect(null, mapDispatchToProps)(AsideButtons);

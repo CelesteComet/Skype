@@ -1,5 +1,5 @@
 export const TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
-export const TOGGLE_CONTACTS_LIST = "TOGGLE_CONTACTS_LIST";
+export const SHOW_CONTACTS_LIST = "SHOW_CONTACTS_LIST";
 export const TOGGLE_CREATE_ROOM_VIEW = "TOGGLE_CREATE_ROOM_VIEW";
 export const SHOW_SEARCH_DIRECTORY_BUTTON = "SHOW_SEARCH_DIRECTORY_BUTTON";
 export const HIDE_SEARCH_DIRECTORY_BUTTON = "HIDE_SEARCH_DIRECTORY_BUTTON";
@@ -16,9 +16,9 @@ export const toggleProfileModal = () => {
   }
 };
 
-export const toggleContactsList = () => {
+export const showContactsList = () => {
   return {
-    type: TOGGLE_CONTACTS_LIST
+    type: SHOW_CONTACTS_LIST
   }
 };
 

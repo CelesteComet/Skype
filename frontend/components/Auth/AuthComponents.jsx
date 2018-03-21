@@ -12,7 +12,6 @@ const Auth = ({component: Component, path, loggedIn, exact}) => {
   );
 };
 
-
 // Renders component if user is logged in, otherwise redirect to /login
 const Protected = ({component: Component, path, loggedIn, exact}) => {
   return (
@@ -22,7 +21,6 @@ const Protected = ({component: Component, path, loggedIn, exact}) => {
     }} />
   );
 };
-
 
 // access the Redux state to check if the user is logged in
 const mapStateToProps = state => {

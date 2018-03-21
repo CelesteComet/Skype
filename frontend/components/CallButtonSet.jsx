@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function CallButtonSet({ createRoomView }) {
+function CallButtonSet({ handleCall, createRoomView }) {
   if (!createRoomView) {
     return (
       <ul className='call-button-set'>
