@@ -1,0 +1,37 @@
+export const RECEIVE_ROOMS = 'RECEIVE_ROOMS';
+export const RECEIVE_ROOM = 'RECEIVE_ROOM';
+
+export const receiveRoom = room => {
+  return {
+    action: RECEIVE_ROOM,
+    payload: room 
+  };
+};
+
+export const receiveRooms = rooms => {
+  return {
+    action: RECEIVE_ROOMS,
+    payload: rooms 
+  };
+};
+
+export const fetchRooms = () => dispatch => {
+  return $.ajax({
+    url: 'api/rooms'
+  }).then(res => {
+    dispatch(receiveRooms(res));
+  }, error => {
+    console.log(error);
+  });
+};
+
+export const fetchRoom = roomId => dispatch => {
+  return $.ajax({
+    url: 'api/room'
+  }).then(res => {
+    dispatch(receiveRoom(res));
+  }, error => {
+    console.log(error);
+  });
+};
+

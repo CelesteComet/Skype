@@ -9,7 +9,9 @@ class User < ApplicationRecord
   has_many :friendships
   has_many :rooms, through: :room_memberships
 
-  has_many :messages
+  has_many :messages,
+  through: :rooms,
+  source: :messages
 
   has_many :friends, 
   through: :friendships,

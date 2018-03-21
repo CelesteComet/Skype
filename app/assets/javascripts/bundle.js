@@ -47755,6 +47755,10 @@ var _messagesReducer = __webpack_require__(137);
 
 var _messagesReducer2 = _interopRequireDefault(_messagesReducer);
 
+var _roomReducer = __webpack_require__(220);
+
+var _roomReducer2 = _interopRequireDefault(_roomReducer);
+
 var _roomMembershipsReducer = __webpack_require__(139);
 
 var _roomMembershipsReducer2 = _interopRequireDefault(_roomMembershipsReducer);
@@ -47781,6 +47785,7 @@ var rootReducer = (0, _redux.combineReducers)({
   session: _sessionReducer2.default,
   messages: _messagesReducer2.default,
   friends: _friendReducer2.default,
+  rooms: _roomReducer2.default,
   recents: _recentRoomsReducer2.default,
   roomMemberships: _roomMembershipsReducer2.default,
   potentialFriends: _potentialFriendsReducer2.default,
@@ -57179,6 +57184,91 @@ _ProfileItem.propTypes = {
 };
 
 exports.default = _ProfileItem;
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _roomActions = __webpack_require__(221);
+
+var roomReducer = function roomReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments[1];
+
+  var newState = Object.assign({}, state);
+  switch (action.type) {
+    case _roomActions.RECEIVE_ROOMS:
+      return action.payload;
+      break;
+    case _roomActions.RECEIVE_ROOM:
+      newState[action.payload.id] = action.payload;
+      return newState;
+      break;
+    default:
+      return state;
+      break;
+  };
+};
+
+exports.default = roomReducer;
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var RECEIVE_ROOMS = exports.RECEIVE_ROOMS = 'RECEIVE_ROOMS';
+var RECEIVE_ROOM = exports.RECEIVE_ROOM = 'RECEIVE_ROOM';
+
+var receiveRoom = exports.receiveRoom = function receiveRoom(room) {
+  return {
+    action: RECEIVE_ROOM,
+    payload: room
+  };
+};
+
+var receiveRooms = exports.receiveRooms = function receiveRooms(rooms) {
+  return {
+    action: RECEIVE_ROOMS,
+    payload: rooms
+  };
+};
+
+var fetchRooms = exports.fetchRooms = function fetchRooms() {
+  return function (dispatch) {
+    return $.ajax({
+      url: 'api/rooms'
+    }).then(function (res) {
+      dispatch(receiveRooms(res));
+    }, function (error) {
+      console.log(error);
+    });
+  };
+};
+
+var fetchRoom = exports.fetchRoom = function fetchRoom(roomId) {
+  return function (dispatch) {
+    return $.ajax({
+      url: 'api/room'
+    }).then(function (res) {
+      dispatch(receiveRoom(res));
+    }, function (error) {
+      console.log(error);
+    });
+  };
+};
 
 /***/ })
 /******/ ]);
