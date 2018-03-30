@@ -8,14 +8,16 @@ import {configureSocket} from '../configureSocket';
 import Peer from 'simple-peer';
 
 // Actions
-import { logoutUser, getUser } from '../actions/sessionActions';
+import { logoutUser, getUser }  from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
-import { fetchAllFriends } from '../actions/friendActions';
-import { fetchAllMessages, fetchRoomMessages } from '../actions/messageActions';
-import { showContactsList } from '../actions/uiActions';
-
-import { connect } from 'react-redux';
-import titleService from '../services/titleService';
+import { fetchRooms }           from '../actions/roomActions';
+import { fetchAllFriends }      from '../actions/friendActions';
+import { 
+  fetchAllMessages, 
+  fetchRoomMessages }           from '../actions/messageActions';
+import { showContactsList }     from '../actions/uiActions';
+import { connect }              from 'react-redux';
+import titleService             from '../services/titleService';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -23,33 +25,9 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-
-    this.configurePeer(); 
-
-    // get all friends, then get all the memberships
-    dispatch(fetchAllFriends()).then(() => {
-      dispatch(fetchRoomMemberships()).then((e) => {
-        const { dispatch, state} = this.props;
-        const roomMemberships = Object.values(state.roomMemberships);
-        const chatroomIds = [...new Set(roomMemberships.map(m => m.room_id))];
-        dispatch(getUser());
-        configureSocket(chatroomIds, dispatch);
-
-        // if the user currently does not belong to any rooms, bring him to contacts
-        if (roomMemberships.length === 0) {
-          dispatch(showContactsList());
-        }
-        //dispatch(fetchRoomMessages(1));
-      });
-    });
+    const { fetchRooms } = this.props;
+    fetchRooms();
   }
-
-  configurePeer() {
-
-  }
-
-
 
   render() {
     const { dispatch, modalView } = this.props;
@@ -74,7 +52,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { dispatch }
+  return { 
+    fetchRooms: () => { dispatch(fetchRooms()) },
+    dispatch 
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

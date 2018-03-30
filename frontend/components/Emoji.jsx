@@ -40,13 +40,14 @@ class Emoji extends Component {
 
   componentDidMount() {
     // get canvas context 
-
-
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = 500;
     this.canvas.height = 500;
     this.init();
+  }
 
+  componentWillUnmount() {
+    window.cancelAnimationFrame(this.id);
   }
 
   init() {

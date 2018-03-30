@@ -5,6 +5,9 @@ import { fetchRoom }        from '../actions/roomActions';
 import { makeCall }         from '../actions/callActions';
 import { displayCallUI }    from '../actions/uiActions';
 
+// Import Selectors 
+import { getUserStatusMsg } from './Selectors';
+
 // Import UI Components
 import ContactsListItem     from './ContactsListItem';
 import _ProfileItem         from './_ProfileItem';
@@ -114,44 +117,59 @@ class HeaderMessageInterface extends Component {
   }
 
   render() {
-    const { callUI, callKey, createRoomView } = this.props;
-    const { currentRoom } = this.props;
-    const callButtons = (
-      <div>
-        <button onClick={this.handleReceiveCall.bind(null, callKey)}>accept call</button>
-      </div>
-    );
-    console.log(currentRoom);
-    console.log("AWODIOAWIDOWID")
-    return (
-      <div className='header-message-interface'>
 
-        {this.props.currentRoom && 
-          <_ProfileItem 
-          name={ usersString } 
-          subtitle={ lastMsgSent } 
-          status={1} 
-          src={'images/default-avatar.svg'} 
-          onClick={ this.switchRoom.bind(null, id) } />
-        }
+    if (!this.props.currentRoom) {
+      return (
+        <h1>LOADING</h1>
+      );
+    } else {
+      const { callUI, callKey, createRoomView } = this.props;
+      const { currentRoom } = this.props;
+      console.log("RN");
+      console.log(currentRoom);
+      if (currentRoom) {
+        let usersString = getUserStatusMsg(currentRoom.users);
+
+      }
+      const callButtons = (
+        <div>
+          <button onClick={this.handleReceiveCall.bind(null, callKey)}>accept call</button>
+        </div>
+      );
+      console.log(currentRoom);
+      console.log("AWODIOAWIDOWID")
+      return (
+        <div className='header-message-interface'>
+
+          {currentRoom && 
+            <_ProfileItem 
+            name={ usersString } 
+            subtitle={ lastMsgSent } 
+            status={1} 
+            src={'images/default-avatar.svg'} 
+            onClick={ this.switchRoom.bind(null, id) } />
+          }
 
 
 
 
-        {this.props.type === 'message' && <ContactsListItem contact={ {username: "Bruce"} }/> }
+          {this.props.type === 'message' && <ContactsListItem contact={ {username: "Bruce"} }/> }
 
-        {this.props.type === 'addFriends' && 
-          <div>
-            <h1>Untitled Conversation</h1>
-            <p>{this.props.participants} participants</p>
-          </div>
-        }
-        <CallButtonSet 
-          createRoomView={ createRoomView }
-          handleCall={this.handleCall.bind(null, this)}/>
-        {callUI && callButtons }
-      </div>
-    );
+          {this.props.type === 'addFriends' && 
+            <div>
+              <h1>Untitled Conversation</h1>
+              <p>{this.props.participants} participants</p>
+            </div>
+          }
+          <CallButtonSet 
+            createRoomView={ createRoomView }
+            handleCall={this.handleCall.bind(null, this)}/>
+          {callUI && callButtons }
+        </div>
+      );
+    }
+
+
   }
 }
 

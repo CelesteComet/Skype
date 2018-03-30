@@ -35,7 +35,7 @@ export const fetchRooms = () => dispatch => {
 
 export const fetchRoom = roomId => dispatch => {
   return $.ajax({
-    url: 'api/room'
+    url: `api/rooms/${roomId}`
   }).then(res => {
     dispatch(receiveRoom(res));
   }, error => {

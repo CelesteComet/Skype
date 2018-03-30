@@ -2,6 +2,7 @@
 $color-green: #00FF00;
 $color-blue: #0000FF;*/
 $light-blue: rgb(151, 216, 245);
+$lightish-blue: rgb(199, 237, 252);
 $lighter-blue: #EFF6F9;
 $light-gray: #8CA8B4;
 $dark-gray: rgb(148, 153, 156);
@@ -38,7 +39,13 @@ img {
       border-radius: 100%;
       border: 2px solid $dark-gray;
       box-shadow: white 0px 0px 0px 3px;
+
+      .green   { background: 'green' }
+      .yellow  { background: 'yellow'}
+      .red     { background: 'red'   }
     }
+
+
   }
 
   ._profile-texts {
@@ -235,8 +242,13 @@ aside {
     padding: 7px 18px 7px 18px;
   }
 
+  li.selected {
+    background: $lightish-blue;
+  }
+
   li:hover {
     background: $lighter-blue;
+    cursor: pointer;
   }
 }
 

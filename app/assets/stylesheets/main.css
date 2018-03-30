@@ -305,17 +305,6 @@ footer a:hover {
 
 
 
-@media (max-width: 600px) {
-  .big-sidebar-list {
-    position: relative;
-    left: 18px;
-    padding-bottom: 60px;
-  }
-
-  .hide-at-small {
-    display: none;
-  }
-}
 
 @media (max-width: 666px) {
   .form-holder {

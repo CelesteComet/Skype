@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getRecentsInfo, getUserStatusMsg } from './Selectors';
+import { getRecentsInfo, getUserStatusMsg, orderByDate } from './Selectors';
 import { moveToRoom } from '../actions/uiActions';
 import { fetchRoomMessages } from '../actions/messageActions';
 import { fetchRooms } from '../actions/roomActions';
@@ -12,19 +12,19 @@ import RecentsListItem from './RecentsListItem';
 class RecentsList extends Component {
   constructor(props) {
     super(props);
-    this.switchRoom = this.switchRoom.bind(this);
+    this.moveToRoom = this.moveToRoom.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
   }
 
-  switchRoom(roomId) {
-    const { switchRoom } = this.props;
-    switchRoom(roomId);
+  moveToRoom(roomId) {
+    const { moveToRoom, fetchRoomMessages } = this.props;
+    moveToRoom(roomId);
     fetchRoomMessages(roomId);
   }
 
   componentDidMount() {
     const { fetchRooms } = this.props;
-    fetchRooms();
+    // fetchRooms();
   } 
 
   scrollDown() {
@@ -32,14 +32,14 @@ class RecentsList extends Component {
   }
 
   render() {
-    const { rooms, currentUser } = this.props;
+    const { rooms, currentUser, currentRoomId } = this.props;
 
     let recentsJSX = [];
 
-    for (let id in rooms) {
+    for (let i = 0; i < rooms.length; i++ ) {
 
       // get the room
-      let roomItem = rooms[id];
+      let roomItem = rooms[i];
 
       // remove currentUser's name out of the room names
       delete roomItem.users[currentUser.id];
@@ -53,29 +53,34 @@ class RecentsList extends Component {
         lastMsgSent = roomItem.lastMsgSent.body;
       }
 
+      // if it is the current room, give class of selected
+      let className = "";
+      if (roomItem.id === currentRoomId) {
+        className = 'selected';
+      }
+
       // get the number of users of the room 
       let numberOfUsers = Object.keys(roomItem.users).length;
-
       // render different roomItem components based on number of users in room
       if (numberOfUsers == 1) {
         recentsJSX.push(
-          <li>
+          <li key={roomItem.id} className={ className }>
             <_ProfileItem 
-            name={ usersString } 
-            subtitle={ lastMsgSent } 
-            status={1} 
-            src={'images/default-avatar.svg'} 
-            onClick={ this.switchRoom.bind(null, id) } />
+              name={ usersString } 
+              subtitle={ lastMsgSent } 
+              status={1} 
+              src={'images/default-avatar.svg'} 
+              onClick={ this.moveToRoom.bind(null, roomItem.id) } />
           </li>
         );
       } else {
         recentsJSX.push(
-          <li>
+          <li key={roomItem.id} className={ className }>
             <_ProfileItem 
-            name={ usersString } 
-            subtitle={ `${parseInt(numberOfUsers)} participants` } 
-            src={'images/default-avatar-group.svg'}
-            onClick={ this.switchRoom } />
+              name={ usersString } 
+              subtitle={ `${parseInt(numberOfUsers)} participants` } 
+              src={'images/default-avatar-group.svg'}
+              onClick={ this.moveToRoom.bind(null, roomItem.id) } />
           </li>
         );
       };
@@ -91,18 +96,26 @@ class RecentsList extends Component {
   
 const mapStateToProps = state => {
   return {
-    rooms: state.rooms,
-    currentUser: state.session.currentUser
+    rooms: orderByDate(state.rooms),
+    currentUser: state.session.currentUser,
+    currentRoomId: state.ui.currentRoomId
   };
-};
+}
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchRooms: () => { return dispatch(fetchRooms()) },
-    fetchRoomMessages: roomId => { return dispatch(fetchRoomMessages(roomId)) },
-    switchRoom: roomId => { return dispatch(moveToRoom(Number(roomId))) }
-  };
-};
+    moveToRoom: roomId => { dispatch(moveToRoom(roomId)) },
+    fetchRoomMessages: roomId => { dispatch(fetchRoomMessages(roomId)) }
+  }
+}
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchRooms: () => { return dispatch(fetchRooms()) },
+//     fetchRoomMessages: roomId => { return dispatch(fetchRoomMessages(roomId)) },
+//     switchRoom: roomId => { return dispatch(moveToRoom(Number(roomId))) }
+//   };
+// };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecentsList);
 
