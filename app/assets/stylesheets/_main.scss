@@ -209,11 +209,21 @@ img {
 /*              Aside                 */
 /**************************************/
 
+aside {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
 .name-heading {
   position: relative;
   padding-left: 18px;
   top: -26px;
   z-index: 3;
+}
+
+.big-sidebar-list {
+  flex: 1;
 }
 
 /**************************************/

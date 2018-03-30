@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
 // Components
-import _ProfileItem from '../_ProfileItem';
-import CircleImageIcon from '../CircleImageIcon';
+import _ProfileItem from './_ProfileItem';
+import CircleImageIcon from './CircleImageIcon';
 
 // Redux 
 import { connect } from 'react-redux';
 
 // Actions
-import { toggleProfileModal } from '../../actions/uiActions';
-import { logoutUser } from '../../actions/sessionActions';
+import { toggleProfileModal } from '../actions/uiActions';
+import { logoutUser } from '../actions/sessionActions';
 
 const statusText = {
   1: "Online",

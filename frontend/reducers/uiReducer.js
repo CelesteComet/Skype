@@ -1,7 +1,7 @@
 import { 
   TOGGLE_PROFILE_MODAL, 
   SHOW_CONTACTS_LIST, 
-  TOGGLE_CREATE_ROOM_VIEW,
+  SHOW_CREATE_ROOM_VIEW,
   SHOW_SEARCH_DIRECTORY_BUTTON,
   HIDE_SEARCH_DIRECTORY_BUTTON,
   SHOW_MEDIA_UPLOAD,
@@ -46,7 +46,7 @@ const uiReducer = (state = initialState, action) => {
       closeAll(newState);
       newState.contactsListView = true;
       return newState;
-    case TOGGLE_CREATE_ROOM_VIEW: 
+    case SHOW_CREATE_ROOM_VIEW: 
       closeAll(newState);
       newState.createRoomView = true;
       return newState;

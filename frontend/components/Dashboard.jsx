@@ -2,7 +2,7 @@ import React, { Fragment, Component } from 'react';
 import SideBar from './SideBar';
 import Main from './Main';
 import Footer from './Footer';
-import ModalProfile from './ModalProfile/ModalProfile';
+import ModalProfile from './ModalProfile';
 import {configureSocket} from '../configureSocket';
 
 import Peer from 'simple-peer';

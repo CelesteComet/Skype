@@ -8,6 +8,16 @@ import ContactsListItem from './ContactsListItem';
 
 
 class RecentsListItem extends Component {
+
+  constructor(props) {
+    super(props);
+    this.switchRoomHandler = this.switchRoomHandler.bind(this);
+  }
+
+  switchRoomHandler() {
+    console.log("ROOM SWITCH");
+  }
+
   render() {
 
     // difference between currentRoomId and room_id is that room_id is the selection and 

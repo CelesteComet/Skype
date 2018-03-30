@@ -7,7 +7,7 @@ import {
 
 class AsideButtons extends Component {
   render() {
-    const { showContactsList, toggleCreateRoomView } = this.props;
+    const { showContactsList, showCreateRoomView } = this.props;
     return (
       <ul className="aside-buttons">
         <span>
@@ -25,7 +25,7 @@ class AsideButtons extends Component {
 const mapDispatchToProps = dispatch => {
   return { 
     showContactsList: () => { dispatch(showContactsList()); },
-    toggleCreateRoomView: () => { dispatch(toggleCreateRoomView()); }
+    showCreateRoomView: () => { dispatch(toggleCreateRoomView()); }
   }
 };
 

@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import ContactsListItem from './ContactsListItem';
+
+// Import Actions
+import { fetchRoom }        from '../actions/roomActions';
+import { makeCall }         from '../actions/callActions';
+import { displayCallUI }    from '../actions/uiActions';
+
+// Import UI Components
+import ContactsListItem     from './ContactsListItem';
+import _ProfileItem         from './_ProfileItem';
+
 import CallButtonSet from './CallButtonSet';
 import { connect } from 'react-redux';
-import { makeCall } from '../actions/callActions';
-import { displayCallUI } from '../actions/uiActions';
+
 import Peer from 'simple-peer';
 
 class HeaderMessageInterface extends Component {
@@ -11,8 +19,11 @@ class HeaderMessageInterface extends Component {
   constructor(props) {
     super(props);
     this.handleCall = this.handleCall.bind(this);
+  }
 
-
+  componentDidMount() {
+    const { fetchRoom } = this.props;
+    fetchRoom();
   }
 
 // function showMyFace() {
@@ -104,15 +115,31 @@ class HeaderMessageInterface extends Component {
 
   render() {
     const { callUI, callKey, createRoomView } = this.props;
-
+    const { currentRoom } = this.props;
     const callButtons = (
       <div>
         <button onClick={this.handleReceiveCall.bind(null, callKey)}>accept call</button>
       </div>
     );
+    console.log(currentRoom);
+    console.log("AWODIOAWIDOWID")
     return (
       <div className='header-message-interface'>
+
+        {this.props.currentRoom && 
+          <_ProfileItem 
+          name={ usersString } 
+          subtitle={ lastMsgSent } 
+          status={1} 
+          src={'images/default-avatar.svg'} 
+          onClick={ this.switchRoom.bind(null, id) } />
+        }
+
+
+
+
         {this.props.type === 'message' && <ContactsListItem contact={ {username: "Bruce"} }/> }
+
         {this.props.type === 'addFriends' && 
           <div>
             <h1>Untitled Conversation</h1>
@@ -132,11 +159,18 @@ const mapStateToProps = state => {
   return {
     callUI: state.ui.callUI,
     callKey: state.ui.callKey,
-    createRoomView: state.ui.createRoomView
-  }
+    createRoomView: state.ui.createRoomView,
+    currentRoom: state.rooms[state.ui.currentRoomId]
+  };
 };
 
-export default connect(mapStateToProps, null)(HeaderMessageInterface);
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchRoom: () => { dispatch(fetchRoom()) }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderMessageInterface);
 
 // when you click a button
 

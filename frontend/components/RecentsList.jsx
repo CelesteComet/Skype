@@ -12,23 +12,20 @@ import RecentsListItem from './RecentsListItem';
 class RecentsList extends Component {
   constructor(props) {
     super(props);
-    this.handleSwitchRoom = this.handleSwitchRoom.bind(this);
+    this.switchRoom = this.switchRoom.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
   }
 
-  componentDidMount() {
-    fetchRooms();
+  switchRoom(roomId) {
+    const { switchRoom } = this.props;
+    switchRoom(roomId);
+    fetchRoomMessages(roomId);
   }
 
-  handleSwitchRoom(roomId, e) {
-    e.preventDefault();
-    const { dispatch, switchRoom } = this.props;
-    // Go to the room 
-    switchRoom(roomId);
-    dispatch(fetchRoomMessages(roomId)).then(() => {
-      this.scrollDown();
-    });
-  }     
+  componentDidMount() {
+    const { fetchRooms } = this.props;
+    fetchRooms();
+  } 
 
   scrollDown() {
     // $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
@@ -36,7 +33,6 @@ class RecentsList extends Component {
 
   render() {
     const { rooms, currentUser } = this.props;
-    console.log(rooms);
 
     let recentsJSX = [];
 
@@ -48,8 +44,6 @@ class RecentsList extends Component {
       // remove currentUser's name out of the room names
       delete roomItem.users[currentUser.id];
 
-
-
       // get the status message for name
       let usersString = getUserStatusMsg(roomItem.users);
       
@@ -59,13 +53,10 @@ class RecentsList extends Component {
         lastMsgSent = roomItem.lastMsgSent.body;
       }
 
-
-
       // get the number of users of the room 
       let numberOfUsers = Object.keys(roomItem.users).length;
 
       // render different roomItem components based on number of users in room
-      console.log(numberOfUsers);
       if (numberOfUsers == 1) {
         recentsJSX.push(
           <li>
@@ -74,7 +65,7 @@ class RecentsList extends Component {
             subtitle={ lastMsgSent } 
             status={1} 
             src={'images/default-avatar.svg'} 
-            onClick={ this.switchRoom } />
+            onClick={ this.switchRoom.bind(null, id) } />
           </li>
         );
       } else {
@@ -107,8 +98,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchRooms: dispatch(fetchRooms()),
-    switchRoom: roomId => { dispatch(moveToRoom(Number(roomId))) }
+    fetchRooms: () => { return dispatch(fetchRooms()) },
+    fetchRoomMessages: roomId => { return dispatch(fetchRoomMessages(roomId)) },
+    switchRoom: roomId => { return dispatch(moveToRoom(Number(roomId))) }
   };
 };
 
