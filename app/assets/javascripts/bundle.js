@@ -22909,7 +22909,7 @@ function SessionFooter() {
         )
       )
     ),
-    _react2.default.createElement("img", { src: "images/microsoftLogo.svg" })
+    _react2.default.createElement("img", { src: "images/microsoftLogo.svg", style: { width: '60px' } })
   );
 }
 
@@ -51640,23 +51640,21 @@ var RecentsList = function (_Component) {
         if (numberOfUsers == 1) {
           recentsJSX.push(_react2.default.createElement(
             'li',
-            { key: roomItem.id, className: className },
+            { key: roomItem.id, className: className, onClick: this.moveToRoom.bind(null, roomItem.id) },
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
               subtitle: lastMsgSent,
               status: 1,
-              src: 'images/default-avatar.svg',
-              onClick: this.moveToRoom.bind(null, roomItem.id) })
+              src: 'images/default-avatar.svg' })
           ));
         } else {
           recentsJSX.push(_react2.default.createElement(
             'li',
-            { key: roomItem.id, className: className },
+            { key: roomItem.id, className: className, onClick: this.moveToRoom.bind(null, roomItem.id) },
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
               subtitle: parseInt(numberOfUsers) + ' participants',
-              src: 'images/default-avatar-group.svg',
-              onClick: this.moveToRoom.bind(null, roomItem.id) })
+              src: 'images/default-avatar-group.svg' })
           ));
         };
       }

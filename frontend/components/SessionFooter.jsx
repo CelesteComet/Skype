@@ -7,8 +7,7 @@ function SessionFooter() {
         <li><a>Terms of Use</a></li>
         <li><a>Privacy & Cookies</a></li>
       </ul>
-      <img src="images/microsoftLogo.svg" />
-
+      <img src="images/microsoftLogo.svg" style={{width: '60px'}} />
     </div>
   );
 }

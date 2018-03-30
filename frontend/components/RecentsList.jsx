@@ -64,23 +64,21 @@ class RecentsList extends Component {
       // render different roomItem components based on number of users in room
       if (numberOfUsers == 1) {
         recentsJSX.push(
-          <li key={roomItem.id} className={ className }>
+          <li key={roomItem.id} className={ className } onClick={ this.moveToRoom.bind(null, roomItem.id) }>
             <_ProfileItem 
               name={ usersString } 
               subtitle={ lastMsgSent } 
               status={1} 
-              src={'images/default-avatar.svg'} 
-              onClick={ this.moveToRoom.bind(null, roomItem.id) } />
+              src={'images/default-avatar.svg'} />
           </li>
         );
       } else {
         recentsJSX.push(
-          <li key={roomItem.id} className={ className }>
+          <li key={roomItem.id} className={ className } onClick={ this.moveToRoom.bind(null, roomItem.id) }>
             <_ProfileItem 
               name={ usersString } 
               subtitle={ `${parseInt(numberOfUsers)} participants` } 
-              src={'images/default-avatar-group.svg'}
-              onClick={ this.moveToRoom.bind(null, roomItem.id) } />
+              src={'images/default-avatar-group.svg'} />
           </li>
         );
       };
