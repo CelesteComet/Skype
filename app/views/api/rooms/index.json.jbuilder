@@ -10,6 +10,7 @@
       end
     end
     json.set! "lastMsgSent", room.messages[-1]
+    json.set! "updated_at", room.updated_at
   end
 end
 

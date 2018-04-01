@@ -38,6 +38,7 @@ export const getUserStatusMsg = usersObject => {
 };
 
 export const orderByDate = roomObjects => {
+  
   let orderedRooms = [];
 
   for (let id in roomObjects) {
@@ -46,8 +47,9 @@ export const orderByDate = roomObjects => {
   }
 
   orderedRooms = orderedRooms.sort((a,b) => {
-    new Date(a.lastMsgSent) - new Date(b.lastMsgSent);
+    return new Date(b.updated_at) - new Date(a.updated_at);
   });
+  console.log(orderedRooms)
 
   return orderedRooms;
 };

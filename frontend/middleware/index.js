@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Emoji from '../components/Emoji'; 
 
-function convertStringToSmileyArray(string) {
+export function convertStringToSmileyArray(string) {
   // let smileyArray = [];
 
   // let elems = string.split('(kiss)');
@@ -44,7 +44,7 @@ const emojiTable = {
 }
 
 
-const smileyParser = store => next => action => {
+export const smileyParser = store => next => action => {
 
   // DYING! go through string one by one
   if (action.type === 'RECEIVE_MESSAGE') {
@@ -66,7 +66,6 @@ const smileyParser = store => next => action => {
         }
       })
     }
-
   } 
 
   if (action.type === "RECEIVE_ROOM_MESSAGES") {
@@ -78,4 +77,3 @@ const smileyParser = store => next => action => {
   next(action);
 }
 
-export default smileyParser;

@@ -6,6 +6,10 @@ import { moveToRoom } from '../actions/uiActions';
 import { fetchRoomMessages } from '../actions/messageActions';
 import { fetchRooms } from '../actions/roomActions';
 
+// Import Misc.
+import { convertStringToSmileyArray } from '../middleware';
+
+// Import Components
 import _ProfileItem from './_ProfileItem';
 import RecentsListItem from './RecentsListItem';
 
@@ -67,7 +71,7 @@ class RecentsList extends Component {
           <li key={roomItem.id} className={ className } onClick={ this.moveToRoom.bind(null, roomItem.id) }>
             <_ProfileItem 
               name={ usersString } 
-              subtitle={ lastMsgSent } 
+              subtitle={ lastMsgSent ? convertStringToSmileyArray(lastMsgSent) : "" } 
               status={1} 
               src={'images/default-avatar.svg'} />
           </li>

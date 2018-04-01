@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+// Import Misc.
 import * as uuid from 'uuid/v1';
 
+// Import Components
 import ProfileItem from './ProfileItem';
 import ContactsListItem from './ContactsListItem';
-
 
 class RecentsListItem extends Component {
 

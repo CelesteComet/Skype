@@ -32,7 +32,6 @@ function _ProfileItem({name, subtitle, status, src, onClick}) {
 
 _ProfileItem.propTypes = {
   name: PropTypes.string,
-  subtitle: PropTypes.string,
   status: PropTypes.number,
   onClick: PropTypes.func
 };

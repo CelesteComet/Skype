@@ -12,7 +12,7 @@ import rootReducer from './reducers/rootReducer';
 import { HashRouter, Route } from 'react-router-dom';
 
 // Middleware stuff
-import smileyParser from './middleware/index';
+import { smileyParser } from './middleware/index';
 
 // My own components
 import App from './components/App'; 

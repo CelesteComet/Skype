@@ -79,7 +79,7 @@ class Emoji extends Component {
     let {size} = this.props;
     return (
       <canvas 
-        style={{width: size}}
+        style={{width: 19}}
         className='emoji'
         data-id={Math.random()}
         ref={(canvas) => { this.canvas = canvas; }} >

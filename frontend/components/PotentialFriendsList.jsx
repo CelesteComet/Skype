@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ContactsListItem from './ContactsListItem';
+import _ProfileItem from './_ProfileItem';
 
 
 class PotentialFriendsList extends Component {
@@ -12,10 +13,13 @@ class PotentialFriendsList extends Component {
     const { potentialFriends, directoryButton } = this.props;
 
     let potentialFriendsJSX = potentialFriends.map(contact => {
+      let { id, username } = contact;
       return (
-        <li>
-          <ContactsListItem
-            contact={ contact }/>
+        <li key={id}>
+          <_ProfileItem 
+            name={ username } 
+            status={1} 
+            src={'images/default-avatar.svg'} />       
         </li>
       );
     });

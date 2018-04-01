@@ -18595,7 +18595,6 @@ function _ProfileItem(_ref) {
 
 _ProfileItem.propTypes = {
   name: _propTypes2.default.string,
-  subtitle: _propTypes2.default.string,
   status: _propTypes2.default.number,
   onClick: _propTypes2.default.func
 };
@@ -20134,6 +20133,7 @@ var getUserStatusMsg = exports.getUserStatusMsg = function getUserStatusMsg(user
 };
 
 var orderByDate = exports.orderByDate = function orderByDate(roomObjects) {
+
   var orderedRooms = [];
 
   for (var id in roomObjects) {
@@ -20142,8 +20142,9 @@ var orderByDate = exports.orderByDate = function orderByDate(roomObjects) {
   }
 
   orderedRooms = orderedRooms.sort(function (a, b) {
-    new Date(a.lastMsgSent) - new Date(b.lastMsgSent);
+    return new Date(b.updated_at) - new Date(a.updated_at);
   });
+  console.log(orderedRooms);
 
   return orderedRooms;
 };
@@ -25200,7 +25201,7 @@ var Emoji = function (_Component) {
       var size = this.props.size;
 
       return _react2.default.createElement('canvas', {
-        style: { width: size },
+        style: { width: 19 },
         className: 'emoji',
         'data-id': Math.random(),
         ref: function ref(canvas) {
@@ -25237,6 +25238,10 @@ var _ContactsListItem = __webpack_require__(13);
 
 var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
 
+var _ProfileItem2 = __webpack_require__(21);
+
+var _ProfileItem3 = _interopRequireDefault(_ProfileItem2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25263,11 +25268,16 @@ var PotentialFriendsList = function (_Component) {
 
 
       var potentialFriendsJSX = potentialFriends.map(function (contact) {
+        var id = contact.id,
+            username = contact.username;
+
         return _react2.default.createElement(
           'li',
-          null,
-          _react2.default.createElement(_ContactsListItem2.default, {
-            contact: contact })
+          { key: id },
+          _react2.default.createElement(_ProfileItem3.default, {
+            name: username,
+            status: 1,
+            src: 'images/default-avatar.svg' })
         );
       });
 
@@ -28739,8 +28749,6 @@ var _reactRouterDom = __webpack_require__(27);
 
 var _index = __webpack_require__(170);
 
-var _index2 = _interopRequireDefault(_index);
-
 var _App = __webpack_require__(171);
 
 var _App2 = _interopRequireDefault(_App);
@@ -28764,7 +28772,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (window.currentUser) {
     var preloadedState = { session: { currentUser: window.currentUser } };
-    store = (0, _redux.createStore)(_rootReducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default, _index2.default, _reduxLogger2.default));
+    store = (0, _redux.createStore)(_rootReducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default, _index.smileyParser, _reduxLogger2.default));
     delete window.currentUser;
   } else {
     store = (0, _redux.createStore)(_rootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxLogger2.default));
@@ -50723,6 +50731,8 @@ var createMemoryHistory = function createMemoryHistory() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.smileyParser = undefined;
+exports.convertStringToSmileyArray = convertStringToSmileyArray;
 
 var _react = __webpack_require__(0);
 
@@ -50776,7 +50786,7 @@ var emojiTable = {
   "(rainbowsmile)": "rainbowsmile"
 };
 
-var smileyParser = function smileyParser(store) {
+var smileyParser = exports.smileyParser = function smileyParser(store) {
   return function (next) {
     return function (action) {
 
@@ -50812,8 +50822,6 @@ var smileyParser = function smileyParser(store) {
     };
   };
 };
-
-exports.default = smileyParser;
 
 /***/ }),
 /* 171 */
@@ -51550,6 +51558,8 @@ var _messageActions = __webpack_require__(11);
 
 var _roomActions = __webpack_require__(12);
 
+var _middleware = __webpack_require__(170);
+
 var _ProfileItem2 = __webpack_require__(21);
 
 var _ProfileItem3 = _interopRequireDefault(_ProfileItem2);
@@ -51565,6 +51575,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Import Misc.
+
+
+// Import Components
+
 
 var RecentsList = function (_Component) {
   _inherits(RecentsList, _Component);
@@ -51643,7 +51659,7 @@ var RecentsList = function (_Component) {
             { key: roomItem.id, className: className, onClick: this.moveToRoom.bind(null, roomItem.id) },
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
-              subtitle: lastMsgSent,
+              subtitle: lastMsgSent ? (0, _middleware.convertStringToSmileyArray)(lastMsgSent) : "",
               status: 1,
               src: 'images/default-avatar.svg' })
           ));
@@ -51743,6 +51759,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Import Misc.
+
+
+// Import Components
+
 
 var RecentsListItem = function (_Component) {
   _inherits(RecentsListItem, _Component);
