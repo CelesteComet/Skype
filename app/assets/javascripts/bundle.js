@@ -51020,22 +51020,6 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _SideBar = __webpack_require__(175);
-
-var _SideBar2 = _interopRequireDefault(_SideBar);
-
-var _Main = __webpack_require__(182);
-
-var _Main2 = _interopRequireDefault(_Main);
-
-var _Footer = __webpack_require__(206);
-
-var _Footer2 = _interopRequireDefault(_Footer);
-
-var _ModalProfile = __webpack_require__(207);
-
-var _ModalProfile2 = _interopRequireDefault(_ModalProfile);
-
 var _configureSocket = __webpack_require__(44);
 
 var _simplePeer = __webpack_require__(45);
@@ -51060,6 +51044,26 @@ var _titleService = __webpack_require__(92);
 
 var _titleService2 = _interopRequireDefault(_titleService);
 
+var _SideBar = __webpack_require__(175);
+
+var _SideBar2 = _interopRequireDefault(_SideBar);
+
+var _Main = __webpack_require__(182);
+
+var _Main2 = _interopRequireDefault(_Main);
+
+var _Footer = __webpack_require__(206);
+
+var _Footer2 = _interopRequireDefault(_Footer);
+
+var _ModalProfile = __webpack_require__(207);
+
+var _ModalProfile2 = _interopRequireDefault(_ModalProfile);
+
+var _ContextMenu = __webpack_require__(224);
+
+var _ContextMenu2 = _interopRequireDefault(_ContextMenu);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51068,7 +51072,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// Actions
+// Import Misc
+
+
+// Import Actions
+
+
+// Import Components
 
 
 var Dashboard = function (_Component) {
@@ -51083,16 +51093,19 @@ var Dashboard = function (_Component) {
   _createClass(Dashboard, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var fetchRooms = this.props.fetchRooms;
+      var _props = this.props,
+          fetchRooms = _props.fetchRooms,
+          fetchFriends = _props.fetchFriends;
 
+      fetchFriends();
       fetchRooms();
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          dispatch = _props.dispatch,
-          modalView = _props.modalView;
+      var _props2 = this.props,
+          dispatch = _props2.dispatch,
+          modalView = _props2.modalView;
 
       return _react2.default.createElement(
         _react.Fragment,
@@ -51103,7 +51116,8 @@ var Dashboard = function (_Component) {
           modalView && _react2.default.createElement(_ModalProfile2.default, null),
           _react2.default.createElement(_SideBar2.default, null),
           _react2.default.createElement(_Main2.default, null),
-          _react2.default.createElement(_Footer2.default, null)
+          _react2.default.createElement(_Footer2.default, null),
+          _react2.default.createElement(_ContextMenu2.default, null)
         )
       );
     }
@@ -51122,7 +51136,10 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchRooms: function fetchRooms() {
-      dispatch((0, _roomActions.fetchRooms)());
+      return dispatch((0, _roomActions.fetchRooms)());
+    },
+    fetchFriends: function fetchFriends() {
+      return dispatch((0, _friendActions.fetchAllFriends)());
     },
     dispatch: dispatch
   };
@@ -51592,6 +51609,7 @@ var RecentsList = function (_Component) {
 
     _this.moveToRoom = _this.moveToRoom.bind(_this);
     _this.scrollDown = _this.scrollDown.bind(_this);
+    _this.handleContextMenu = _this.handleContextMenu.bind(_this);
     return _this;
   }
 
@@ -51608,13 +51626,25 @@ var RecentsList = function (_Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var fetchRooms = this.props.fetchRooms;
-      // fetchRooms();
+      // For the contextMenu so that it can hide after it has been shown 
+      var contextMenu = document.querySelector(".context-menu");
+      document.body.addEventListener('click', function () {
+        contextMenu.className = "context-menu hide";
+      });
     }
   }, {
     key: 'scrollDown',
     value: function scrollDown() {
       // $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
+    }
+  }, {
+    key: 'handleContextMenu',
+    value: function handleContextMenu(e) {
+      e.preventDefault();
+      var contextMenu = document.querySelector(".context-menu");
+      contextMenu.className = "context-menu";
+      contextMenu.style.top = e.pageY - contextMenu.offsetHeight + 'px';
+      contextMenu.style.left = e.pageX - contextMenu.offsetWidth / 2 + 'px';
     }
   }, {
     key: 'render',
@@ -51646,7 +51676,7 @@ var RecentsList = function (_Component) {
 
         // if it is the current room, give class of selected
         var className = "";
-        if (roomItem.id === currentRoomId) {
+        if (roomItem.id == currentRoomId) {
           className = 'selected';
         }
 
@@ -51677,7 +51707,7 @@ var RecentsList = function (_Component) {
 
       return _react2.default.createElement(
         'ul',
-        { className: 'recents-list' },
+        { className: 'recents-list', onContextMenu: this.handleContextMenu },
         recentsJSX
       );
     }
@@ -52518,10 +52548,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(3);
 
-var _ContactsListItem = __webpack_require__(13);
-
-var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
-
 var _roomActions = __webpack_require__(12);
 
 var _uiActions = __webpack_require__(5);
@@ -52530,6 +52556,14 @@ var _configureSocket = __webpack_require__(44);
 
 var _messageActions = __webpack_require__(11);
 
+var _ContactsListItem = __webpack_require__(13);
+
+var _ContactsListItem2 = _interopRequireDefault(_ContactsListItem);
+
+var _ProfileItem2 = __webpack_require__(21);
+
+var _ProfileItem3 = _interopRequireDefault(_ProfileItem2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52537,6 +52571,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Import Actions
+
+
+// Import Components
+
 
 var ContactsListView = function (_Component) {
   _inherits(ContactsListView, _Component);
@@ -52555,12 +52595,19 @@ var ContactsListView = function (_Component) {
     value: function handleClick(user) {
       var _props = this.props,
           dispatch = _props.dispatch,
-          currentUser = _props.currentUser;
+          currentUser = _props.currentUser,
+          fetchRooms = _props.fetchRooms,
+          moveToRoom = _props.moveToRoom;
+      // dispatch(createRoom([currentUser.id, user.id])).then((room) => {
+      //   fetchRooms()
+      //     .then(moveToRoom(room.id));
+      //   createSubscription(room.id, dispatch);
+      // });
 
       dispatch((0, _roomActions.createRoom)([currentUser.id, user.id])).then(function (room) {
-        dispatch((0, _roomActions.fetchRooms)());
-        dispatch((0, _uiActions.moveToRoom)(room.id));
-        (0, _configureSocket.createSubscription)(room.id, dispatch);
+
+        moveToRoom(room.id);
+        fetchRooms();
       });
     }
   }, {
@@ -52582,6 +52629,10 @@ var ContactsListView = function (_Component) {
         for (var i = 0; i < contacts.length; i++) {
           // if we are on the first one, grab the letter and dump it in
           // then dump the person in
+          var _contacts$i = contacts[i],
+              username = _contacts$i.username,
+              status = _contacts$i.status;
+
           if (i == 0) {
             var firstLetter = contacts[0].username[0];
             contactsJSX.push(_react2.default.createElement(
@@ -52589,14 +52640,14 @@ var ContactsListView = function (_Component) {
               { key: Math.random(), className: 'alphabet-row' },
               firstLetter
             ));
-            //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
+
             contactsJSX.push(_react2.default.createElement(
               'div',
               { className: 'contacts-list-item', key: Math.random(), onClick: this.handleClick.bind(null, contacts[i]) },
-              _react2.default.createElement(_ContactsListItem2.default, {
-                contact: contacts[i],
-                onClick: this.handleClick.bind(null, contacts[i])
-              })
+              _react2.default.createElement(_ProfileItem3.default, {
+                name: username,
+                status: status,
+                subtitle: 'sub' })
             ));
           } else {
             // if we are not on the first one, check if the last letter is 
@@ -52607,10 +52658,10 @@ var ContactsListView = function (_Component) {
               contactsJSX.push(_react2.default.createElement(
                 'div',
                 { className: 'contacts-list-item', key: Math.random(), onClick: this.handleClick.bind(null, contacts[i]) },
-                _react2.default.createElement(_ContactsListItem2.default, {
-                  contact: contacts[i],
-                  onClick: this.handleClick.bind(null, contacts[i])
-                })
+                _react2.default.createElement(_ProfileItem3.default, {
+                  name: username,
+                  status: status,
+                  subtitle: 'sub' })
               ));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             } else {
@@ -52622,10 +52673,10 @@ var ContactsListView = function (_Component) {
               contactsJSX.push(_react2.default.createElement(
                 'div',
                 { className: 'contacts-list-item', key: Math.random(), onClick: this.handleClick.bind(null, contacts[i]) },
-                _react2.default.createElement(_ContactsListItem2.default, {
-                  contact: contacts[i],
-                  onClick: this.handleClick.bind(null, contacts[i])
-                })
+                _react2.default.createElement(_ProfileItem3.default, {
+                  name: username,
+                  status: status,
+                  subtitle: 'sub' })
               ));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
             }
@@ -52702,7 +52753,15 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return { dispatch: dispatch };
+  return {
+    dispatch: dispatch,
+    fetchRooms: function fetchRooms() {
+      return dispatch((0, _roomActions.fetchRooms)());
+    },
+    moveToRoom: function moveToRoom(roomId) {
+      dispatch((0, _uiActions.moveToRoom)(roomId));
+    }
+  };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ContactsListView);
@@ -57491,6 +57550,37 @@ var createUser = exports.createUser = function createUser(user) {
     data: { user: user }
   });
 };
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ContextMenu() {
+  return _react2.default.createElement(
+    'ul',
+    { className: 'context-menu hide' },
+    _react2.default.createElement(
+      'li',
+      null,
+      'Delete conversation'
+    )
+  );
+}
+
+exports.default = ContextMenu;
 
 /***/ })
 /******/ ]);

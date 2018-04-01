@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ContactsListItem from './ContactsListItem';
+
+// Import Actions
 import { createRoom, fetchRooms } from '../actions/roomActions';
 import { moveToRoom } from '../actions/uiActions';
 import { createSubscription } from '../configureSocket';
 import { fetchRoomMessages } from '../actions/messageActions';
+
+// Import Components
+import ContactsListItem from './ContactsListItem';
+import _ProfileItem from './_ProfileItem';
+
 
 class ContactsListView extends Component {
   constructor(props) {
@@ -13,12 +19,19 @@ class ContactsListView extends Component {
   }
 
   handleClick(user) {
-    let { dispatch, currentUser } = this.props;
-    dispatch(createRoom([currentUser.id, user.id])).then((room) => {
-      dispatch(fetchRooms());
-      dispatch(moveToRoom(room.id));
-      createSubscription(room.id, dispatch);
-    });
+    let { dispatch, currentUser, fetchRooms, moveToRoom } = this.props;
+    // dispatch(createRoom([currentUser.id, user.id])).then((room) => {
+    //   fetchRooms()
+    //     .then(moveToRoom(room.id));
+    //   createSubscription(room.id, dispatch);
+    // });
+
+    dispatch(createRoom([currentUser.id, user.id]))
+      .then(room => {
+        
+        moveToRoom(room.id);
+        fetchRooms()
+      })
   }
 
   render() {
@@ -35,16 +48,17 @@ class ContactsListView extends Component {
       for (let i = 0; i < contacts.length; i++) {
         // if we are on the first one, grab the letter and dump it in
         // then dump the person in
+        const { username, status } = contacts[i];
         if (i == 0) {
           let firstLetter = contacts[0].username[0];
           contactsJSX.push(<li key={Math.random()} className='alphabet-row'>{firstLetter}</li>)
-          //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
+          
           contactsJSX.push(
             <div className='contacts-list-item' key={Math.random()} onClick={this.handleClick.bind(null, contacts[i])}>
-              <ContactsListItem 
-              contact={ contacts[i] }
-              onClick={this.handleClick.bind(null, contacts[i])} 
-              />
+              <_ProfileItem 
+                name={ username }
+                status={ status }
+                subtitle={'sub'} />
             </div>
           )
         } else {
@@ -55,10 +69,10 @@ class ContactsListView extends Component {
           if (lastLetter === currentLetter) {
             contactsJSX.push(
               <div className='contacts-list-item' key={Math.random()} onClick={this.handleClick.bind(null, contacts[i])}>
-                <ContactsListItem 
-                contact={ contacts[i] }
-                onClick={this.handleClick.bind(null, contacts[i])} 
-                />
+                <_ProfileItem 
+                  name={ username }
+                  status={ status }
+                  subtitle={'sub'} />
               </div>
             )
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
@@ -66,10 +80,10 @@ class ContactsListView extends Component {
             contactsJSX.push(<li key={Math.random()} className='alphabet-row'>{currentLetter}</li>)
             contactsJSX.push(
               <div className='contacts-list-item' key={Math.random()} onClick={this.handleClick.bind(null, contacts[i])}>
-                <ContactsListItem 
-                contact={ contacts[i] }
-                onClick={this.handleClick.bind(null, contacts[i])} 
-                />
+                <_ProfileItem 
+                  name={ username }
+                  status={ status }
+                  subtitle={'sub'} />
               </div>
             )
             //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
@@ -111,11 +125,15 @@ const mapStateToProps = state => {
   return {
     contacts: Object.values(state.friends),
     currentUser: state.session.currentUser
-  }
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return { dispatch }
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch,
+    fetchRooms: () => { return dispatch(fetchRooms()) },
+    moveToRoom: roomId => { dispatch(moveToRoom(roomId)) }
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactsListView);

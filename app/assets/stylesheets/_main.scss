@@ -7,6 +7,31 @@ $lighter-blue: #EFF6F9;
 $light-gray: #8CA8B4;
 $dark-gray: rgb(148, 153, 156);
 
+/**************************************/
+/*  --------------------------------- */
+/*  MISC                              */
+/*  TYPOGRAPHY                        */
+/*  CONTEXT MENU                      */
+/*  MODAL                             */
+/*  ASIDE                             */
+/*  RECENTS LIST                      */
+/*  Clouds                            */
+/*  Potential Friends List            */
+/*  Contacts List                     */
+/*  --------------------------------- */
+/**************************************/
+
+
+/**************************************/
+/*                MISC                */
+/**************************************/
+
+.hide {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+
 /* TYPOGRAPHY */
 $font-size-sub: 14px;
 
@@ -57,6 +82,32 @@ img {
       font-style: italic;
       font-size: $font-size-sub;
       color: $light-gray;
+    }
+  }
+}
+
+/**************************************/
+/*            CONTEXT MENU            */
+/**************************************/
+
+.context-menu {
+  position: absolute;
+  padding: 10px;
+  z-index: 10;
+  background: white;
+  min-width: 90px;
+  max-width: 290px;
+  box-shadow: -1px 3px 10px 0 rgba(0,0,0,0.15);
+  border: #C0DCE6 1px solid;
+  border-radius: 5px;
+
+  li {
+    padding: 6px;
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+      background: #E6EEF2;
     }
   }
 }
@@ -244,6 +295,10 @@ aside {
     background: $lightish-blue;
   }
 
+  li.selected:hover {
+    background: $lightish-blue;
+  }
+
   li:hover {
     background: $lighter-blue;
     cursor: pointer;
@@ -347,6 +402,14 @@ aside {
     background: $lighter-blue;
     cursor: pointer;
   }
+}
+
+/**************************************/
+/*            Contacts List           */
+/**************************************/
+
+.contacts-list-item {
+  padding-left: 20px;
 }
 
 

@@ -1,13 +1,10 @@
 import React, { Fragment, Component } from 'react';
-import SideBar from './SideBar';
-import Main from './Main';
-import Footer from './Footer';
-import ModalProfile from './ModalProfile';
+
+// Import Misc
 import {configureSocket} from '../configureSocket';
+import Peer              from 'simple-peer';
 
-import Peer from 'simple-peer';
-
-// Actions
+// Import Actions
 import { logoutUser, getUser }  from '../actions/sessionActions';
 import { fetchRoomMemberships } from '../actions/roomMembershipActions'
 import { fetchRooms }           from '../actions/roomActions';
@@ -19,13 +16,21 @@ import { showContactsList }     from '../actions/uiActions';
 import { connect }              from 'react-redux';
 import titleService             from '../services/titleService';
 
+// Import Components
+import SideBar      from './SideBar';
+import Main         from './Main';
+import Footer       from './Footer';
+import ModalProfile from './ModalProfile';
+import ContextMenu  from './ContextMenu';
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    const { fetchRooms } = this.props;
+    const { fetchRooms, fetchFriends } = this.props;
+    fetchFriends();
     fetchRooms();
   }
 
@@ -38,6 +43,7 @@ class Dashboard extends Component {
           <SideBar />
           <Main />
           <Footer />
+          <ContextMenu />
         </div>
       </Fragment>
     );
@@ -53,7 +59,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return { 
-    fetchRooms: () => { dispatch(fetchRooms()) },
+    fetchRooms: () => { return dispatch(fetchRooms()) },
+    fetchFriends: () => { return dispatch(fetchAllFriends()) },
     dispatch 
   }
 };

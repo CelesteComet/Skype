@@ -18,6 +18,7 @@ class RecentsList extends Component {
     super(props);
     this.moveToRoom = this.moveToRoom.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
+    this.handleContextMenu = this.handleContextMenu.bind(this);
   }
 
   moveToRoom(roomId) {
@@ -27,12 +28,24 @@ class RecentsList extends Component {
   }
 
   componentDidMount() {
-    const { fetchRooms } = this.props;
-    // fetchRooms();
+    // For the contextMenu so that it can hide after it has been shown 
+    let contextMenu = document.querySelector(".context-menu");
+    document.body.addEventListener('click', () => {
+      contextMenu.className = "context-menu hide";
+    })
   } 
 
   scrollDown() {
     // $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
+  }
+
+  handleContextMenu(e) {
+    e.preventDefault();
+    let contextMenu = document.querySelector(".context-menu");
+    contextMenu.className = "context-menu";
+    contextMenu.style.top = (e.pageY - contextMenu.offsetHeight) + 'px';
+    contextMenu.style.left = (e.pageX - contextMenu.offsetWidth/2) + 'px';
+
   }
 
   render() {
@@ -59,7 +72,7 @@ class RecentsList extends Component {
 
       // if it is the current room, give class of selected
       let className = "";
-      if (roomItem.id === currentRoomId) {
+      if (roomItem.id == currentRoomId) {
         className = 'selected';
       }
 
@@ -89,7 +102,7 @@ class RecentsList extends Component {
     }
 
     return (
-      <ul className="recents-list">
+      <ul className="recents-list" onContextMenu={this.handleContextMenu}>
         { recentsJSX }
       </ul>
     )
