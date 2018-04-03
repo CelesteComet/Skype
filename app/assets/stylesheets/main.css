@@ -155,7 +155,6 @@ textarea {
 .search-skype input:focus {
   text-align: left;
   outline: none;
-  padding-left: 50px;
 }
 
 .search-skype input:blur {

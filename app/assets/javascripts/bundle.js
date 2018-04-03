@@ -28421,8 +28421,8 @@ var SessionLogin = function (_Component) {
           history = _props2.history;
 
       var user = {
-        username: "Bruce",
-        password: "qqqqqq"
+        username: "Guest User",
+        password: "password"
       };
       dispatch((0, _sessionActions.loginUser)(user)).then(function () {
         history.push('/dashboard');
