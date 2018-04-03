@@ -52662,12 +52662,15 @@ var ContactsListView = function (_Component) {
           dispatch = _props.dispatch,
           currentUser = _props.currentUser,
           fetchRooms = _props.fetchRooms,
+          receiveRooms = _props.receiveRooms,
           moveToRoom = _props.moveToRoom,
           fetchRoomMessages = _props.fetchRoomMessages;
 
+
       dispatch((0, _roomActions.createRoom)([currentUser.id, user.id])).then(function (room) {
         moveToRoom(room.id);
-        fetchRooms().then(function () {
+        fetchRooms().then(function (rooms) {
+          receiveRooms(rooms);
           fetchRoomMessages(room.id);
         });
       });
@@ -52820,8 +52823,11 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     dispatch: dispatch,
+    receiveRooms: function receiveRooms(rooms) {
+      dispatch((0, _roomActions.receiveRooms)(rooms));
+    },
     fetchRooms: function fetchRooms() {
-      return dispatch((0, _roomActions.fetchRooms)());
+      console.log("F");return dispatch((0, _roomActions.fetchRooms)());
     },
     moveToRoom: function moveToRoom(roomId) {
       dispatch((0, _uiActions.moveToRoom)(roomId));

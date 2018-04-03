@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // Import Actions
-import { createRoom, fetchRooms } from '../actions/roomActions';
+import { createRoom, fetchRooms, receiveRooms } from '../actions/roomActions';
 import { moveToRoom } from '../actions/uiActions';
 import { createSubscription } from '../configureSocket';
 import { fetchRoomMessages } from '../actions/messageActions';
@@ -19,12 +19,20 @@ class ContactsListView extends Component {
   }
 
   handleClick(user) {
-    let { dispatch, currentUser, fetchRooms, moveToRoom, fetchRoomMessages } = this.props;
+    let { 
+      dispatch, 
+      currentUser, 
+      fetchRooms, 
+      receiveRooms, 
+      moveToRoom, 
+      fetchRoomMessages } = this.props;
+
     dispatch(createRoom([currentUser.id, user.id]))
       .then(room => {
         moveToRoom(room.id);
         fetchRooms()
-          .then(() => {
+          .then(rooms => {
+            receiveRooms(rooms);
             fetchRoomMessages(room.id);
           });
       })
@@ -130,7 +138,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch,
-    fetchRooms: () => { return dispatch(fetchRooms()) },
+    receiveRooms: rooms => { dispatch(receiveRooms(rooms)) },
+    fetchRooms: () => { console.log("F"); return dispatch(fetchRooms()) },
     moveToRoom: roomId => { dispatch(moveToRoom(roomId)) },
     fetchRoomMessages: roomId => { dispatch(fetchRoomMessages(roomId)) }
   };
