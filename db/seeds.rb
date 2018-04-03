@@ -26,13 +26,6 @@ User.create({username: "Mercedes", password: "qqqqqq", profile_id: 13})
 User.create({username: "Aston Martin", password: "qqqqqq", profile_id: 14})
 User.create({username: "Apple Macbook", password: "qqqqqq", profile_id: 15})
 
-firstRoom = Room.create({})
-secondRoom = Room.create({})
-
-fortyfifthRoom = Room.new({id: 45})
-fortyfifthRoom.save
-
-
 # im in room 1
 # RoomMembership.create(room_id: 1, user_id: 1)
 # RoomMembership.create(room_id: 2, user_id: 1)

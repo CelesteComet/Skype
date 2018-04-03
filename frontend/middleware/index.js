@@ -17,14 +17,14 @@ export function convertStringToSmileyArray(string) {
   // return smileyArray;
 
     let smileyArray = []
-    
+     
     let elems = string.split(/(\([^)]*\))/g)
-    if (elems[0] == "" && elems[2] == "" && emojiTable[elems[1]]) {
+    if (elems.length == 3 && elems[0] == "" && elems[2] == "" && emojiTable[elems[1]]) {
       smileyArray.push(<Emoji key={Math.random()} name={emojiTable[elems[1]]} size={100}/>);
     } else {
       elems.forEach((elem, i) => {
         if (emojiTable[elem] !== undefined) {
-          smileyArray.push(<Emoji key={Math.random()} name={emojiTable[elem]}/>);
+          smileyArray.push(<Emoji key={Math.random()} name={emojiTable[elem]} size={19}/>);
         } else {
           smileyArray.push(elem);
         }
@@ -54,13 +54,12 @@ export const smileyParser = store => next => action => {
     action.payload.body = [];
     
     let elems = body.split(/(\([^)]*\))/g)
-    console.log(elems);
     if (elems.length == 3 && elems[0] == "" && elems[2] == "" && emojiTable[elems[1]]) {
       action.payload.body.push(<Emoji key={Math.random()} name={emojiTable[elems[1]]} size={100}/>);
     } else {
       elems.forEach((elem, i) => {
         if (emojiTable[elem] !== undefined) {
-          action.payload.body.push(<Emoji key={Math.random()} name={emojiTable[elem]}/>);
+          action.payload.body.push(<Emoji key={Math.random()} name={emojiTable[elem]} size={19} />);
         } else {
           action.payload.body.push(elem);
         }

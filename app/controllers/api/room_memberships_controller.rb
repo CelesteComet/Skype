@@ -3,7 +3,8 @@ class Api::RoomMembershipsController < ApplicationController
   before_action :require_login # check application controller
 
   def index
-    @rooms = current_user.rooms.includes(:room_memberships)
+    @room_memberships = current_user.rooms.includes(:room_memberships)
+    render json: @room_memberships
   end
 
   def create
@@ -11,6 +12,16 @@ class Api::RoomMembershipsController < ApplicationController
     @room_membership.user_id = current_user.id
 
     if @room_membership.save
+      render json: @room_membership
+    else 
+      render json: @room_membership.errors.full_messages, status: 400
+    end
+  end
+
+  def destroy 
+    @room_membership = Room.find_by(id: params[:id]).room_memberships.find_by(user_id: current_user.id);
+    if @room_membership
+      @room_membership.destroy
       render json: @room_membership
     else 
       render json: @room_membership.errors.full_messages, status: 400

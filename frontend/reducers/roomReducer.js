@@ -2,6 +2,7 @@ import { RECEIVE_ROOM, RECEIVE_ROOMS } from '../actions/roomActions';
 
 const roomReducer = (state = {}, action) => {
   let newState = Object.assign({}, state)
+  console.log(action.payload);
   switch (action.type) {
     case RECEIVE_ROOMS: 
       return action.payload

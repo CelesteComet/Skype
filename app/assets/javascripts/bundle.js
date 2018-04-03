@@ -17789,7 +17789,7 @@ var logoutUser = exports.logoutUser = function logoutUser() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createMessage = exports.fetchRoomMessages = exports.fetchAllMessages = exports.receiveAllMessages = exports.receiveRoomMessages = exports.receiveMessage = exports.RECEIVE_ROOM_MESSAGES = exports.RECEIVE_ALL_MESSAGES = exports.RECEIVE_MESSAGE = undefined;
+exports.createMessage = exports.fetchRoomMessages = exports.fetchAllMessages = exports.clearMessages = exports.receiveAllMessages = exports.receiveRoomMessages = exports.receiveMessage = exports.CLEAR_MESSAGES = exports.RECEIVE_ROOM_MESSAGES = exports.RECEIVE_ALL_MESSAGES = exports.RECEIVE_MESSAGE = undefined;
 
 var _messageAPIService = __webpack_require__(142);
 
@@ -17800,6 +17800,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var RECEIVE_MESSAGE = exports.RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 var RECEIVE_ALL_MESSAGES = exports.RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
 var RECEIVE_ROOM_MESSAGES = exports.RECEIVE_ROOM_MESSAGES = 'RECEIVE_ROOM_MESSAGES';
+var CLEAR_MESSAGES = exports.CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 
 var receiveMessage = exports.receiveMessage = function receiveMessage(message) {
   return {
@@ -17822,6 +17823,12 @@ var receiveAllMessages = exports.receiveAllMessages = function receiveAllMessage
   };
 };
 
+var clearMessages = exports.clearMessages = function clearMessages() {
+  return {
+    type: CLEAR_MESSAGES
+  };
+};
+
 var fetchAllMessages = exports.fetchAllMessages = function fetchAllMessages() {
   return function (dispatch) {
     return APIUtil.fetchAllMessages().then(function (messages) {
@@ -17835,6 +17842,7 @@ var fetchAllMessages = exports.fetchAllMessages = function fetchAllMessages() {
 var fetchRoomMessages = exports.fetchRoomMessages = function fetchRoomMessages(roomId) {
   return function (dispatch) {
     return APIUtil.fetchRoomMessages(roomId).then(function (messages) {
+      console.log(messages);
       dispatch(receiveRoomMessages(messages));
     }, function (err) {
       console.log(err);
@@ -18567,6 +18575,35 @@ function _ProfileItem(_ref) {
     color += 'red';
   }
 
+  var subtitleLength = 0;
+
+  if (Array.isArray(subtitle)) {
+    subtitle.forEach(function (txtBlk) {
+      if (typeof txtBlk === 'string') {
+        subtitleLength += txtBlk.length;
+      } else {
+        subtitleLength += 1;
+      }
+    });
+  } else {
+    subtitle = subtitle.split('');
+    subtitleLength = subtitle.length;
+  }
+
+  if (subtitleLength > 20) {
+    var splitSub = [];
+    subtitle.forEach(function (e) {
+      if (e.length > 1) {
+        e.split('').forEach(function (j) {
+          splitSub.push(j);
+        });
+      } else {
+        splitSub.push(e);
+      }
+    });
+    subtitle = splitSub.slice(0, 30).join('') + '...';
+  }
+
   return _react2.default.createElement(
     'div',
     { onClick: onClick, className: '_profile-item' },
@@ -18886,11 +18923,15 @@ module.exports = warning;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.CREATE_ROOM = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
+exports.leaveRoom = exports.fetchRoomMemberships = exports.receiveRoomMemberships = exports.CREATE_ROOM = exports.RECEIVE_ALL_ROOM_MEMBERSHIPS = undefined;
 
 var _roomMembershipAPIService = __webpack_require__(145);
 
 var APIUtil = _interopRequireWildcard(_roomMembershipAPIService);
+
+var _roomActions = __webpack_require__(12);
+
+var _messageActions = __webpack_require__(11);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -18908,6 +18949,17 @@ var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemb
   return function (dispatch) {
     return APIUtil.fetchRoomMemberships().then(function (roomMemberships) {
       dispatch(receiveRoomMemberships(roomMemberships));
+    }, function (err) {
+      console.log(err);
+    });
+  };
+};
+
+var leaveRoom = exports.leaveRoom = function leaveRoom(roomId) {
+  return function (dispatch) {
+    return APIUtil.destroyRoomMembership(roomId).then(function (roomMemberships) {
+      dispatch((0, _messageActions.clearMessages)());
+      dispatch((0, _roomActions.fetchRooms)());
     }, function (err) {
       console.log(err);
     });
@@ -20210,6 +20262,8 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
 
     // When a message is received
     App[roomName].received = function (data) {
+      console.log("Message received");
+      console.log(data);
       dispatch((0, _messageActions.receiveMessage)(data));
     };
 
@@ -25201,7 +25255,7 @@ var Emoji = function (_Component) {
       var size = this.props.size;
 
       return _react2.default.createElement('canvas', {
-        style: { width: 19 },
+        style: { width: size },
         className: 'emoji',
         'data-id': Math.random(),
         ref: function ref(canvas) {
@@ -47991,6 +48045,8 @@ var messagesReducer = function messagesReducer() {
       return action.payload;
     case _messageActions.RECEIVE_ROOM_MESSAGES:
       return action.payload;
+    case _messageActions.CLEAR_MESSAGES:
+      return {};
     default:
       return state;
   }
@@ -48046,6 +48102,7 @@ var roomReducer = function roomReducer() {
   var action = arguments[1];
 
   var newState = Object.assign({}, state);
+  console.log(action.payload);
   switch (action.type) {
     case _roomActions.RECEIVE_ROOMS:
       return action.payload;
@@ -48114,9 +48171,9 @@ var fetchRoomMemberships = exports.fetchRoomMemberships = function fetchRoomMemb
   });
 };
 
-var logoutUser = exports.logoutUser = function logoutUser() {
+var destroyRoomMembership = exports.destroyRoomMembership = function destroyRoomMembership(roomId) {
   return $.ajax({
-    url: 'api/session',
+    url: 'api/room_memberships/' + roomId,
     method: 'DELETE'
   });
 };
@@ -50762,12 +50819,12 @@ function convertStringToSmileyArray(string) {
   var smileyArray = [];
 
   var elems = string.split(/(\([^)]*\))/g);
-  if (elems[0] == "" && elems[2] == "" && emojiTable[elems[1]]) {
+  if (elems.length == 3 && elems[0] == "" && elems[2] == "" && emojiTable[elems[1]]) {
     smileyArray.push(_react2.default.createElement(_Emoji2.default, { key: Math.random(), name: emojiTable[elems[1]], size: 100 }));
   } else {
     elems.forEach(function (elem, i) {
       if (emojiTable[elem] !== undefined) {
-        smileyArray.push(_react2.default.createElement(_Emoji2.default, { key: Math.random(), name: emojiTable[elem] }));
+        smileyArray.push(_react2.default.createElement(_Emoji2.default, { key: Math.random(), name: emojiTable[elem], size: 19 }));
       } else {
         smileyArray.push(elem);
       }
@@ -50798,13 +50855,12 @@ var smileyParser = exports.smileyParser = function smileyParser(store) {
         action.payload.body = [];
 
         var elems = body.split(/(\([^)]*\))/g);
-        console.log(elems);
         if (elems.length == 3 && elems[0] == "" && elems[2] == "" && emojiTable[elems[1]]) {
           action.payload.body.push(_react2.default.createElement(_Emoji2.default, { key: Math.random(), name: emojiTable[elems[1]], size: 100 }));
         } else {
           elems.forEach(function (elem, i) {
             if (emojiTable[elem] !== undefined) {
-              action.payload.body.push(_react2.default.createElement(_Emoji2.default, { key: Math.random(), name: emojiTable[elem] }));
+              action.payload.body.push(_react2.default.createElement(_Emoji2.default, { key: Math.random(), name: emojiTable[elem], size: 19 }));
             } else {
               action.payload.body.push(elem);
             }
@@ -51575,6 +51631,8 @@ var _messageActions = __webpack_require__(11);
 
 var _roomActions = __webpack_require__(12);
 
+var _roomMembershipActions = __webpack_require__(26);
+
 var _middleware = __webpack_require__(170);
 
 var _ProfileItem2 = __webpack_require__(21);
@@ -51592,6 +51650,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Import Actions
+
 
 // Import Misc.
 
@@ -51639,12 +51700,32 @@ var RecentsList = function (_Component) {
     }
   }, {
     key: 'handleContextMenu',
-    value: function handleContextMenu(e) {
+    value: function handleContextMenu(roomId, e) {
       e.preventDefault();
+
+      var leaveRoom = this.props.leaveRoom;
+
+      // find the hidden context menu
+
       var contextMenu = document.querySelector(".context-menu");
+
+      // provide original className to make it show
       contextMenu.className = "context-menu";
+
+      // set new positions based on mouse click
       contextMenu.style.top = e.pageY - contextMenu.offsetHeight + 'px';
       contextMenu.style.left = e.pageX - contextMenu.offsetWidth / 2 + 'px';
+
+      // set event listener for delete action
+      var contextMenuDeleteItem = contextMenu.querySelector('li');
+
+      // handler to leave the room
+      var leaveRoomHandler = function leaveRoomHandler(e) {
+        leaveRoom(roomId);
+        contextMenuDeleteItem.removeEventListener('click', leaveRoomHandler);
+      };
+
+      contextMenuDeleteItem.addEventListener('click', leaveRoomHandler);
     }
   }, {
     key: 'render',
@@ -51686,7 +51767,10 @@ var RecentsList = function (_Component) {
         if (numberOfUsers == 1) {
           recentsJSX.push(_react2.default.createElement(
             'li',
-            { key: roomItem.id, className: className, onClick: this.moveToRoom.bind(null, roomItem.id) },
+            { key: roomItem.id,
+              className: className,
+              onClick: this.moveToRoom.bind(null, roomItem.id),
+              onContextMenu: this.handleContextMenu.bind(null, roomItem.id) },
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
               subtitle: lastMsgSent ? (0, _middleware.convertStringToSmileyArray)(lastMsgSent) : "",
@@ -51696,7 +51780,10 @@ var RecentsList = function (_Component) {
         } else {
           recentsJSX.push(_react2.default.createElement(
             'li',
-            { key: roomItem.id, className: className, onClick: this.moveToRoom.bind(null, roomItem.id) },
+            { key: roomItem.id,
+              className: className,
+              onClick: this.moveToRoom.bind(null, roomItem.id),
+              onContextMenu: this.handleContextMenu.bind(null, roomItem.id) },
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
               subtitle: parseInt(numberOfUsers) + ' participants',
@@ -51707,7 +51794,7 @@ var RecentsList = function (_Component) {
 
       return _react2.default.createElement(
         'ul',
-        { className: 'recents-list', onContextMenu: this.handleContextMenu },
+        { className: 'recents-list' },
         recentsJSX
       );
     }
@@ -51731,17 +51818,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchRoomMessages: function fetchRoomMessages(roomId) {
       dispatch((0, _messageActions.fetchRoomMessages)(roomId));
+    },
+    leaveRoom: function leaveRoom(roomId) {
+      dispatch((0, _roomMembershipActions.leaveRoom)(roomId));
     }
   };
 };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchRooms: () => { return dispatch(fetchRooms()) },
-//     fetchRoomMessages: roomId => { return dispatch(fetchRoomMessages(roomId)) },
-//     switchRoom: roomId => { return dispatch(moveToRoom(Number(roomId))) }
-//   };
-// };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RecentsList);
 
@@ -52597,17 +52679,14 @@ var ContactsListView = function (_Component) {
           dispatch = _props.dispatch,
           currentUser = _props.currentUser,
           fetchRooms = _props.fetchRooms,
-          moveToRoom = _props.moveToRoom;
-      // dispatch(createRoom([currentUser.id, user.id])).then((room) => {
-      //   fetchRooms()
-      //     .then(moveToRoom(room.id));
-      //   createSubscription(room.id, dispatch);
-      // });
+          moveToRoom = _props.moveToRoom,
+          fetchRoomMessages = _props.fetchRoomMessages;
 
       dispatch((0, _roomActions.createRoom)([currentUser.id, user.id])).then(function (room) {
-
         moveToRoom(room.id);
-        fetchRooms();
+        fetchRooms().then(function () {
+          fetchRoomMessages(room.id);
+        });
       });
     }
   }, {
@@ -52647,6 +52726,7 @@ var ContactsListView = function (_Component) {
               _react2.default.createElement(_ProfileItem3.default, {
                 name: username,
                 status: status,
+                src: '/images/default-avatar.svg',
                 subtitle: 'sub' })
             ));
           } else {
@@ -52661,6 +52741,7 @@ var ContactsListView = function (_Component) {
                 _react2.default.createElement(_ProfileItem3.default, {
                   name: username,
                   status: status,
+                  src: '/images/default-avatar.svg',
                   subtitle: 'sub' })
               ));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
@@ -52676,6 +52757,7 @@ var ContactsListView = function (_Component) {
                 _react2.default.createElement(_ProfileItem3.default, {
                   name: username,
                   status: status,
+                  src: '/images/default-avatar.svg',
                   subtitle: 'sub' })
               ));
               //contactsJSX.push(<li className='contacts-list-item'>{contacts[i].username}</li>)
@@ -52760,6 +52842,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     moveToRoom: function moveToRoom(roomId) {
       dispatch((0, _uiActions.moveToRoom)(roomId));
+    },
+    fetchRoomMessages: function fetchRoomMessages(roomId) {
+      dispatch((0, _messageActions.fetchRoomMessages)(roomId));
     }
   };
 };

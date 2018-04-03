@@ -42,6 +42,7 @@ img {
 }
 
 ._profile-item {
+  overflow: hidden;
   white-space: nowrap;
 
   .icon-container {
@@ -173,8 +174,12 @@ img {
   }
 
   header {
-    padding-top: 26px;
-    padding-left: 19px;
+    padding-top: 29px;
+    padding-left: 18px;
+  }
+
+  .status-circle {
+    display: none;
   }
 }
 
@@ -283,6 +288,20 @@ aside {
 }
 
 /**************************************/
+/*           Aside Buttons            */
+/**************************************/
+
+
+@media (max-width: 600px) {
+  .aside-buttons {
+    padding: 0; 
+  }
+}
+  
+
+
+
+/**************************************/
 /*           Recents List             */
 /**************************************/
 
@@ -306,6 +325,14 @@ aside {
 
   canvas {
     width: 19px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .recents-list {
+    li {
+      padding: 7px 0px 7px 18px;
+    }
   }
 }
 

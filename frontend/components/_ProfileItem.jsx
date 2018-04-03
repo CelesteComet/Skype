@@ -13,6 +13,35 @@ function _ProfileItem({name, subtitle, status, src, onClick}) {
     color += 'red'
   } 
 
+  let subtitleLength = 0;
+
+  if (Array.isArray(subtitle)) {
+    subtitle.forEach(txtBlk => {
+      if (typeof txtBlk === 'string') {
+        subtitleLength += txtBlk.length;
+      } else {
+        subtitleLength += 1;
+      }
+    });
+  } else {
+    subtitle = subtitle.split('');
+    subtitleLength = subtitle.length;
+  }
+
+  if (subtitleLength > 20) {
+    let splitSub = [];
+    subtitle.forEach(e => {
+      if (e.length > 1) {
+        e.split('').forEach(j => {
+          splitSub.push(j);
+        })
+      } else {
+        splitSub.push(e)
+      }
+    });
+    subtitle = splitSub.slice(0,30).join('') + '...';
+  }
+
   return (
     <div onClick={ onClick } className="_profile-item">
       {/* Icon */}

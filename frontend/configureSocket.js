@@ -39,6 +39,8 @@ export const configureSocket = (chatRoomIds, dispatch) => {
 
     // When a message is received
     App[roomName].received = data => {
+      console.log("Message received");
+      console.log(data);
       dispatch(receiveMessage(data));
     };
 
@@ -67,11 +69,6 @@ export const configureSocket = (chatRoomIds, dispatch) => {
       dispatch(toggleCallUI(payload))
     }
   };
-
-  
-
-
-
 };
 
 

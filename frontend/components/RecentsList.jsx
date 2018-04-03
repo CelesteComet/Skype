@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getRecentsInfo, getUserStatusMsg, orderByDate } from './Selectors';
-import { moveToRoom } from '../actions/uiActions';
-import { fetchRoomMessages } from '../actions/messageActions';
-import { fetchRooms } from '../actions/roomActions';
+import PropTypes            from 'prop-types';
+import { connect }          from 'react-redux';
+import { 
+  getRecentsInfo, 
+  getUserStatusMsg, 
+  orderByDate }             from './Selectors';
+
+// Import Actions
+import { moveToRoom }         from '../actions/uiActions';
+import { fetchRoomMessages }  from '../actions/messageActions';
+import { fetchRooms }         from '../actions/roomActions';
+import { leaveRoom }          from '../actions/roomMembershipActions'
 
 // Import Misc.
 import { convertStringToSmileyArray } from '../middleware';
 
 // Import Components
-import _ProfileItem from './_ProfileItem';
-import RecentsListItem from './RecentsListItem';
+import _ProfileItem     from './_ProfileItem';
+import RecentsListItem  from './RecentsListItem';
 
 class RecentsList extends Component {
   constructor(props) {
@@ -39,13 +45,31 @@ class RecentsList extends Component {
     // $(".main-message-interface")[0].scrollTop = $(".main-message-interface")[0].scrollHeight;
   }
 
-  handleContextMenu(e) {
+  handleContextMenu(roomId, e) {
     e.preventDefault();
+
+    const { leaveRoom } = this.props;
+
+    // find the hidden context menu
     let contextMenu = document.querySelector(".context-menu");
+
+    // provide original className to make it show
     contextMenu.className = "context-menu";
+
+    // set new positions based on mouse click
     contextMenu.style.top = (e.pageY - contextMenu.offsetHeight) + 'px';
     contextMenu.style.left = (e.pageX - contextMenu.offsetWidth/2) + 'px';
 
+    // set event listener for delete action
+    let contextMenuDeleteItem = contextMenu.querySelector('li');
+
+    // handler to leave the room
+    let leaveRoomHandler = function(e) {
+      leaveRoom(roomId);
+      contextMenuDeleteItem.removeEventListener('click', leaveRoomHandler);
+    }
+
+    contextMenuDeleteItem.addEventListener('click', leaveRoomHandler);
   }
 
   render() {
@@ -81,7 +105,10 @@ class RecentsList extends Component {
       // render different roomItem components based on number of users in room
       if (numberOfUsers == 1) {
         recentsJSX.push(
-          <li key={roomItem.id} className={ className } onClick={ this.moveToRoom.bind(null, roomItem.id) }>
+          <li key={roomItem.id} 
+              className={ className } 
+              onClick={ this.moveToRoom.bind(null, roomItem.id) }
+              onContextMenu={this.handleContextMenu.bind(null, roomItem.id)}>
             <_ProfileItem 
               name={ usersString } 
               subtitle={ lastMsgSent ? convertStringToSmileyArray(lastMsgSent) : "" } 
@@ -91,7 +118,10 @@ class RecentsList extends Component {
         );
       } else {
         recentsJSX.push(
-          <li key={roomItem.id} className={ className } onClick={ this.moveToRoom.bind(null, roomItem.id) }>
+          <li key={roomItem.id} 
+              className={ className } 
+              onClick={ this.moveToRoom.bind(null, roomItem.id) }
+              onContextMenu={this.handleContextMenu.bind(null, roomItem.id)}>
             <_ProfileItem 
               name={ usersString } 
               subtitle={ `${parseInt(numberOfUsers)} participants` } 
@@ -102,7 +132,7 @@ class RecentsList extends Component {
     }
 
     return (
-      <ul className="recents-list" onContextMenu={this.handleContextMenu}>
+      <ul className="recents-list">
         { recentsJSX }
       </ul>
     )
@@ -120,17 +150,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     moveToRoom: roomId => { dispatch(moveToRoom(roomId)) },
-    fetchRoomMessages: roomId => { dispatch(fetchRoomMessages(roomId)) }
+    fetchRoomMessages: roomId => { dispatch(fetchRoomMessages(roomId)) },
+    leaveRoom: roomId => { dispatch(leaveRoom(roomId)) }
   }
 }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     fetchRooms: () => { return dispatch(fetchRooms()) },
-//     fetchRoomMessages: roomId => { return dispatch(fetchRoomMessages(roomId)) },
-//     switchRoom: roomId => { return dispatch(moveToRoom(Number(roomId))) }
-//   };
-// };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecentsList);
 

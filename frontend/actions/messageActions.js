@@ -3,6 +3,7 @@ import * as APIUtil from '../services/messageAPIService';
 export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 export const RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
 export const RECEIVE_ROOM_MESSAGES = 'RECEIVE_ROOM_MESSAGES';
+export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 
 export const receiveMessage = message => {
   return {
@@ -25,6 +26,12 @@ export const receiveAllMessages = (messages) => {
   }
 }
 
+export const clearMessages = () => {
+  return {
+    type: CLEAR_MESSAGES
+  }
+}
+
 export const fetchAllMessages = () => dispatch => {
   return APIUtil.fetchAllMessages()
     .then(messages => {
@@ -37,6 +44,7 @@ export const fetchAllMessages = () => dispatch => {
 export const fetchRoomMessages = (roomId) => dispatch => {
   return APIUtil.fetchRoomMessages(roomId)
     .then(messages => {
+      console.log(messages);
       dispatch(receiveRoomMessages(messages));
     }, err => {
       console.log(err);
@@ -51,5 +59,7 @@ export const createMessage = message => dispatch => {
       console.log(err);
     }) 
 }
+
+
 
 

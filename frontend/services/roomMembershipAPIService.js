@@ -1,15 +1,15 @@
 export const fetchRoomMemberships = () => {
   return $.ajax({
     url: 'api/room_memberships'
-  })
-};
+  });
+}
 
-export const logoutUser = () => {
+export const destroyRoomMembership = roomId => {
   return $.ajax({
-    url: 'api/session',
+    url: `api/room_memberships/${roomId}`,
     method: 'DELETE'
-  })
-};
+  });
+}
 
 // Refactor into different service later
 
@@ -18,6 +18,6 @@ export const createRoom = (roomIds) => {
     url: 'api/rooms',
     method: 'POST',
     data: {room: {room_Ids: roomIds}}
-  })   
+  });
 }
 

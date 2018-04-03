@@ -20,8 +20,6 @@ for (let name in emojiPaths) {
   emojiImages[name] = image;
 }
 
-
-
 class Emoji extends Component {
   constructor(props) {
     super(props);
@@ -79,7 +77,7 @@ class Emoji extends Component {
     let {size} = this.props;
     return (
       <canvas 
-        style={{width: 19}}
+        style={{width: size}}
         className='emoji'
         data-id={Math.random()}
         ref={(canvas) => { this.canvas = canvas; }} >

@@ -19,18 +19,14 @@ class ContactsListView extends Component {
   }
 
   handleClick(user) {
-    let { dispatch, currentUser, fetchRooms, moveToRoom } = this.props;
-    // dispatch(createRoom([currentUser.id, user.id])).then((room) => {
-    //   fetchRooms()
-    //     .then(moveToRoom(room.id));
-    //   createSubscription(room.id, dispatch);
-    // });
-
+    let { dispatch, currentUser, fetchRooms, moveToRoom, fetchRoomMessages } = this.props;
     dispatch(createRoom([currentUser.id, user.id]))
       .then(room => {
-        
         moveToRoom(room.id);
         fetchRooms()
+          .then(() => {
+            fetchRoomMessages(room.id);
+          });
       })
   }
 
@@ -58,6 +54,7 @@ class ContactsListView extends Component {
               <_ProfileItem 
                 name={ username }
                 status={ status }
+                src={'/images/default-avatar.svg'}
                 subtitle={'sub'} />
             </div>
           )
@@ -72,6 +69,7 @@ class ContactsListView extends Component {
                 <_ProfileItem 
                   name={ username }
                   status={ status }
+                  src={'/images/default-avatar.svg'}
                   subtitle={'sub'} />
               </div>
             )
@@ -83,6 +81,7 @@ class ContactsListView extends Component {
                 <_ProfileItem 
                   name={ username }
                   status={ status }
+                  src={'/images/default-avatar.svg'}
                   subtitle={'sub'} />
               </div>
             )
@@ -132,7 +131,8 @@ const mapDispatchToProps = dispatch => {
   return {
     dispatch,
     fetchRooms: () => { return dispatch(fetchRooms()) },
-    moveToRoom: roomId => { dispatch(moveToRoom(roomId)) }
+    moveToRoom: roomId => { dispatch(moveToRoom(roomId)) },
+    fetchRoomMessages: roomId => { dispatch(fetchRoomMessages(roomId)) }
   };
 };
 
