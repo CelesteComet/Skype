@@ -4,7 +4,6 @@ import { fetchRoomMemberships } from './actions/roomMembershipActions';
 import { moveToRoom, toggleCallUI } from './actions/uiActions';
 import { fetchRooms, receiveRooms } from './actions/roomActions';
 import { updateUserStatus } from './actions/friendActions';
-import Peer from 'simple-peer';
 
 export const createSubscription = (roomId, dispatch) => {
   const roomName = `room #${roomId}`;
@@ -13,11 +12,11 @@ export const createSubscription = (roomId, dispatch) => {
     channel: 'ChatChannel', room: roomId 
   });
 
-  console.log(`Created a subscription to ${roomName}`);
-
   // When a message is received
   App[roomName].received = data => {
-    dispatch(receiveMessage(data));
+      dispatch(fetchRooms())
+        .then(rooms => { dispatch(receiveRooms(rooms)) });
+      dispatch(receiveMessage(data));
   };
 
   App[roomName].disconnected = () => {
@@ -25,7 +24,7 @@ export const createSubscription = (roomId, dispatch) => {
   };
 };
 
-export const configureSocket = (chatRoomIds, dispatch) => {
+export const configureSocket = (chatRoomIds, dispatch, state) => {
 
 
   chatRoomIds.forEach(chatroomId => {
@@ -36,13 +35,13 @@ export const configureSocket = (chatRoomIds, dispatch) => {
     App[roomName] = App.cable.subscriptions.create({
       channel: "ChatChannel", room: chatroomId
     });
-    console.log(`Created a subscription to ${roomName}`);
 
     // When a message is received
     App[roomName].received = data => {
-      dispatch(receiveMessage(data));
       dispatch(fetchRooms())
         .then(rooms => { dispatch(receiveRooms(rooms)) });
+      dispatch(receiveMessage(data));
+
     };
 
     App[roomName].disconnected = () => {

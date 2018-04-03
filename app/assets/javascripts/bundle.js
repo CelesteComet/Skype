@@ -20193,12 +20193,6 @@ var _roomActions = __webpack_require__(12);
 
 var _friendActions = __webpack_require__(18);
 
-var _simplePeer = __webpack_require__(45);
-
-var _simplePeer2 = _interopRequireDefault(_simplePeer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var createSubscription = exports.createSubscription = function createSubscription(roomId, dispatch) {
   var roomName = 'room #' + roomId;
 
@@ -20206,10 +20200,11 @@ var createSubscription = exports.createSubscription = function createSubscriptio
     channel: 'ChatChannel', room: roomId
   });
 
-  console.log('Created a subscription to ' + roomName);
-
   // When a message is received
   App[roomName].received = function (data) {
+    dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
+      dispatch((0, _roomActions.receiveRooms)(rooms));
+    });
     dispatch((0, _messageActions.receiveMessage)(data));
   };
 
@@ -20218,7 +20213,7 @@ var createSubscription = exports.createSubscription = function createSubscriptio
   };
 };
 
-var configureSocket = exports.configureSocket = function configureSocket(chatRoomIds, dispatch) {
+var configureSocket = exports.configureSocket = function configureSocket(chatRoomIds, dispatch, state) {
 
   chatRoomIds.forEach(function (chatroomId) {
 
@@ -20228,14 +20223,13 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
     App[roomName] = App.cable.subscriptions.create({
       channel: "ChatChannel", room: chatroomId
     });
-    console.log('Created a subscription to ' + roomName);
 
     // When a message is received
     App[roomName].received = function (data) {
-      dispatch((0, _messageActions.receiveMessage)(data));
       dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
         dispatch((0, _roomActions.receiveRooms)(rooms));
       });
+      dispatch((0, _messageActions.receiveMessage)(data));
     };
 
     App[roomName].disconnected = function () {
@@ -50819,8 +50813,12 @@ var smileyParser = exports.smileyParser = function smileyParser(store) {
   return function (next) {
     return function (action) {
 
-      // DYING! go through string one by one
       if (action.type === 'RECEIVE_MESSAGE') {
+
+        // Check to see if the message is in the room, refactor to its own middleware
+        if (Number(store.getState().ui.currentRoomId) !== action.payload.room_id) {
+          return;
+        }
 
         var body = action.payload.body;
 
@@ -51125,12 +51123,13 @@ var Dashboard = function (_Component) {
           fetchRooms = _props.fetchRooms,
           fetchFriends = _props.fetchFriends,
           receiveRooms = _props.receiveRooms,
-          dispatch = _props.dispatch;
+          dispatch = _props.dispatch,
+          state = _props.state;
 
       fetchFriends();
       fetchRooms().then(function (rooms) {
         receiveRooms(rooms);
-        (0, _configureSocket.configureSocket)(Object.keys(rooms), dispatch);
+        (0, _configureSocket.configureSocket)(Object.keys(rooms), dispatch, state);
       });
     }
   }, {

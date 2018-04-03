@@ -3,7 +3,7 @@ import {
   RECEIVE_MESSAGE,
   RECEIVE_ALL_MESSAGES,
   RECEIVE_ROOM_MESSAGES,
-  CLEAR_MESSAGES
+  CLEAR_MESSAGES,
 } from '../actions/messageActions';
 
 const initialState = {};

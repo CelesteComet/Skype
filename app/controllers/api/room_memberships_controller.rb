@@ -21,9 +21,9 @@ class Api::RoomMembershipsController < ApplicationController
   def destroy 
     @room_membership = Room.find_by(id: params[:id]).room_memberships.find_by(user_id: current_user.id);
     if @room_membership
-      @room_membership.destroy
       room_users_Ids = @room_membership.room.users.map {|f| f.id}
-      WebNotificationsJob.perform([room_users_Ids], 'fetch_rooms')
+      @room_membership.destroy
+      WebNotificationsJob.perform(room_users_Ids, 'fetch_rooms')
       render json: @room_membership
     else 
       render json: @room_membership.errors.full_messages, status: 400

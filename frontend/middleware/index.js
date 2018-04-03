@@ -46,8 +46,12 @@ const emojiTable = {
 
 export const smileyParser = store => next => action => {
 
-  // DYING! go through string one by one
   if (action.type === 'RECEIVE_MESSAGE') {
+
+    // Check to see if the message is in the room, refactor to its own middleware
+    if (Number(store.getState().ui.currentRoomId) !== action.payload.room_id) {
+      return;
+    }
 
     let body = action.payload.body;
 

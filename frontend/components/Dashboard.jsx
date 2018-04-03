@@ -29,11 +29,11 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const { fetchRooms, fetchFriends, receiveRooms, dispatch } = this.props;
+    const { fetchRooms, fetchFriends, receiveRooms, dispatch, state } = this.props;
     fetchFriends();
     fetchRooms().then(rooms => {
       receiveRooms(rooms);
-      configureSocket(Object.keys(rooms), dispatch);
+      configureSocket(Object.keys(rooms), dispatch, state);
     })
   }
 

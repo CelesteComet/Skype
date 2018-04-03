@@ -6,7 +6,6 @@
 
   def create
     @room = Room.create({});
-    print params[:room][:room_Ids]
     params[:room][:room_Ids].each do |id|
       @room.room_memberships.create(room_id: @room.id, user_id: id)
       payload = {
