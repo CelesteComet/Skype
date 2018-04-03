@@ -10,10 +10,9 @@
     params[:room][:room_Ids].each do |id|
       @room.room_memberships.create(room_id: @room.id, user_id: id)
       payload = {
-        action: 'fetch_rooms',
         roomId: @room.id
       }
-      WebNotificationsJob.perform([id], 'notify_status', {data: payload})
+      WebNotificationsJob.perform([id], 'fetch_rooms', payload)
     end
 
     if @room.save 

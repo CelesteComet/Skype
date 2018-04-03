@@ -40,9 +40,9 @@ export const configureSocket = (chatRoomIds, dispatch) => {
 
     // When a message is received
     App[roomName].received = data => {
-      console.log("Message received");
-      console.log(data);
       dispatch(receiveMessage(data));
+      dispatch(fetchRooms())
+        .then(rooms => { dispatch(receiveRooms(rooms)) });
     };
 
     App[roomName].disconnected = () => {
@@ -56,18 +56,17 @@ export const configureSocket = (chatRoomIds, dispatch) => {
   App.appearances = App.cable.subscriptions.create({channel: 'WebNotificationsChannel'});
 
   App.appearances.received = (data) => {
-    console.log(data);
     if (data.action === 'fetch_rooms') {
-      dispatch(fetchRoomMemberships()).then(() => {
-        createSubscription(data.roomId, dispatch);
+      dispatch(fetchRooms()).then(rooms => {
+        dispatch(receiveRooms(rooms));
+        createSubscription(data.payload.roomId, dispatch);
       });
     } else if (data.action === 'notify_status') {
       let {user_id, status} = data.payload;
       dispatch(updateUserStatus(user_id, status));
       dispatch(fetchRooms())
-        .then(rooms => { console.log(rooms); dispatch(receiveRooms(rooms)); });
+        .then(rooms => { dispatch(receiveRooms(rooms)); });
     } else if (data.action === 'receiveCall') {
-      console.log("receive call action received")
       const { payload } = data;
       dispatch(toggleCallUI(payload))
     }

@@ -1,5 +1,5 @@
 import * as APIUtil from '../services/roomMembershipAPIService';
-import { fetchRooms } from '../actions/roomActions';
+import { fetchRooms, receiveRooms } from '../actions/roomActions';
 import { clearMessages } from '../actions/messageActions';
 
 export const RECEIVE_ALL_ROOM_MEMBERSHIPS = 'RECEIVE_ALL_ROOM_MEMBERSHIPS';
@@ -25,7 +25,9 @@ export const leaveRoom = roomId => dispatch => {
   return APIUtil.destroyRoomMembership(roomId)
     .then(roomMemberships => {
       dispatch(clearMessages());
-      dispatch(fetchRooms());
+      dispatch(fetchRooms()).then(rooms => {
+        dispatch(receiveRooms(rooms));
+      });
     }, err => {
       console.log(err);
     })

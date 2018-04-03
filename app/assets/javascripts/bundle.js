@@ -18926,7 +18926,9 @@ var leaveRoom = exports.leaveRoom = function leaveRoom(roomId) {
   return function (dispatch) {
     return APIUtil.destroyRoomMembership(roomId).then(function (roomMemberships) {
       dispatch((0, _messageActions.clearMessages)());
-      dispatch((0, _roomActions.fetchRooms)());
+      dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
+        dispatch((0, _roomActions.receiveRooms)(rooms));
+      });
     }, function (err) {
       console.log(err);
     });
@@ -20230,9 +20232,10 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
 
     // When a message is received
     App[roomName].received = function (data) {
-      console.log("Message received");
-      console.log(data);
       dispatch((0, _messageActions.receiveMessage)(data));
+      dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
+        dispatch((0, _roomActions.receiveRooms)(rooms));
+      });
     };
 
     App[roomName].disconnected = function () {
@@ -20245,10 +20248,10 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
   App.appearances = App.cable.subscriptions.create({ channel: 'WebNotificationsChannel' });
 
   App.appearances.received = function (data) {
-    console.log(data);
     if (data.action === 'fetch_rooms') {
-      dispatch((0, _roomMembershipActions.fetchRoomMemberships)()).then(function () {
-        createSubscription(data.roomId, dispatch);
+      dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
+        dispatch((0, _roomActions.receiveRooms)(rooms));
+        createSubscription(data.payload.roomId, dispatch);
       });
     } else if (data.action === 'notify_status') {
       var _data$payload = data.payload,
@@ -20257,10 +20260,9 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
 
       dispatch((0, _friendActions.updateUserStatus)(user_id, status));
       dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
-        console.log(rooms);dispatch((0, _roomActions.receiveRooms)(rooms));
+        dispatch((0, _roomActions.receiveRooms)(rooms));
       });
     } else if (data.action === 'receiveCall') {
-      console.log("receive call action received");
       var payload = data.payload;
 
       dispatch((0, _uiActions.toggleCallUI)(payload));
