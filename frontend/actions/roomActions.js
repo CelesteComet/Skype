@@ -26,10 +26,6 @@ export const receiveRooms = rooms => {
 export const fetchRooms = () => dispatch => {
   return $.ajax({
     url: 'api/rooms'
-  }).then(res => {
-    dispatch(receiveRooms(res));
-  }, error => {
-    console.log(error);
   });
 };
 

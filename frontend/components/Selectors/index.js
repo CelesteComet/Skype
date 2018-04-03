@@ -49,7 +49,6 @@ export const orderByDate = roomObjects => {
   orderedRooms = orderedRooms.sort((a,b) => {
     return new Date(b.updated_at) - new Date(a.updated_at);
   });
-  console.log(orderedRooms)
 
   return orderedRooms;
 };

@@ -102,8 +102,12 @@ class RecentsList extends Component {
 
       // get the number of users of the room 
       let numberOfUsers = Object.keys(roomItem.users).length;
+
       // render different roomItem components based on number of users in room
       if (numberOfUsers == 1) {
+
+        // get the single user information
+        let user = Object.values(roomItem.users)[0];
         recentsJSX.push(
           <li key={roomItem.id} 
               className={ className } 
@@ -112,7 +116,7 @@ class RecentsList extends Component {
             <_ProfileItem 
               name={ usersString } 
               subtitle={ lastMsgSent ? convertStringToSmileyArray(lastMsgSent) : "" } 
-              status={1} 
+              status={ user.status } 
               src={'images/default-avatar.svg'} />
           </li>
         );

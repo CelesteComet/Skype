@@ -2,6 +2,7 @@ import { receiveMessage } from './actions/messageActions';
 import { logoutUser } from './actions/sessionActions';
 import { fetchRoomMemberships } from './actions/roomMembershipActions';
 import { moveToRoom, toggleCallUI } from './actions/uiActions';
+import { fetchRooms, receiveRooms } from './actions/roomActions';
 import { updateUserStatus } from './actions/friendActions';
 import Peer from 'simple-peer';
 
@@ -60,9 +61,11 @@ export const configureSocket = (chatRoomIds, dispatch) => {
       dispatch(fetchRoomMemberships()).then(() => {
         createSubscription(data.roomId, dispatch);
       });
-    } else if (data.action === 'notify_presence') {
+    } else if (data.action === 'notify_status') {
       let {user_id, status} = data.payload;
       dispatch(updateUserStatus(user_id, status));
+      dispatch(fetchRooms())
+        .then(rooms => { console.log(rooms); dispatch(receiveRooms(rooms)); });
     } else if (data.action === 'receiveCall') {
       console.log("receive call action received")
       const { payload } = data;

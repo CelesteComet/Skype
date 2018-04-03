@@ -6,6 +6,9 @@ $lightish-blue: rgb(199, 237, 252);
 $lighter-blue: #EFF6F9;
 $light-gray: #8CA8B4;
 $dark-gray: rgb(148, 153, 156);
+$color-status-green: #8CB738;
+$color-status-yellow: #F6D24B;
+$color-status-red: #D63230;
 
 /**************************************/
 /*  --------------------------------- */
@@ -65,10 +68,21 @@ img {
       border-radius: 100%;
       border: 2px solid $dark-gray;
       box-shadow: white 0px 0px 0px 3px;
+    }
 
-      .green   { background: 'green' }
-      .yellow  { background: 'yellow'}
-      .red     { background: 'red'   }
+    .status-circle.green  { 
+      background: $color-status-green; 
+      border: 2px solid $color-status-green;
+    }
+
+    .status-circle.yellow { 
+      background: $color-status-yellow; 
+      border: 2px solid $color-status-yellow;
+    }
+    
+    .status-circle.red { 
+      background: $color-status-red;
+      border: 2px solid $color-status-red; 
     }
   }
 

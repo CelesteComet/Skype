@@ -1,14 +1,14 @@
 import React, { Fragment, Component } from 'react';
 
 // Import Misc
-import {configureSocket} from '../configureSocket';
+import { configureSocket } from '../configureSocket';
 import Peer              from 'simple-peer';
 
 // Import Actions
-import { logoutUser, getUser }  from '../actions/sessionActions';
-import { fetchRoomMemberships } from '../actions/roomMembershipActions'
-import { fetchRooms }           from '../actions/roomActions';
-import { fetchAllFriends }      from '../actions/friendActions';
+import { logoutUser, getUser }      from '../actions/sessionActions';
+import { fetchRoomMemberships }     from '../actions/roomMembershipActions'
+import { fetchRooms, receiveRooms } from '../actions/roomActions';
+import { fetchAllFriends }          from '../actions/friendActions';
 import { 
   fetchAllMessages, 
   fetchRoomMessages }           from '../actions/messageActions';
@@ -29,9 +29,12 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const { fetchRooms, fetchFriends } = this.props;
+    const { fetchRooms, fetchFriends, receiveRooms, dispatch } = this.props;
     fetchFriends();
-    fetchRooms();
+    fetchRooms().then(rooms => {
+      receiveRooms(rooms);
+      configureSocket(Object.keys(rooms), dispatch);
+    })
   }
 
   render() {
@@ -53,6 +56,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
   return {
     modalView: state.ui.profileModalView,
+    rooms: state.rooms,
     state
   }
 };
@@ -61,6 +65,7 @@ const mapDispatchToProps = dispatch => {
   return { 
     fetchRooms: () => { return dispatch(fetchRooms()) },
     fetchFriends: () => { return dispatch(fetchAllFriends()) },
+    receiveRooms: rooms => { return dispatch(receiveRooms(rooms)) },
     dispatch 
   }
 };

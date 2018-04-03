@@ -17901,10 +17901,6 @@ var fetchRooms = exports.fetchRooms = function fetchRooms() {
   return function (dispatch) {
     return $.ajax({
       url: 'api/rooms'
-    }).then(function (res) {
-      dispatch(receiveRooms(res));
-    }, function (error) {
-      console.log(error);
     });
   };
 };
@@ -18567,41 +18563,12 @@ function _ProfileItem(_ref) {
 
   // change status circle color based on login status
   var color = "";
-  if (status === 2) {
+  if (status === 1) {
     color += 'green';
   } else if (status === 3) {
     color += 'yellow';
   } else if (status === 4) {
     color += 'red';
-  }
-
-  var subtitleLength = 0;
-
-  if (Array.isArray(subtitle)) {
-    subtitle.forEach(function (txtBlk) {
-      if (typeof txtBlk === 'string') {
-        subtitleLength += txtBlk.length;
-      } else {
-        subtitleLength += 1;
-      }
-    });
-  } else {
-    subtitle = subtitle.split('');
-    subtitleLength = subtitle.length;
-  }
-
-  if (subtitleLength > 20) {
-    var splitSub = [];
-    subtitle.forEach(function (e) {
-      if (e.length > 1) {
-        e.split('').forEach(function (j) {
-          splitSub.push(j);
-        });
-      } else {
-        splitSub.push(e);
-      }
-    });
-    subtitle = splitSub.slice(0, 30).join('') + '...';
   }
 
   return _react2.default.createElement(
@@ -20196,7 +20163,6 @@ var orderByDate = exports.orderByDate = function orderByDate(roomObjects) {
   orderedRooms = orderedRooms.sort(function (a, b) {
     return new Date(b.updated_at) - new Date(a.updated_at);
   });
-  console.log(orderedRooms);
 
   return orderedRooms;
 };
@@ -20220,6 +20186,8 @@ var _sessionActions = __webpack_require__(10);
 var _roomMembershipActions = __webpack_require__(26);
 
 var _uiActions = __webpack_require__(5);
+
+var _roomActions = __webpack_require__(12);
 
 var _friendActions = __webpack_require__(18);
 
@@ -20282,12 +20250,15 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
       dispatch((0, _roomMembershipActions.fetchRoomMemberships)()).then(function () {
         createSubscription(data.roomId, dispatch);
       });
-    } else if (data.action === 'notify_presence') {
+    } else if (data.action === 'notify_status') {
       var _data$payload = data.payload,
           user_id = _data$payload.user_id,
           status = _data$payload.status;
 
       dispatch((0, _friendActions.updateUserStatus)(user_id, status));
+      dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
+        console.log(rooms);dispatch((0, _roomActions.receiveRooms)(rooms));
+      });
     } else if (data.action === 'receiveCall') {
       console.log("receive call action received");
       var payload = data.payload;
@@ -48102,7 +48073,6 @@ var roomReducer = function roomReducer() {
   var action = arguments[1];
 
   var newState = Object.assign({}, state);
-  console.log(action.payload);
   switch (action.type) {
     case _roomActions.RECEIVE_ROOMS:
       return action.payload;
@@ -51151,10 +51121,15 @@ var Dashboard = function (_Component) {
     value: function componentDidMount() {
       var _props = this.props,
           fetchRooms = _props.fetchRooms,
-          fetchFriends = _props.fetchFriends;
+          fetchFriends = _props.fetchFriends,
+          receiveRooms = _props.receiveRooms,
+          dispatch = _props.dispatch;
 
       fetchFriends();
-      fetchRooms();
+      fetchRooms().then(function (rooms) {
+        receiveRooms(rooms);
+        (0, _configureSocket.configureSocket)(Object.keys(rooms), dispatch);
+      });
     }
   }, {
     key: 'render',
@@ -51185,6 +51160,7 @@ var Dashboard = function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     modalView: state.ui.profileModalView,
+    rooms: state.rooms,
     state: state
   };
 };
@@ -51196,6 +51172,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchFriends: function fetchFriends() {
       return dispatch((0, _friendActions.fetchAllFriends)());
+    },
+    receiveRooms: function receiveRooms(rooms) {
+      return dispatch((0, _roomActions.receiveRooms)(rooms));
     },
     dispatch: dispatch
   };
@@ -51763,8 +51742,12 @@ var RecentsList = function (_Component) {
 
         // get the number of users of the room 
         var numberOfUsers = Object.keys(roomItem.users).length;
+
         // render different roomItem components based on number of users in room
         if (numberOfUsers == 1) {
+
+          // get the single user information
+          var user = Object.values(roomItem.users)[0];
           recentsJSX.push(_react2.default.createElement(
             'li',
             { key: roomItem.id,
@@ -51774,7 +51757,7 @@ var RecentsList = function (_Component) {
             _react2.default.createElement(_ProfileItem3.default, {
               name: usersString,
               subtitle: lastMsgSent ? (0, _middleware.convertStringToSmileyArray)(lastMsgSent) : "",
-              status: 1,
+              status: user.status,
               src: 'images/default-avatar.svg' })
           ));
         } else {
