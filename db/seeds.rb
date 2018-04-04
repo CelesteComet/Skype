@@ -11,8 +11,8 @@
 guestUser = User.create({username: "Guest User", password: "password", profile_id: 1})
 bruceUser = User.create({username: "Bruce Wong", password: "password", profile_id: 2})
 
-User.create({username: "Donald Trump", password: "password", profile_id: 3})
-User.create({username: "Barack Obama", password: "password", profile_id: 4})
+User.create({username: "Andrew Ng", password: "password", profile_id: 3})
+User.create({username: "John Carmack", password: "password", profile_id: 4})
 User.create({username: "Larry Elison", password: "password", profile_id: 5})
 User.create({username: "Conan O'Brian", password: "password", profile_id: 6})
 User.create({username: "Gal Gadot", password: "password", profile_id: 7})
