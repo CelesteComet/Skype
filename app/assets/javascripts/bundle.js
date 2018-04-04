@@ -51124,7 +51124,10 @@ var Dashboard = function (_Component) {
   function Dashboard(props) {
     _classCallCheck(this, Dashboard);
 
-    return _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).call(this, props));
+
+    _titleService2.default.changeFavicon("images/skypeicon.png");
+    return _this;
   }
 
   _createClass(Dashboard, [{
@@ -52455,8 +52458,8 @@ var InputMessageInterface = function (_Component) {
   _createClass(InputMessageInterface, [{
     key: 'adjustTextArea',
     value: function adjustTextArea() {
-      var rows = Math.ceil((this.textArea.scrollHeight - this.baseScrollHeight) / 16);
-      this.textArea.rows = rows;
+      // let rows = Math.ceil((this.textArea.scrollHeight - this.baseScrollHeight) / 16);
+      // this.textArea.rows = rows;
     }
   }, {
     key: 'handleChange',

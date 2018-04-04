@@ -23,8 +23,8 @@ class InputMessageInterface extends Component {
   }
 
   adjustTextArea() {
-    let rows = Math.ceil((this.textArea.scrollHeight - this.baseScrollHeight) / 16);
-    this.textArea.rows = rows;
+    // let rows = Math.ceil((this.textArea.scrollHeight - this.baseScrollHeight) / 16);
+    // this.textArea.rows = rows;
   }
 
   handleChange(e) {

@@ -21,4 +21,6 @@ Rails.application.routes.draw do
 
   end
 
+  match '*' => redirect('/'), via: :all
+
 end

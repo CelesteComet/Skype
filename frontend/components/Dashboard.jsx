@@ -26,6 +26,7 @@ import ContextMenu  from './ContextMenu';
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    titleService.changeFavicon("images/skypeicon.png");
   }
 
   componentDidMount() {
