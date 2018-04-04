@@ -400,7 +400,6 @@ module.exports = warning;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
 var SHOW_PROFILE_MODAL = exports.SHOW_PROFILE_MODAL = 'SHOW_PROFILE_MODAL';
 var HIDE_PROFILE_MODAL = exports.HIDE_PROFILE_MODAL = 'HIDE_PROFILE_MODAL';
 var SHOW_CONTACTS_LIST = exports.SHOW_CONTACTS_LIST = "SHOW_CONTACTS_LIST";
@@ -423,12 +422,6 @@ var showProfileModal = exports.showProfileModal = function showProfileModal() {
 var hideProfileModal = exports.hideProfileModal = function hideProfileModal() {
   return {
     type: HIDE_PROFILE_MODAL
-  };
-};
-
-var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModal() {
-  return {
-    type: TOGGLE_PROFILE_MODAL
   };
 };
 

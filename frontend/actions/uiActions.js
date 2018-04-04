@@ -1,4 +1,3 @@
-export const TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
 export const SHOW_PROFILE_MODAL = 'SHOW_PROFILE_MODAL';
 export const HIDE_PROFILE_MODAL = 'HIDE_PROFILE_MODAL';
 export const SHOW_CONTACTS_LIST = "SHOW_CONTACTS_LIST";
@@ -23,12 +22,6 @@ export const hideProfileModal = () => {
     type: HIDE_PROFILE_MODAL
   }
 }
-
-export const toggleProfileModal = () => {
-  return {
-    type: TOGGLE_PROFILE_MODAL
-  }
-};
 
 export const showContactsList = () => {
   return {
