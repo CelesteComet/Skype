@@ -20242,6 +20242,7 @@ var configureSocket = exports.configureSocket = function configureSocket(chatRoo
   App.appearances = App.cable.subscriptions.create({ channel: 'WebNotificationsChannel' });
 
   App.appearances.received = function (data) {
+    console.log(data);
     if (data.action === 'fetch_rooms') {
       dispatch((0, _roomActions.fetchRooms)()).then(function (rooms) {
         dispatch((0, _roomActions.receiveRooms)(rooms));

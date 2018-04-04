@@ -55,6 +55,7 @@ export const configureSocket = (chatRoomIds, dispatch, state) => {
   App.appearances = App.cable.subscriptions.create({channel: 'WebNotificationsChannel'});
 
   App.appearances.received = (data) => {
+    console.log(data);
     if (data.action === 'fetch_rooms') {
       dispatch(fetchRooms()).then(rooms => {
         dispatch(receiveRooms(rooms));
