@@ -79,7 +79,11 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: skype_production
-  username: skype
-  password: <%= ENV['SKYPE_DATABASE_PASSWORD'] %>
+    <<: *default
+    adapter: postgresql
+    encoding: unicode
+    database: <%= Figaro.env.database %>
+    username: <%= Figaro.env.username %>
+    password: <%= Figaro.env.password %>
+    host: <%= Figaro.env.host %>
+    port: <%= Figaro.env.port %>
