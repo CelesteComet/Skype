@@ -35,7 +35,10 @@ $color-status-red: #D63230;
   left: -9999px !important;
 }
 
-/* TYPOGRAPHY */
+/**************************************/
+/*             Typography             */
+/**************************************/
+
 $font-size-sub: 14px;
 
 img {
@@ -43,6 +46,14 @@ img {
   width: 100%;
   border: none;
 }
+
+a, button {
+  cursor: pointer;
+}
+
+/**************************************/
+/*           Profile Item             */
+/**************************************/
 
 ._profile-item {
   overflow: hidden;
