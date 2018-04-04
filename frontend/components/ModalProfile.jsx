@@ -8,7 +8,7 @@ import CircleImageIcon from './CircleImageIcon';
 import { connect } from 'react-redux';
 
 // Actions
-import { toggleProfileModal } from '../actions/uiActions';
+import { hideProfileModal } from '../actions/uiActions';
 import { logoutUser } from '../actions/sessionActions';
 
 const statusText = {
@@ -21,22 +21,23 @@ class ModalProfile extends Component {
 
   constructor(props) {
     super(props);
-    this.dispatch = this.props.dispatch;
-    this.toggleProfileModal = this.toggleProfileModal.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleLogout() {
-    toggleProfileModal();
-    this.dispatch(logoutUser());
-  }
-
-  toggleProfileModal() {
-    this.dispatch(toggleProfileModal());
+    const { hideProfileModal, logoutUser } = this.props;
+    hideProfileModal();
+    logoutUser();
   }
 
   render() {
-    const { dispatch, currentUser } = this.props;
+
+    const { 
+      dispatch, 
+      currentUser,
+      hideProfileModal
+    } = this.props;
+
     const { username, status } = currentUser;
 
     return (
@@ -55,7 +56,7 @@ class ModalProfile extends Component {
               subtitle={"Online"}
               status={ status } 
               src={ 'images/default-avatar.svg' }
-              onClick={() => { dispatch(toggleProfileModal()) }} />
+              onClick={ hideProfileModal } />
           </header>
 
           {/* Modal Main */}
@@ -104,7 +105,11 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { dispatch }
+  return { 
+    showProfileModal: () => { dispatch(showProfileModal()) },
+    hideProfileModal: () => { dispatch(hideProfileModal()) },
+    logoutUser: () => { dispatch(logoutUser()) }
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalProfile);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { toggleProfileModal } from '../actions/uiActions';
+import { toggleProfileModal, showProfileModal } from '../actions/uiActions';
 import { connect } from 'react-redux';
 
 import Search from './Search';
@@ -13,7 +13,7 @@ import Clouds from './Clouds';
 
 class SideBar extends Component {
   render() {
-    let { dispatch, directoryButton, currentUser } = this.props;
+    let { dispatch, directoryButton, currentUser, showProfileModal } = this.props;
 
     return (
       <div className="aside-container">
@@ -34,7 +34,7 @@ class SideBar extends Component {
                 subtitle={"Online"}
                 status={currentUser.status} 
                 src={ 'images/default-avatar.svg' }
-                onClick={() => { dispatch(toggleProfileModal()) }} />
+                onClick={ showProfileModal } />
             </div>
 
 
@@ -60,7 +60,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { dispatch }
+  return { 
+    showProfileModal: () => { dispatch(showProfileModal()) },
+    dispatch 
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

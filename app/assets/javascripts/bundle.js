@@ -401,6 +401,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var TOGGLE_PROFILE_MODAL = exports.TOGGLE_PROFILE_MODAL = "TOGGLE_PROFILE_MODAL";
+var SHOW_PROFILE_MODAL = exports.SHOW_PROFILE_MODAL = 'SHOW_PROFILE_MODAL';
+var HIDE_PROFILE_MODAL = exports.HIDE_PROFILE_MODAL = 'HIDE_PROFILE_MODAL';
 var SHOW_CONTACTS_LIST = exports.SHOW_CONTACTS_LIST = "SHOW_CONTACTS_LIST";
 var TOGGLE_CREATE_ROOM_VIEW = exports.TOGGLE_CREATE_ROOM_VIEW = "TOGGLE_CREATE_ROOM_VIEW";
 var SHOW_SEARCH_DIRECTORY_BUTTON = exports.SHOW_SEARCH_DIRECTORY_BUTTON = "SHOW_SEARCH_DIRECTORY_BUTTON";
@@ -411,6 +413,18 @@ var MOVE_TO_ROOM = exports.MOVE_TO_ROOM = "MOVE_TO_ROOM";
 var SHOW_IN_SEARCH = exports.SHOW_IN_SEARCH = "SHOW_IN_SEARCH";
 var HIDE_IN_SEARCH = exports.HIDE_IN_SEARCH = "HIDE_IN_SEARCH";
 var TOGGLE_CALL_UI = exports.TOGGLE_CALL_UI = "TOGGLE_CALL_UI";
+
+var showProfileModal = exports.showProfileModal = function showProfileModal() {
+  return {
+    type: SHOW_PROFILE_MODAL
+  };
+};
+
+var hideProfileModal = exports.hideProfileModal = function hideProfileModal() {
+  return {
+    type: HIDE_PROFILE_MODAL
+  };
+};
 
 var toggleProfileModal = exports.toggleProfileModal = function toggleProfileModal() {
   return {
@@ -48262,8 +48276,11 @@ var uiReducer = function uiReducer() {
 
   var newState = _lodash2.default.merge({}, state);
   switch (action.type) {
-    case _uiActions.TOGGLE_PROFILE_MODAL:
-      newState.profileModalView = !newState.profileModalView;
+    case _uiActions.SHOW_PROFILE_MODAL:
+      newState.profileModalView = true;
+      return newState;
+    case _uiActions.HIDE_PROFILE_MODAL:
+      newState.profileModalView = false;
       return newState;
     case _uiActions.TOGGLE_CALL_UI:
       newState.callUI = !newState.callUI;
@@ -51256,7 +51273,8 @@ var SideBar = function (_Component) {
       var _props = this.props,
           dispatch = _props.dispatch,
           directoryButton = _props.directoryButton,
-          currentUser = _props.currentUser;
+          currentUser = _props.currentUser,
+          showProfileModal = _props.showProfileModal;
 
 
       return _react2.default.createElement(
@@ -51277,9 +51295,7 @@ var SideBar = function (_Component) {
                 subtitle: "Online",
                 status: currentUser.status,
                 src: 'images/default-avatar.svg',
-                onClick: function onClick() {
-                  dispatch((0, _uiActions.toggleProfileModal)());
-                } })
+                onClick: showProfileModal })
             ),
             _react2.default.createElement(_Search2.default, null)
           ),
@@ -51305,7 +51321,12 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return { dispatch: dispatch };
+  return {
+    showProfileModal: function showProfileModal() {
+      dispatch((0, _uiActions.showProfileModal)());
+    },
+    dispatch: dispatch
+  };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SideBar);
@@ -55009,8 +55030,6 @@ var ModalProfile = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (ModalProfile.__proto__ || Object.getPrototypeOf(ModalProfile)).call(this, props));
 
-    _this.dispatch = _this.props.dispatch;
-    _this.toggleProfileModal = _this.toggleProfileModal.bind(_this);
     _this.handleLogout = _this.handleLogout.bind(_this);
     return _this;
   }
@@ -55018,20 +55037,20 @@ var ModalProfile = function (_Component) {
   _createClass(ModalProfile, [{
     key: 'handleLogout',
     value: function handleLogout() {
-      (0, _uiActions.toggleProfileModal)();
-      this.dispatch((0, _sessionActions.logoutUser)());
-    }
-  }, {
-    key: 'toggleProfileModal',
-    value: function toggleProfileModal() {
-      this.dispatch((0, _uiActions.toggleProfileModal)());
+      var _props = this.props,
+          hideProfileModal = _props.hideProfileModal,
+          logoutUser = _props.logoutUser;
+
+      hideProfileModal();
+      logoutUser();
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          dispatch = _props.dispatch,
-          currentUser = _props.currentUser;
+      var _props2 = this.props,
+          dispatch = _props2.dispatch,
+          currentUser = _props2.currentUser,
+          hideProfileModal = _props2.hideProfileModal;
       var username = currentUser.username,
           status = currentUser.status;
 
@@ -55051,9 +55070,7 @@ var ModalProfile = function (_Component) {
               subtitle: "Online",
               status: status,
               src: 'images/default-avatar.svg',
-              onClick: function onClick() {
-                dispatch((0, _uiActions.toggleProfileModal)());
-              } })
+              onClick: hideProfileModal })
           ),
           _react2.default.createElement(
             'div',
@@ -55128,7 +55145,27 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return { dispatch: dispatch };
+  return {
+    showProfileModal: function (_showProfileModal) {
+      function showProfileModal() {
+        return _showProfileModal.apply(this, arguments);
+      }
+
+      showProfileModal.toString = function () {
+        return _showProfileModal.toString();
+      };
+
+      return showProfileModal;
+    }(function () {
+      dispatch(showProfileModal());
+    }),
+    hideProfileModal: function hideProfileModal() {
+      dispatch((0, _uiActions.hideProfileModal)());
+    },
+    logoutUser: function logoutUser() {
+      dispatch((0, _sessionActions.logoutUser)());
+    }
+  };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ModalProfile);

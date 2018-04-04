@@ -1,8 +1,9 @@
 import { 
-  TOGGLE_PROFILE_MODAL, 
+  SHOW_PROFILE_MODAL, 
   SHOW_CONTACTS_LIST, 
   SHOW_CREATE_ROOM_VIEW,
   SHOW_SEARCH_DIRECTORY_BUTTON,
+  HIDE_PROFILE_MODAL,
   HIDE_SEARCH_DIRECTORY_BUTTON,
   SHOW_MEDIA_UPLOAD,
   HIDE_MEDIA_UPLOAD,
@@ -35,8 +36,11 @@ const initialState = {
 const uiReducer = (state = initialState, action) => {
   let newState = _.merge({}, state);
   switch (action.type) {
-    case TOGGLE_PROFILE_MODAL: 
-      newState.profileModalView = !newState.profileModalView;
+    case SHOW_PROFILE_MODAL:
+      newState.profileModalView = true;
+      return newState;
+    case HIDE_PROFILE_MODAL: 
+      newState.profileModalView = false;
       return newState;
     case TOGGLE_CALL_UI:
       newState.callUI = !newState.callUI;
