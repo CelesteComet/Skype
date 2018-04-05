@@ -17917,7 +17917,7 @@ var fetchRoom = exports.fetchRoom = function fetchRoom(roomId) {
     return $.ajax({
       url: 'api/rooms/' + roomId
     }).then(function (res) {
-      dispatch(receiveRoom(res));
+      dispatch(receiveRooms(res));
     }, function (error) {
       console.log(error);
     });
@@ -28804,7 +28804,7 @@ document.addEventListener('DOMContentLoaded', function () {
     store = (0, _redux.createStore)(_rootReducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default, _index.smileyParser, _reduxLogger2.default));
     delete window.currentUser;
   } else {
-    store = (0, _redux.createStore)(_rootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxLogger2.default));
+    store = (0, _redux.createStore)(_rootReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _index.smileyParser, _reduxLogger2.default));
   }
 
   window.store = store;
@@ -50823,7 +50823,7 @@ var emojiTable = {
 var smileyParser = exports.smileyParser = function smileyParser(store) {
   return function (next) {
     return function (action) {
-
+      debugger;
       if (action.type === 'RECEIVE_MESSAGE') {
 
         // Check to see if the message is in the room, refactor to its own middleware
@@ -50850,8 +50850,10 @@ var smileyParser = exports.smileyParser = function smileyParser(store) {
       }
 
       if (action.type === "RECEIVE_ROOM_MESSAGES") {
-        action.payload.map(function (msg) {
-          return msg.body = convertStringToSmileyArray(msg.body);
+        console.log(action);
+        debugger;
+        action.payload.forEach(function (msg) {
+          msg.body = convertStringToSmileyArray(msg.body);
         });
       }
 
@@ -55283,7 +55285,7 @@ var SessionForm = function (_Component) {
         'div',
         { className: 'session-form' },
         _react2.default.createElement(_MicrosoftLogos2.default, null),
-        errors.map(function (error, i) {
+        errors && errors.map(function (error, i) {
           return _react2.default.createElement(
             'p',
             { key: i },

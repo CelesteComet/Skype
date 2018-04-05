@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     store = createStore(rootReducer, preloadedState, applyMiddleware(thunk, smileyParser, logger));
     delete window.currentUser;
   } else {
-    store = createStore(rootReducer, applyMiddleware(thunk, logger));
+    store = createStore(rootReducer, applyMiddleware(thunk, smileyParser, logger));
   }
 
   window.store = store;

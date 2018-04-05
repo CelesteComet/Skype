@@ -60,7 +60,7 @@ class SessionForm extends Component {
     return (
       <div className="session-form">
         <MicrosoftLogos />
-        {errors.map((error, i) => (
+        {errors && errors.map((error, i) => (
           <p key={i}>{error}</p>
         ))}
         <SlideIn>

@@ -316,6 +316,9 @@ aside {
 /*           Aside Buttons            */
 /**************************************/
 
+.aside-buttons li:hover {
+  cursor: pointer;
+}
 
 @media (max-width: 600px) {
   .aside-buttons {
@@ -323,9 +326,6 @@ aside {
   }
 }
   
-
-
-
 /**************************************/
 /*           Recents List             */
 /**************************************/
