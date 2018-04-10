@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HeaderMessageInterface from './HeaderMessageInterface';
+import _HeaderMessageInterface from './_HeaderMessageInterface';
 import ContactsListItem from './ContactsListItem';
 import { createRoom } from '../actions/roomMembershipActions';
 import { moveToRoom } from '../actions/uiActions';

@@ -19,7 +19,6 @@ import App from './components/App';
 
 let store;
 
-
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root');
 

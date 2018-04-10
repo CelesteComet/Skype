@@ -18,7 +18,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "simple-peer": "^8.3.0",
+    "simple-peer": "^8.5.0",
     "style-loader": "^0.20.1",
     "typed.js": "^2.0.6",
     "uuid": "^3.2.1",

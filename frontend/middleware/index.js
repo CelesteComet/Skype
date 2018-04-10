@@ -45,7 +45,6 @@ const emojiTable = {
 
 
 export const smileyParser = store => next => action => {
-  debugger;
   if (action.type === 'RECEIVE_MESSAGE') {
 
     // Check to see if the message is in the room, refactor to its own middleware
@@ -72,8 +71,6 @@ export const smileyParser = store => next => action => {
   } 
 
   if (action.type === "RECEIVE_ROOM_MESSAGES") {
-    console.log(action);
-    debugger;
     action.payload.forEach(msg => {
       msg.body = convertStringToSmileyArray(msg.body);
     });

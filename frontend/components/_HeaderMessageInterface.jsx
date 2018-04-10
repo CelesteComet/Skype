@@ -15,7 +15,9 @@ import _ProfileItem         from './_ProfileItem';
 import CallButtonSet from './CallButtonSet';
 import { connect } from 'react-redux';
 
-function _HeaderMessageInterface({ title, subtitle, status, src }) {
+function _HeaderMessageInterface(props) {
+  const { title, subtitle, status, src, handleCall } = props;
+  console.log(props);
   return (
     <div className='header-message-interface'>
       <_ProfileItem
@@ -23,7 +25,8 @@ function _HeaderMessageInterface({ title, subtitle, status, src }) {
         subtitle={subtitle}
         status={status} 
         src={src} />
-      <CallButtonSet /> 
+      <CallButtonSet 
+        handleCall={ handleCall } /> 
     </div>
   );
 }
