@@ -12,4 +12,10 @@ class Api::CallsController < ApplicationController
     })
   end
 
+  def make_call
+    WebNotificationsJob.perform(params[:userId], 'receiveCall', {
+      data: [params[:token]]
+    }) 
+  end
+
 end

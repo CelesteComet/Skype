@@ -1,4 +1,4 @@
-export const makeCall = (token, userId) => {
+export const makeCall = (token, userId) => dispatch => {
   return $.ajax({
     url: 'api/makeCall',
     method: 'POST',

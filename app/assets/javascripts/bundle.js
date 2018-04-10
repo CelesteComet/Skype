@@ -28392,11 +28392,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var makeCall = exports.makeCall = function makeCall(token, userId) {
-  return $.ajax({
-    url: 'api/makeCall',
-    method: 'POST',
-    data: { token: token, userId: userId }
-  });
+  return function (dispatch) {
+    return $.ajax({
+      url: 'api/makeCall',
+      method: 'POST',
+      data: { token: token, userId: userId }
+    });
+  };
 };
 
 var sendMessage = exports.sendMessage = function sendMessage(userIds, payload) {
@@ -54030,6 +54032,16 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _simplePeer = __webpack_require__(78);
+
+var Peer = _interopRequireWildcard(_simplePeer);
+
+var _reactRedux = __webpack_require__(3);
+
+var _callActions = __webpack_require__(92);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54038,25 +54050,40 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// Import Actions
+
+
 var CallProvider = function (_Component) {
   _inherits(CallProvider, _Component);
 
   function CallProvider(props) {
     _classCallCheck(this, CallProvider);
 
-    return _possibleConstructorReturn(this, (CallProvider.__proto__ || Object.getPrototypeOf(CallProvider)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (CallProvider.__proto__ || Object.getPrototypeOf(CallProvider)).call(this, props));
+
+    _this.peer = new Peer.default({ initiator: false, trickle: false });
+    _this.handleCall = _this.handleCall.bind(_this);
+    return _this;
   }
 
   _createClass(CallProvider, [{
-    key: "handleCall",
+    key: 'handleCall',
     value: function handleCall() {
-      console.log("CALLING");
+      var _props = this.props,
+          otherUserId = _props.otherUserId,
+          makeCall = _props.makeCall;
+
+      this.peer = new Peer.default({ initiator: true, trickle: false });
+      this.peer.on('signal', function (data) {
+        // send the call signal
+        makeCall(data, otherUserId);
+      });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "div",
+        'div',
         null,
         _react2.default.cloneElement(this.props.children, { handleCall: this.handleCall })
       );
@@ -54066,7 +54093,28 @@ var CallProvider = function (_Component) {
   return CallProvider;
 }(_react.Component);
 
-exports.default = CallProvider;
+var mapStateToProps = function mapStateToProps(state) {
+  if (state.rooms[state.ui.currentRoomId]) {
+    return {
+      otherUserId: Object.keys(state.rooms[state.ui.currentRoomId].users)[0],
+      currentRoomId: state.ui.currentRoomId
+    };
+  } else {
+    return {
+      currentRoomId: state.ui.currentRoomId
+    };
+  }
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    makeCall: function makeCall(data, otherUserId) {
+      dispatch((0, _callActions.makeCall)(data, otherUserId));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CallProvider);
 
 /***/ }),
 /* 204 */
